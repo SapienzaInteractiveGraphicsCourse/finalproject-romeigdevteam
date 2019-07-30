@@ -1,0 +1,90 @@
+<!doctype html>
+<html>
+
+<head>
+    <meta charset="UTF-8">
+    <title> Babylonjs demo</title>
+    <style>
+        #canvas{
+            width: 100%;
+            height: 100%;
+
+        }
+    </style>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/babylonjs/4.0.3/babylon.js">    </script>
+
+</head>
+
+<body>
+    <canvas id="canvas"> </canvas>
+    <script>
+        window.addEventListener("DOMContentLoaded", function () {
+            var canvas = document.getElementById("canvas");
+            var engine = new BABYLON.Engine(canvas, true);
+
+            var createScene = function () {
+                var scene = new BABYLON.Scene(engine);
+                engine.enableOfflineSupport = false;    //if error turn off manifest related model
+
+                scene.clearColor = new BABYLON.Color3.White();
+                
+                var box = BABYLON.Mesh.CreateBox("Box1",4.0,scene);
+                var box2 = BABYLON.Mesh.CreateBox("Box2", 4.0, scene);
+                var material = new BABYLON.StandardMaterial("material1",scene);
+                material.wireframe = true;
+                box2.material = material;
+                box2.position = new BABYLON.Vector3(0,5,0);
+
+                
+
+                //camera arc
+
+                var camera = new BABYLON.ArcRotateCamera("arcCamera",
+                     BABYLON.Tools.ToRadians(45),BABYLON.Tools.ToRadians(45), 10.0, box.position, scene);
+                camera.setTarget(box);
+                camera.attachControl(canvas,true);
+                // camera.keysUp.push(87) //W
+                // camera.keysLeft.push(65) //A
+                // camera.keysDown.push(83) //S
+                // camera.keysRight.push(68) //D
+                
+
+                // var camera = new BABYLON.FollowCamera("followCam",BABYLON.Vector3.Zero(),scene);
+                // camera.target = box2;
+                // camera.radius = 10;
+                // camera.heightOffset = 5;
+                // camera.attachControl(canvas,true);
+
+
+                var light = new BABYLON.SpotLight("pointLight", new BABYLON.Vector3(0,10,5),scene);
+                light.diffuse = new BABYLON.Color3(1,0,0);
+                
+                scene.actionManager = new BABYLON.ActionManager(scene);
+                scene.actionManager.registerAction( new BABYLON.ExecuteCodeAction({ 
+                    trigger: BABYLON.ActionManager.OnKeyUpTrigger,  //spaceBar 
+                    parameter: " "}, 
+                    function(){
+                        light.setEnabled(!light.isEnabled() );
+                } ))
+
+                BABYLON.SceneLoader.ImportMesh("","","models/soldier.babylon",
+                scene,
+                function(newMeshes){
+                    newMeshes.forEach(function(mesh){
+                        mesh.rotation = new BABYLON.Vector3( BABYLON.Tools.ToRadians(45),0,0); //rotating 45 each mesh
+                    })
+                });
+                return scene;
+            }
+            
+            var scene = createScene();
+            engine.runRenderLoop(function(){
+                //scene.getMeshByName("Box1").position.z += 0.01;
+                scene.render();
+            });
+        });
+
+        
+
+    </script>
+</body>
