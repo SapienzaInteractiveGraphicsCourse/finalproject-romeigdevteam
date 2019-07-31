@@ -1,0 +1,338 @@
+Exporter version: 6.1.2, Blender version: 2.80 (sub 75)
+========= Conversion from Blender to Babylon.js =========
+	Scene settings used :
+		inline textures     :  false
+		Material Type       :  PBR
+		Positions Precision :  4
+		Normals Precision   :  3
+		UVs Precision       :  3
+		Vert Color Precision:  3
+		Mat Weight Precision:  2
+		texture directory   :  /home/giuppo/Desktop/igFinal/www/babylonjs/models/
+	Python World class constructor completed
+	processing begun of skeleton:  Armature, id:  0
+		processing begun of bone:  mixamorig:Hips, index:  0
+		processing begun of bone:  mixamorig:Spine, index:  1
+		processing begun of bone:  mixamorig:Spine1, index:  2
+		processing begun of bone:  mixamorig:Spine2, index:  3
+		processing begun of bone:  mixamorig:Neck, index:  4
+		processing begun of bone:  mixamorig:Head, index:  5
+		processing begun of bone:  mixamorig:HeadTop_End, index:  6
+		processing begun of bone:  mixamorig:RightEye, index:  7
+		processing begun of bone:  mixamorig:LeftEye, index:  8
+		processing begun of bone:  mixamorig:LeftShoulder, index:  9
+		processing begun of bone:  mixamorig:LeftArm, index:  10
+		processing begun of bone:  mixamorig:LeftForeArm, index:  11
+		processing begun of bone:  mixamorig:LeftHand, index:  12
+		processing begun of bone:  mixamorig:LeftHandMiddle1, index:  13
+		processing begun of bone:  mixamorig:LeftHandMiddle2, index:  14
+		processing begun of bone:  mixamorig:LeftHandMiddle3, index:  15
+		processing begun of bone:  mixamorig:LeftHandMiddle4, index:  16
+		processing begun of bone:  mixamorig:LeftHandThumb1, index:  17
+		processing begun of bone:  mixamorig:LeftHandThumb2, index:  18
+		processing begun of bone:  mixamorig:LeftHandThumb3, index:  19
+		processing begun of bone:  mixamorig:LeftHandThumb4, index:  20
+		processing begun of bone:  mixamorig:LeftHandIndex1, index:  21
+		processing begun of bone:  mixamorig:LeftHandIndex2, index:  22
+		processing begun of bone:  mixamorig:LeftHandIndex3, index:  23
+		processing begun of bone:  mixamorig:LeftHandIndex4, index:  24
+		processing begun of bone:  mixamorig:LeftHandRing1, index:  25
+		processing begun of bone:  mixamorig:LeftHandRing2, index:  26
+		processing begun of bone:  mixamorig:LeftHandRing3, index:  27
+		processing begun of bone:  mixamorig:LeftHandRing4, index:  28
+		processing begun of bone:  mixamorig:LeftHandPinky1, index:  29
+		processing begun of bone:  mixamorig:LeftHandPinky2, index:  30
+		processing begun of bone:  mixamorig:LeftHandPinky3, index:  31
+		processing begun of bone:  mixamorig:LeftHandPinky4, index:  32
+		processing begun of bone:  mixamorig:RightShoulder, index:  33
+		processing begun of bone:  mixamorig:RightArm, index:  34
+		processing begun of bone:  mixamorig:RightForeArm, index:  35
+		processing begun of bone:  mixamorig:RightHand, index:  36
+		processing begun of bone:  mixamorig:RightHandMiddle1, index:  37
+		processing begun of bone:  mixamorig:RightHandMiddle2, index:  38
+		processing begun of bone:  mixamorig:RightHandMiddle3, index:  39
+		processing begun of bone:  mixamorig:RightHandMiddle4, index:  40
+		processing begun of bone:  mixamorig:RightHandThumb1, index:  41
+		processing begun of bone:  mixamorig:RightHandThumb2, index:  42
+		processing begun of bone:  mixamorig:RightHandThumb3, index:  43
+		processing begun of bone:  mixamorig:RightHandThumb4, index:  44
+		processing begun of bone:  mixamorig:RightHandIndex1, index:  45
+		processing begun of bone:  mixamorig:RightHandIndex2, index:  46
+		processing begun of bone:  mixamorig:RightHandIndex3, index:  47
+		processing begun of bone:  mixamorig:RightHandIndex4, index:  48
+		processing begun of bone:  mixamorig:RightHandRing1, index:  49
+		processing begun of bone:  mixamorig:RightHandRing2, index:  50
+		processing begun of bone:  mixamorig:RightHandRing3, index:  51
+		processing begun of bone:  mixamorig:RightHandRing4, index:  52
+		processing begun of bone:  mixamorig:RightHandPinky1, index:  53
+		processing begun of bone:  mixamorig:RightHandPinky2, index:  54
+		processing begun of bone:  mixamorig:RightHandPinky3, index:  55
+		processing begun of bone:  mixamorig:RightHandPinky4, index:  56
+		processing begun of bone:  mixamorig:RightUpLeg, index:  57
+		processing begun of bone:  mixamorig:RightLeg, index:  58
+		processing begun of bone:  mixamorig:RightFoot, index:  59
+		processing begun of bone:  mixamorig:RightToeBase, index:  60
+		processing begun of bone:  mixamorig:RightToe_End, index:  61
+		processing begun of bone:  mixamorig:LeftUpLeg, index:  62
+		processing begun of bone:  mixamorig:LeftLeg, index:  63
+		processing begun of bone:  mixamorig:LeftFoot, index:  64
+		processing begun of bone:  mixamorig:LeftToeBase, index:  65
+		processing begun of bone:  mixamorig:LeftToe_End, index:  66
+	processing begun of camera (UniversalCamera):  Camera
+	processing begun of mesh:  Hats
+		processing begun of material:  Hatmat
+			processing texture FuseModel_Hat_normal
+				texture type:  bumpTexture, mapped using: "HatsDiffuseUVLayer"
+			processing texture FuseModel_Hat_diffuse
+				texture type:  diffuseTexture, mapped using: "HatsDiffuseUVLayer"
+			processing texture FuseModel_Hat_specular
+				texture type:  specularTexture, mapped using: "HatsDiffuseUVLayer"
+			processing texture FuseModel_Hat_gloss
+				texture type:  value not meaningful 2, mapped using: "HatsDiffuseUVLayer"
+		Custom split normals with tangents being used
+		num positions      :  2503
+		num normals        :  2503
+		num tangents       :  2503
+		num uvs            :  5006
+		num uvs2           :  0
+		num colors         :  0
+		num indices        :  7650
+		Skeleton stats:  
+			Total Influencers:  2988
+			Avg # of influencers per vertex:  1.1938
+			Highest # of influencers observed:  3, num vertices with this:  98
+			exported as 3 influencers
+			num skeletonWeights and skeletonIndices:  10012
+	processing begun of mesh:  Tops
+		processing begun of material:  Topmat
+			processing texture FuseModel_Top_normal
+				texture type:  bumpTexture, mapped using: "TopsDiffuseUVLayer"
+			processing texture FuseModel_Top_diffuse
+				texture type:  diffuseTexture, mapped using: "TopsDiffuseUVLayer"
+			processing texture FuseModel_Top_specular
+				texture type:  specularTexture, mapped using: "TopsDiffuseUVLayer"
+			processing texture FuseModel_Top_gloss
+				texture type:  value not meaningful 2, mapped using: "TopsDiffuseUVLayer"
+		Custom split normals with tangents being used
+		num positions      :  2313
+		num normals        :  2313
+		num tangents       :  2313
+		num uvs            :  4626
+		num uvs2           :  0
+		num colors         :  0
+		num indices        :  6468
+		Skeleton stats:  
+			WARNING: Maximum # of influencers exceeded for 349 vertices, extras ignored
+			Total Influencers:  13101
+			Avg # of influencers per vertex:  5.6641
+			Highest # of influencers observed:  14, num vertices with this:  349
+			exported as 8 influencers
+			num skeletonWeights and skeletonIndices:  18504
+	processing begun of mesh:  Eyes
+		processing begun of material:  Bodymat
+			processing texture FuseModel_Body_normal
+				texture type:  bumpTexture, mapped using: "EyesDiffuseUVLayer"
+			processing texture FuseModel_Body_diffuse
+				texture type:  diffuseTexture, mapped using: "EyesDiffuseUVLayer"
+			processing texture FuseModel_Body_specular
+				texture type:  specularTexture, mapped using: "EyesDiffuseUVLayer"
+			processing texture FuseModel_Body_gloss
+				texture type:  value not meaningful 2, mapped using: "EyesDiffuseUVLayer"
+		Custom split normals with tangents being used
+		num positions      :  882
+		num normals        :  882
+		num tangents       :  882
+		num uvs            :  1764
+		num uvs2           :  0
+		num colors         :  0
+		num indices        :  4560
+		Skeleton stats:  
+			Total Influencers:  882
+			Avg # of influencers per vertex:  1
+			Highest # of influencers observed:  1, num vertices with this:  882
+			exported as 1 influencers
+			num skeletonWeights and skeletonIndices:  3528
+	processing begun of mesh:  Beards
+		processing begun of material:  Beardmat
+			processing texture FuseModel_Beard_normal
+				texture type:  bumpTexture, mapped using: "BeardsDiffuseUVLayer"
+			processing texture FuseModel_Beard_diffuse
+				texture type:  diffuseTexture, mapped using: "BeardsDiffuseUVLayer"
+			processing texture FuseModel_Beard_specular
+				texture type:  specularTexture, mapped using: "BeardsDiffuseUVLayer"
+			processing texture FuseModel_Beard_gloss
+				texture type:  value not meaningful 2, mapped using: "BeardsDiffuseUVLayer"
+		Custom split normals with tangents being used
+		num positions      :  147
+		num normals        :  147
+		num tangents       :  147
+		num uvs            :  294
+		num uvs2           :  0
+		num colors         :  0
+		num indices        :  372
+		Skeleton stats:  
+			Total Influencers:  147
+			Avg # of influencers per vertex:  1
+			Highest # of influencers observed:  1, num vertices with this:  147
+			exported as 1 influencers
+			num skeletonWeights and skeletonIndices:  588
+	processing begun of mesh:  Shoes
+		processing begun of material:  Shoesmat
+			processing texture FuseModel_Shoes_normal
+				texture type:  bumpTexture, mapped using: "ShoesDiffuseUVLayer"
+			processing texture FuseModel_Shoes_diffuse
+				texture type:  diffuseTexture, mapped using: "ShoesDiffuseUVLayer"
+			processing texture FuseModel_Shoes_specular
+				texture type:  specularTexture, mapped using: "ShoesDiffuseUVLayer"
+			processing texture FuseModel_Shoes_gloss
+				texture type:  value not meaningful 2, mapped using: "ShoesDiffuseUVLayer"
+		Custom split normals with tangents being used
+		num positions      :  2035
+		num normals        :  2035
+		num tangents       :  2035
+		num uvs            :  4070
+		num uvs2           :  0
+		num colors         :  0
+		num indices        :  6432
+		Skeleton stats:  
+			Total Influencers:  6812
+			Avg # of influencers per vertex:  3.3474
+			Highest # of influencers observed:  5, num vertices with this:  20
+			exported as 5 influencers
+			num skeletonWeights and skeletonIndices:  16280
+	processing begun of mesh:  Bottoms
+		processing begun of material:  Bottommat
+			processing texture FuseModel_Bottom_normal
+				texture type:  bumpTexture, mapped using: "BottomsDiffuseUVLayer"
+			processing texture FuseModel_Bottom_diffuse
+				texture type:  diffuseTexture, mapped using: "BottomsDiffuseUVLayer"
+			processing texture FuseModel_Bottom_specular
+				texture type:  specularTexture, mapped using: "BottomsDiffuseUVLayer"
+			processing texture FuseModel_Bottom_gloss
+				texture type:  value not meaningful 2, mapped using: "BottomsDiffuseUVLayer"
+		Custom split normals with tangents being used
+		num positions      :  1446
+		num normals        :  1446
+		num tangents       :  1446
+		num uvs            :  2892
+		num uvs2           :  0
+		num colors         :  0
+		num indices        :  6528
+		Skeleton stats:  
+			Total Influencers:  7877
+			Avg # of influencers per vertex:  5.4474
+			Highest # of influencers observed:  8, num vertices with this:  188
+			exported as 8 influencers
+			num skeletonWeights and skeletonIndices:  11568
+	processing begun of mesh:  Body
+		processing begun of material:  Bodymat
+		registered as also a user of material:  Bodymat
+		Custom split normals with tangents being used
+		num positions      :  2257
+		num normals        :  2257
+		num tangents       :  2257
+		num uvs            :  4514
+		num uvs2           :  0
+		num colors         :  0
+		num indices        :  9210
+		Skeleton stats:  
+			Total Influencers:  4158
+			Avg # of influencers per vertex:  1.8423
+			Highest # of influencers observed:  5, num vertices with this:  37
+			exported as 5 influencers
+			num skeletonWeights and skeletonIndices:  18056
+	processing begun of mesh:  Masks
+		processing begun of material:  Maskmat
+			processing texture FuseModel_Mask_normal
+				texture type:  bumpTexture, mapped using: "MasksDiffuseUVLayer"
+			processing texture FuseModel_Mask_diffuse
+				texture type:  diffuseTexture, mapped using: "MasksDiffuseUVLayer"
+			processing texture FuseModel_Mask_specular
+				texture type:  specularTexture, mapped using: "MasksDiffuseUVLayer"
+			processing texture FuseModel_Mask_gloss
+				texture type:  value not meaningful 2, mapped using: "MasksDiffuseUVLayer"
+		Custom split normals with tangents being used
+		num positions      :  569
+		num normals        :  569
+		num tangents       :  569
+		num uvs            :  1138
+		num uvs2           :  0
+		num colors         :  0
+		num indices        :  2280
+		Skeleton stats:  
+			Total Influencers:  1793
+			Avg # of influencers per vertex:  3.1511
+			Highest # of influencers observed:  5, num vertices with this:  189
+			exported as 5 influencers
+			num skeletonWeights and skeletonIndices:  4552
+	processing begun of mesh:  Eyelashes
+		processing begun of material:  Bodymat
+		registered as also a user of material:  Bodymat
+		Custom split normals with tangents being used
+		num positions      :  98
+		num normals        :  98
+		num tangents       :  98
+		num uvs            :  196
+		num uvs2           :  0
+		num colors         :  0
+		num indices        :  318
+		Skeleton stats:  
+			Total Influencers:  98
+			Avg # of influencers per vertex:  1
+			Highest # of influencers observed:  1, num vertices with this:  98
+			exported as 1 influencers
+			num skeletonWeights and skeletonIndices:  392
+	processing begun of mesh:  Eyewear
+		processing begun of material:  Eyewearmat
+			processing texture FuseModel_Eyewear_normal
+				texture type:  bumpTexture, mapped using: "EyewearDiffuseUVLayer"
+			processing texture FuseModel_Eyewear_diffuse
+				texture type:  diffuseTexture, mapped using: "EyewearDiffuseUVLayer"
+			processing texture FuseModel_Eyewear_specular
+				texture type:  specularTexture, mapped using: "EyewearDiffuseUVLayer"
+			processing texture FuseModel_Eyewear_gloss
+				texture type:  value not meaningful 2, mapped using: "EyewearDiffuseUVLayer"
+		Custom split normals with tangents being used
+		num positions      :  1039
+		num normals        :  1039
+		num tangents       :  1039
+		num uvs            :  2078
+		num uvs2           :  0
+		num colors         :  0
+		num indices        :  3870
+		Skeleton stats:  
+			Total Influencers:  1039
+			Avg # of influencers per vertex:  1
+			Highest # of influencers observed:  1, num vertices with this:  1039
+			exported as 1 influencers
+			num skeletonWeights and skeletonIndices:  4156
+	processing begun of mesh:  Gloves
+		processing begun of material:  Glovemat
+			processing texture FuseModel_Glove_normal
+				texture type:  bumpTexture, mapped using: "GlovesDiffuseUVLayer"
+			processing texture FuseModel_Glove_diffuse
+				texture type:  diffuseTexture, mapped using: "GlovesDiffuseUVLayer"
+			processing texture FuseModel_Glove_specular
+				texture type:  specularTexture, mapped using: "GlovesDiffuseUVLayer"
+			processing texture FuseModel_Glove_gloss
+				texture type:  value not meaningful 2, mapped using: "GlovesDiffuseUVLayer"
+		Custom split normals with tangents being used
+		num positions      :  2039
+		num normals        :  2039
+		num tangents       :  2039
+		num uvs            :  4078
+		num uvs2           :  0
+		num colors         :  0
+		num indices        :  7236
+		Skeleton stats:  
+			WARNING: Maximum # of influencers exceeded for 402 vertices, extras ignored
+			Total Influencers:  13198
+			Avg # of influencers per vertex:  6.4728
+			Highest # of influencers observed:  17, num vertices with this:  402
+			exported as 8 influencers
+			num skeletonWeights and skeletonIndices:  16312
+	processing begun of light (POINT):  Light
+========= Writing of JSON file started =========
+========= Writing of JSON file completed =========
+========= end of processing =========
+elapsed time:  0 min, 25.4727 secs
