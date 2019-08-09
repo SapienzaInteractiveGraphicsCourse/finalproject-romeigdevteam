@@ -1,0 +1,62 @@
+Exporter version: 5.6.4, Blender version: 2.79 (sub 0)
+========= Conversion from Blender to Babylon.js =========
+	Scene settings used :
+		export scope        :  ALL
+		inline textures     :  false
+		Positions Precision :  4
+		Normals Precision   :  3
+		UVs Precision       :  3
+		Vert Color Precision:  3
+		Mat Weight Precision:  2
+		texture directory   :  /home/giuppo/Desktop/finalproject-romeigdevteam/www/myTps/scenes/planeBab/
+	Python World class constructor completed
+	processing begun of mesh:  Interior
+		processing begun of Standard material:  Interior
+			Diffuse texture found "Kd.001"
+				Image texture found, type:  diffuseTexture, mapped using: "UVMap"
+		num positions      :  1991
+		num normals        :  1991
+		num uvs            :  3982
+		num uvs2           :  0
+		num colors         :  0
+		num indices        :  3951
+	processing begun of mesh:  Glass
+		processing begun of Standard material:  Glass
+			Diffuse texture found "Kd"
+				Image texture found, type:  diffuseTexture, mapped using: "UVMap"
+		num positions      :  432
+		num normals        :  432
+		num uvs            :  864
+		num uvs2           :  0
+		num colors         :  0
+		num indices        :  696
+	processing begun of mesh:  Main_Body
+		processing begun of Standard material:  Main
+			Bump texture found "Bump"
+				Image texture found, type:  bumpTexture, mapped using: "UVMap"
+			Diffuse texture found "Kd.002"
+				Image texture found, type:  diffuseTexture, mapped using: "UVMap"
+		num positions      :  6008
+		num normals        :  6008
+		num uvs            :  12016
+		num uvs2           :  0
+		num colors         :  0
+		num indices        :  12825
+	processing begun of mesh:  Wings
+		processing begun of Standard material:  Material.001
+			Bump texture found "Bump.001"
+				Image texture found, type:  bumpTexture, mapped using: "UVMap"
+			Diffuse texture found "Kd.003"
+				Image texture found, type:  diffuseTexture, mapped using: "UVMap"
+		num positions      :  12244
+		num normals        :  12244
+		num uvs            :  24488
+		num uvs2           :  0
+		num colors         :  0
+		num indices        :  24246
+	processing begun of camera (UniversalCamera):  Camera
+	processing begun of light (POINT):  Lamp
+========= Writing of scene file started =========
+========= Writing of scene file completed =========
+========= end of processing =========
+elapsed time:  0 min, 2.1584 secs

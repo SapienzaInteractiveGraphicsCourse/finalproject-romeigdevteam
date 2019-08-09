@@ -264,7 +264,8 @@ $(window).ready(function () {
 		skybox.material = skyboxMaterial;
 
 		// Character/Player
-		BABYLON.SceneLoader.ImportMesh("Body", "models/", "bobbin.babylon", scene, function (newMeshes, particleSystems) {
+		BABYLON.SceneLoader.ImportMesh("soldier", "/home/giuppo/Desktop/finalproject-romeigdevteam/www/babylonjs/scenes/soldier/", 
+		"soldier.babylon", scene, function (newMeshes, particleSystems) {
 			meshPlayer = newMeshes[0];
 			meshPlayer.position.y = 4;
 			meshPlayer.receiveShadows = false;
@@ -274,32 +275,6 @@ $(window).ready(function () {
 			meshPlayer.ellipsoid = new BABYLON.Vector3(1, 1.2, 1);
 			meshPlayer.ellipsoidOffset = new BABYLON.Vector3(0, 2.4, 0);
 			meshPlayer.applyGravity = true;
-
-			// Water
-			if (!noShader) {
-				BABYLON.Engine.ShadersRepository = "";
-				var waterMaterial = new WaterMaterial("water", scene, sun);
-				// refraction
-				waterMaterial.refractionTexture.renderList.push(extraGround);
-				waterMaterial.refractionTexture.renderList.push(ground);
-				waterMaterial.refractionTexture.renderList.push(skybox);
-				waterMaterial.refractionTexture.renderList.push(meshPlayer);
-				waterMaterial.refractionTexture.renderList.push(ramp);
-				waterMaterial.refractionTexture.renderList.push(rampLarge);
-				waterMaterial.refractionTexture.renderList.push(box);
-				// reflection
-				waterMaterial.reflectionTexture.renderList.push(extraGround);
-				waterMaterial.reflectionTexture.renderList.push(ground);
-				waterMaterial.reflectionTexture.renderList.push(skybox);
-				waterMaterial.reflectionTexture.renderList.push(meshPlayer);
-				waterMaterial.reflectionTexture.renderList.push(ramp);
-				waterMaterial.reflectionTexture.renderList.push(rampLarge);
-				waterMaterial.reflectionTexture.renderList.push(box);
-
-				var water = BABYLON.Mesh.CreateGround("water", 1000, 1000, 1, scene, false);
-				//water.visibility = 0.5;
-				water.material = waterMaterial;
-			}
 
 		});
 
