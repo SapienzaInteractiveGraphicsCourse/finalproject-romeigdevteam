@@ -1,0 +1,23 @@
+
+Add collision callback on target (bullet disappears and points are counted [])
+
+
+Add torch model []
+
+Add weapon model []
+
+Add animation of pg []
+
+Add points counter []
+
+Add movement of projectile [X]
+
+WASD coerenti con direzione di mira [X]
+
+WASD simultanei (W + A) che non funzionano se seguono la direzione con +=1 su position invece si []
+
+Add GUI []
+
+Add sounds []
+
+Move become move with collisions []
