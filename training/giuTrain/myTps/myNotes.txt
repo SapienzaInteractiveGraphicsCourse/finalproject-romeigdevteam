@@ -21,3 +21,12 @@ Add GUI []
 Add sounds []
 
 Move become move with collisions []
+
+--------------------------------------------------------------------
+--------------------------------------------------------------------
+ORNAMENTAL SECONDARY THINGS:
+
+Add explosion animation ? -> playgrounded
+
+Add a gui 3d/2d pg choice settings color, weapon, ecc...
+
