@@ -13,12 +13,14 @@ window.addEventListener("DOMContentLoaded", function () {
     var proj;
     var firebullet;
     var bullet, box1;
+    var shootingLine;
     var playerLoaded = false;
+
     var createScene = function () {
 
         // Create the scene space
         scene = new BABYLON.Scene(engine);
-        //enable physics engine and is running during the render loop.
+        // Enable physics engine and is running during the render loop.
         scene.enablePhysics();
 
 
@@ -38,9 +40,6 @@ window.addEventListener("DOMContentLoaded", function () {
         // Add global light to the scene (TODO remove or decrease)
         var light1 = new BABYLON.HemisphericLight("light1", new BABYLON.Vector3(1, 1, 0), scene);
 
-
-
-
         // Skybox
         var skybox = BABYLON.Mesh.CreateBox("skyBox", 800.0, scene);
         var skyboxMaterial = new BABYLON.StandardMaterial("skyBox", scene);
@@ -50,6 +49,8 @@ window.addEventListener("DOMContentLoaded", function () {
         skyboxMaterial.diffuseColor = new BABYLON.Color3(0, 0, 0);
         skyboxMaterial.specularColor = new BABYLON.Color3(0, 0, 0);
         skybox.material = skyboxMaterial;
+
+
 
         //Fog effect
         //scene.fogMode = BABYLON.Scene.FOGMODE_EXP;
@@ -70,36 +71,33 @@ window.addEventListener("DOMContentLoaded", function () {
         groundMaterial.ambientTexture = groundTex;
 
         // ground = BABYLON.Mesh.CreateGroundFromHeightMap("ground", "textures/worldHeightMap.jpg", ground_width, ground_height, 50, 0, 10, scene, false);
-        ground = BABYLON.MeshBuilder.CreateGround("ground", {width: ground_width, height: ground_height, subdivisions: 4}, scene);
+        ground = BABYLON.MeshBuilder.CreateGround("ground", { width: ground_width*2, height: ground_height, subdivisions: 4 }, scene);
         ground.position = new BABYLON.Vector3(0.0, -1.0, 0.0) //TODO REMOVE
         ground.material = groundMaterial;
         ground.isPickable = true;
 
 
-        ground.physicsImpostor = new BABYLON.PhysicsImpostor(ground, BABYLON.PhysicsImpostor.BoxImpostor, { mass: 0, restitution: 0.9 }, scene);
-
-        //Int. walls
-        var sourcePlane = new BABYLON.Plane(0, 0, 0, 0);
-        sourcePlane.normalize();
-        const wallpos = 3.0; //change position of wall square
-        wall1 = BABYLON.MeshBuilder.CreatePlane("wall1", { height: 4, width: 10, sourcePlane: sourcePlane, sideOrientation: BABYLON.Mesh.DOUBLESIDE }, scene);
-        wall1.position = new BABYLON.Vector3(5 + wallpos, 0, 0 + wallpos); wall1.rotation.y = BABYLON.Tools.ToRadians(0)
-        wall2 = BABYLON.MeshBuilder.CreatePlane("wall2", { height: 4, width: 10, sourcePlane: sourcePlane, sideOrientation: BABYLON.Mesh.DOUBLESIDE }, scene);
-        wall2.position = new BABYLON.Vector3(0 + wallpos, 0, 5 + wallpos);
-        wall3 = BABYLON.MeshBuilder.CreatePlane("wall3", { height: 4, width: 10, sourcePlane: sourcePlane, sideOrientation: BABYLON.Mesh.DOUBLESIDE }, scene);
-        wall3.position = new BABYLON.Vector3(5 + wallpos, 0, 10 + wallpos); wall3.rotation.y = BABYLON.Tools.ToRadians(0)
-        wall4 = BABYLON.MeshBuilder.CreatePlane("wall4", { height: 4, width: 10, sourcePlane: sourcePlane, sideOrientation: BABYLON.Mesh.DOUBLESIDE }, scene);
-        wall4.position = new BABYLON.Vector3(10 + wallpos, 0, 5 + wallpos);
+        // //Int. walls
+        // var sourcePlane = new BABYLON.Plane(0, 0, 0, 0);
+        // sourcePlane.normalize();
+        // const wallpos = 3.0; //change position of wall square
+        // wall1 = BABYLON.MeshBuilder.CreatePlane("wall1", { height: 4, width: 10, sourcePlane: sourcePlane, sideOrientation: BABYLON.Mesh.DOUBLESIDE }, scene);
+        // wall1.position = new BABYLON.Vector3(5 + wallpos, 0, 0 + wallpos); wall1.rotation.y = BABYLON.Tools.ToRadians(0)
+        // wall2 = BABYLON.MeshBuilder.CreatePlane("wall2", { height: 4, width: 10, sourcePlane: sourcePlane, sideOrientation: BABYLON.Mesh.DOUBLESIDE }, scene);
+        // wall2.position = new BABYLON.Vector3(0 + wallpos, 0, 5 + wallpos);
+        // wall3 = BABYLON.MeshBuilder.CreatePlane("wall3", { height: 4, width: 10, sourcePlane: sourcePlane, sideOrientation: BABYLON.Mesh.DOUBLESIDE }, scene);
+        // wall3.position = new BABYLON.Vector3(5 + wallpos, 0, 10 + wallpos); wall3.rotation.y = BABYLON.Tools.ToRadians(0)
+        // wall4 = BABYLON.MeshBuilder.CreatePlane("wall4", { height: 4, width: 10, sourcePlane: sourcePlane, sideOrientation: BABYLON.Mesh.DOUBLESIDE }, scene);
+        // wall4.position = new BABYLON.Vector3(10 + wallpos, 0, 5 + wallpos);
 
 
         ///External walls
-        makeSquaredWalls("extWall", -ground_width / 2, ground_width, 10.0, ground.position.y + 5.5, scene);
+       makeSquaredWalls("extWall", -ground_width / 2, ground_width, 10.0, ground.position.y + 5.0, scene);
 
         var matBox = new BABYLON.StandardMaterial("matBox", scene);
         matBox.diffuseColor = new BABYLON.Color3(1.0, 0.7, 0.3);
 
-        //Player
-
+        // Player outside box
         var box0 = BABYLON.Mesh.CreateBox("box", 0.7, scene);   //temp player
         box0.position = new BABYLON.Vector3(0, 0, 0)
 
@@ -108,35 +106,32 @@ window.addEventListener("DOMContentLoaded", function () {
         meshPlayer.isPickable = true;
 
         forward = new BABYLON.Vector3(parseFloat(Math.sin(meshPlayer.rotation.y)) / speedCharacter, gravity, parseFloat(Math.cos(meshPlayer.rotation.y)) / speedCharacter);
+
         if (isCameraLimited)
             camera.lockedTarget = meshPlayer;
         matBox.diffuseColor = new BABYLON.Color3(1.0, 0.1, 0.1);
 
+        
 
+
+
+        // Player mesh
         BABYLON.SceneLoader.ImportMesh("", "./scenes/player_np/", "player1.babylon", scene, function (newMeshes, particleSystems, skeletons) {
+            //Print player bones
             newMeshes.forEach(e => e.skeleton.bones.forEach(x => console.log(x.name)))
-            // meshPlayer = newMeshes[0];
-            // console.log("meshPlayer:", meshPlayer)
-            // camera.target = meshPlayer;
-            // meshPlayer.position = new BABYLON.Vector3(3.0, 15.0, 3.0);
+
             mesh = newMeshes[0];
-
-
             mesh.scaling = new BABYLON.Vector3(0.05, 0.05, 0.05)
-            // meshPlayer.ellipsoid = new BABYLON.Vector3(0.5, 1.0, 0.5);
-            // meshPlayer.ellipsoidOffset = new BABYLON.Vector3(0, 1.0, 0);
-            // meshPlayer.checkCollisions = true;
 
 
-            // console.log("m", meshPlayer);
-            // var forwards = new BABYLON.Vector3(parseFloat(Math.sin(meshPlayer.rotation.y)) / speedCharacter, gravity, parseFloat(Math.cos(meshPlayer.rotation.y)) / speedCharacter);
             // forwards.negate();
+
             // meshPlayer.moveWithCollisions(forwards);
-            // // or
+
             // var backwards = new BABYLON.Vector3(parseFloat(Math.sin(meshPlayer.rotation.y)) / speedCharacter, -gravity, parseFloat(Math.cos(meshPlayer.rotation.y)) / speedCharacter);
             // meshPlayer.moveWithCollisions(backwards);
 
-            // //collision => change color
+            // //collision (NOT CANNON) => change color
             // if (wall1.intersectsMesh(meshPlayer, false)) {
             //     meshPlayer.material.emissiveColor = new BABYLON.Color4(1, 0, 0, 1);
             // } else {
@@ -152,29 +147,25 @@ window.addEventListener("DOMContentLoaded", function () {
 
             meshSkeletons = skeletons
 
-
             // scene.meshes.forEach(function(mesh){
             //    shadowGenerator.getShadowMap().renderList.push(mesh);
-            //    // shadowGenerator2.getShadowMap().renderList.push(mesh);
             //     mesh.receiveShadows = true;
             // })
 
             mesh.isPickable = true;
             // Soldier.aiming_pose(scene);
-            meshPlayer.position.y = 2.0
-            meshPlayer.rotation.y = H.toRad(180)
+            meshPlayer.position.y = 1.0
+            //meshPlayer.rotation.y = H.toRad(180) <- not visible change
             playerLoaded = true
 
-            meshSkeletons.forEach(function (bone) {
+            meshSkeletons.forEach(function (bone) { // Arms in right position
                 scene.beginAnimation(bone, 103, 162, true, 1);
             })
 
-
-            //console.log(    scene.getBoneByName("Bip01 R Hand") );
-
-
         });
 
+
+        // Gun mesh 
         var gun;
         BABYLON.SceneLoader.ImportMesh("", "./scenes/aceGun/", "aceGun.babylon", scene, function (newMeshes, particleSystems, skeletons) {
 
@@ -188,26 +179,35 @@ window.addEventListener("DOMContentLoaded", function () {
 
             })
 
+
         });
 
-
-
-
-
-        //Player torch
+        // Player torch
         light2 = new BABYLON.SpotLight("light2", new BABYLON.Vector3(0, 0.5, 0), new BABYLON.Vector3(2, 0.5, 2), Math.PI / 6, 2, scene);
         skyboxMaterial.disableLighting = true;
 
-        //Shadow effect
+        // Shadow effect
         var shadowGenerator = new BABYLON.ShadowGenerator(1024, light2);
         shadowGenerator.getShadowMap().renderList.push(ground);
         ground.receiveShadows = true;
 
-        //Box Targets
+
+        // Laser line for range of gun
+        function createLine() {
+            var myPoints = [
+                scene.getBoneByName("Bip01 R Hand").position,
+                new BABYLON.Vector3(10, 10, 10)
+            ];
+            var reds = [new BABYLON.Color4(1, 0, 0, 1), new BABYLON.Color4(1, 0.5, 0, 1)];
+            shootingLine = BABYLON.MeshBuilder.CreateLines("lines", { points: myPoints, dashNb: 400, colors: reds }, scene);
+        }
+
+
+        // Box Targets
         var box1 = BABYLON.MeshBuilder.CreateBox("box", { height: 5, width: 1, depth: 0.5 }, scene); // default box
         box1.position = new BABYLON.Vector3(-2.0, 0.0, -2.0);
         box1.material = matBox.clone();
-        box1.onPhysicsCollide = function(){box1.material.diffuseColor = new BABYLON.Color3.Random()}
+        box1.onPhysicsCollide = function () { box1.material.diffuseColor = new BABYLON.Color3.Random() }
         //box1.material.diffuseColor = new BABYLON.Color3.Random();
         //box1.isPickable = true;
         var box2 = BABYLON.MeshBuilder.CreateBox("box", { height: 7, width: 1, depth: 0.5 }, scene); // default box
@@ -221,19 +221,32 @@ window.addEventListener("DOMContentLoaded", function () {
         box3.material.diffuseColor = new BABYLON.Vector3(0.2, 0.3, 0.4);
         //box3.isPickable = true;
 
-        box1.physicsImpostor = new BABYLON.PhysicsImpostor(box1, BABYLON.PhysicsImpostor.BoxImpostor, { mass: 0, restitution: 0.9 }, scene);
+        //Targets mesh
+        var targets=[]
+        BABYLON.SceneLoader.ImportMesh("", "./scenes/targetLowPoly/", "targetLowPoly.glb", scene, function (newMeshes) {
+            
+            newMeshes[0].scaling= new BABYLON.Vector3(0.3,0.3,0.3)
+            newMeshes[0].rotation= new BABYLON.Vector3(0,H.toRad(-90),0);
+            newMeshes[0].position.y = -1.0
+            newMeshes[0].position.x = -30
+            targets.push(newMeshes[0])
+            
+            var targClone1= newMeshes[0].clone();
+            targClone1.position.z=3.0;
+            targets.push(targClone1)
 
-        //proj.physicsImpostor.setAngularVelocity(new BABYLON.Quaternion(1, 0, 1, 0));
+            var targClone2= newMeshes[0].clone();
+            targClone2.position.z=6.0;
+            targets.push(targClone2)
+            
 
-        //Targets
-        BABYLON.SceneLoader.ImportMesh("", "./scenes/", "myTarget.glb", scene, function (newMeshes, particleSystems, skeletons, animationsGroup) {
-            newMeshes[0].scaling = new BABYLON.Vector3(0.5, 0.5, 0.5)
-            newMeshes[0].position.y = -2
         });
 
+        //Physics impostors
+        ground.physicsImpostor = new BABYLON.PhysicsImpostor(ground, BABYLON.PhysicsImpostor.BoxImpostor, { mass: 0, restitution: 0.9 }, scene);
+        box1.physicsImpostor = new BABYLON.PhysicsImpostor(box1, BABYLON.PhysicsImpostor.BoxImpostor, { mass: 0, restitution: 0.9 }, scene);
 
-
-        //data reporter
+        //Data reporter plane
         var outputplane = BABYLON.Mesh.CreatePlane("outputplane", 25, scene, false);
         outputplane.billboardMode = BABYLON.AbstractMesh.BILLBOARDMODE_ALL;
         outputplane.material = new BABYLON.StandardMaterial("outputplane", scene);
@@ -254,19 +267,17 @@ window.addEventListener("DOMContentLoaded", function () {
             outputplaneTexture.drawText(data, null, 380, "140px verdana", "white", null);
         }
 
-        //GUI 
+        // GUI 
         var advancedTexture = BABYLON.GUI.AdvancedDynamicTexture.CreateFullscreenUI("UI");
-        
         gui = new MyGUI(advancedTexture)
         gui.showAmmo();
         gui.showHit();
 
-
-        // Enable Collisions
-        scene.collisionsEnabled = true;
-        camera.checkCollisions = true;
-        //declare which meshes could be in collision with our camera:
-        ground.checkCollisions = true;
+        // // Enable Collisions
+        // scene.collisionsEnabled = true;
+        // camera.checkCollisions = true;
+        // //declare which meshes could be in collision with our camera:
+        // ground.checkCollisions = true;
 
 
         //////////// MOUSE AIMING PART //////////////////////////
@@ -293,7 +304,7 @@ window.addEventListener("DOMContentLoaded", function () {
             return v;
         }
 
-        function castRay() {
+        function castRay() {    //TODO REMOVE
             var origin = meshPlayer.position;
 
             var forward = new BABYLON.Vector3(0, 0, 1);
@@ -318,7 +329,7 @@ window.addEventListener("DOMContentLoaded", function () {
         }
 
         scene.registerBeforeRender(function () {
-            castRay();
+            //castRay();
             if (playerLoaded) {
                 scene.getBoneByName("Bip01 Spine1").setRotation(new BABYLON.Vector3(0, -Math.PI * 0.54 + camera.beta, 0));
                 // Soldier.aiming_pose(scene)
@@ -331,10 +342,7 @@ window.addEventListener("DOMContentLoaded", function () {
             }
 
         });
-
-
         return scene;
-
     };
 
 
@@ -346,33 +354,34 @@ window.addEventListener("DOMContentLoaded", function () {
         var pickResult = scene.pick(scene.pointerX, scene.pointerY);
         //meshPlayer.moveWithCollisions(new BABYLON.Vector3(parseFloat(pickResult.pickedPoint.x) / speedCharacter, gravity, parseFloat(pickResult.pickedPoint.y) / speedCharacter));
         this.console.log(meshPlayer, pickResult.pickedPoint.x, pickResult.pickedPoint.y)
-        const shootPower = 0.5;
+        const shootPower = 0.8;
         const rangeFire = 2.0;
         firebullet(proj, light2.direction, shootPower, rangeFire)
-        this.console.log("shooter position",meshPlayer.position)
+        this.console.log("shooter position", meshPlayer.position)
     })
 
     if (bullet) {
         bullet.physicsImpostor.registerOnPhysicsCollide(box1.physicsImpostor, function (main, collided) {
-            box1.material.diffuseColor = new BABYLON.Color3(Math.random(), Math.random(), Math.random());
+            gui.increaseHit();
+
         });
     }
 
     firebullet = function (NObullet, dir, power, range) {
-        console.log("Fire direction",dir)
-            //Calculations to see if out of range of fire
+        console.log("Fire direction", dir)
+        //Calculations to see if out of range of fire
         // const dVec2 = new BABYLON.Vector2(dir.x, dir.z)
         // const pVec2 = new BABYLON.Vector2(meshPlayer.position.x, meshPlayer.position.z)
         // const dis = BABYLON.Vector2.Distance(dVec2, pVec2)
         // if (dis > range) // to avoid almost infinite distance
         //     dir = new BABYLON.Vector3(dir.x / 15.0, 0.0, dir.z / 15.0)
-        
+
         //When out of the play area
         dir.normalize();
-        if(dir.x > 100 ) dir.x = 20
-        if(dir.y > 100) dir.y = 20
-        if(dir.z > 100) dir.z = 20
-        
+        if (dir.x > 100) dir.x = 20
+        if (dir.y > 100) dir.y = 20
+        if (dir.z > 100) dir.z = 20
+
         //bullet texture
         var hdrTexture = BABYLON.CubeTexture.CreateFromPrefilteredData("textures/environment.dds", scene);
         var metal = new BABYLON.PBRMaterial("metal", scene);
@@ -381,11 +390,10 @@ window.addEventListener("DOMContentLoaded", function () {
         metal.reflectivityColor = new BABYLON.Color3(0.85, 0.85, 0.85);
         metal.albedoColor = new BABYLON.Color3(0.996, 0.839, 0.01);
         //bullet mesh
-        bullet = BABYLON.MeshBuilder.CreateCylinder("Bullet", { diameterTop: 1.2, tessellation: 10,segments: 3 }, scene);
-        
+        bullet = BABYLON.MeshBuilder.CreateSphere("Bullet", { diameter:0.15 }, scene);
+
         bullet.material = metal;
-        bullet.rotation.x=H.toRad(-90)
-        bullet.rotation.y = meshPlayer.rotation.y
+
         bullet.position = light2.getAbsolutePosition();
         bullet.physicsImpostor = new BABYLON.PhysicsImpostor(bullet, BABYLON.PhysicsImpostor.SphereImpostor, { mass: 0.1, friction: 0.5, restition: 0.3 }, scene);
 
@@ -402,15 +410,14 @@ window.addEventListener("DOMContentLoaded", function () {
 
         bullet.physicsImpostor.onCollideEvent = (e, t) => {
             console.log("Collision", e, t)
-            console.log("hiited:",t.name)
-            if(t.material)
-            t.material.diffuseColor = new BABYLON.Color3.Random()
-            gui.increaseHit();
-        }
+            console.log("hiited:", t.name)
+            if (t.material)
+                t.material.diffuseColor = new BABYLON.Color3.Random()
+                    }
         scene.onBeforeRenderObservable.add(bullet.step)
 
         gui.decreaseAmmo();
-        
+
     }
 
 
@@ -457,12 +464,15 @@ window.addEventListener("DOMContentLoaded", function () {
     //setInterval(function(){ console.log( scene.getBoneByName("Bip01 R Hand").position); }, 1000);
 
     //////// RENDER LOOP //////////////////
+    const divFps = document.getElementById("fps");
     engine.runRenderLoop(function () {
         if (scene)
             scene.render();
         checkKeyboardEvents()
         
-        
+        if(divFps)
+            divFps.innerHTML = engine.getFps().toFixed() + " fps"
+
     });
 
 
@@ -474,31 +484,30 @@ window.addEventListener("DOMContentLoaded", function () {
 
 function makeSquaredWalls(name = "wall" + Math.random().toString(36).substring(4) + "_", wallpos, wallWidth, wallHeight, y = 0.0, scene) {
     var extWallsMat = new BABYLON.StandardMaterial("extWallsMat", scene);
-    if (name.includes("ext")) {
-        const tex = new BABYLON.Texture("textures/skysc2.png", scene)
-
-        extWallsMat.diffuseTexture = tex;
-        extWallsMat.opacityTexture = tex;
-        extWallsMat.opacityTexture.wrapU = BABYLON.Texture.CLAMP_ADDRESSMODE;
-        extWallsMat.opacityTexture.wrapV = BABYLON.Texture.CLAMP_ADDRESSMODE;
-    }
+    // if (name.includes("ext")) {
+    //     const tex = new BABYLON.Texture("textures/skysc2.png", scene)
+    //     extWallsMat.diffuseTexture = tex;
+    //     extWallsMat.opacityTexture = tex;
+    //     extWallsMat.opacityTexture.wrapU = BABYLON.Texture.CLAMP_ADDRESSMODE;
+    //     extWallsMat.opacityTexture.wrapV = BABYLON.Texture.CLAMP_ADDRESSMODE;
+    // }
     var sourcePlane = new BABYLON.Plane(0, 0, 0, 0);
     sourcePlane.normalize();
     wallWidth = wallWidth + 0.0; //to floatdiffuse
-    wall1 = BABYLON.MeshBuilder.CreatePlane(name + "1", { height: wallHeight, width: wallWidth, sourcePlane: sourcePlane, sideOrientation: BABYLON.Mesh.DOUBLESIDE }, scene);
+    wall1 = BABYLON.MeshBuilder.CreatePlane(name + "1", { height: wallHeight, width: wallWidth*2, sourcePlane: sourcePlane, sideOrientation: BABYLON.Mesh.DOUBLESIDE }, scene);
     wall1.position = new BABYLON.Vector3(wallWidth / 2 + wallpos, y, 0 + wallpos); wall1.rotation.y = BABYLON.Tools.ToRadians(0)
     wall1.isPickable = true;
     wall1.material = extWallsMat;
     wall2 = BABYLON.MeshBuilder.CreatePlane(name + "2", { height: wallHeight, width: wallWidth, sourcePlane: sourcePlane, sideOrientation: BABYLON.Mesh.DOUBLESIDE }, scene);
-    wall2.position = new BABYLON.Vector3(0 + wallpos, y, wallWidth / 2 + wallpos);
+    wall2.position = new BABYLON.Vector3(0 + wallpos*2, y, wallWidth / 2 + wallpos);
     wall2.isPickable = true;
     wall2.material = extWallsMat;
-    wall3 = BABYLON.MeshBuilder.CreatePlane(name + "3", { height: wallHeight, width: wallWidth, sourcePlane: sourcePlane, sideOrientation: BABYLON.Mesh.DOUBLESIDE }, scene);
+    wall3 = BABYLON.MeshBuilder.CreatePlane(name + "3", { height: wallHeight, width: wallWidth*2, sourcePlane: sourcePlane, sideOrientation: BABYLON.Mesh.DOUBLESIDE }, scene);
     wall3.position = new BABYLON.Vector3(wallWidth / 2 + wallpos, y, wallWidth + wallpos); wall3.rotation.y = BABYLON.Tools.ToRadians(0)
     wall3.isPickable = true;
     wall3.material = extWallsMat;
     wall4 = BABYLON.MeshBuilder.CreatePlane(name + "4", { height: wallHeight, width: wallWidth, sourcePlane: sourcePlane, sideOrientation: BABYLON.Mesh.DOUBLESIDE }, scene);
-    wall4.position = new BABYLON.Vector3(wallWidth + wallpos, y, wallWidth / 2 + wallpos);
+    wall4.position = new BABYLON.Vector3(wallWidth , y, wallWidth / 2 + wallpos);
     wall4.isPickable = true;
     wall4.material = extWallsMat;
 

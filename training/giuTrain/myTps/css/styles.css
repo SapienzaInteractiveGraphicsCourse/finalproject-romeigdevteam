@@ -11,3 +11,12 @@ html, body {
     height: 100%;
     touch-action: none;
 }
+
+#fps {
+    position: absolute;
+    right: 20px;
+    top: 5em;
+    font-size: 20px;
+    color: white;
+    text-shadow: 2px 2px 0 black;
+}
