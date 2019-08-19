@@ -1,0 +1,13 @@
+
+BONES SCHEMA
+
+bones[1] - R LEG 			
+bones[4] - L LEG
+bones[7] - Torso
+bones[8] - Torso
+bones[9] - Head
+
+bones[11] - up arm right
+bones[12] - low arm right
+bones[14] - up arm left
+bones[15] - low arm left

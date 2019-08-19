@@ -3,6 +3,8 @@ var scene, camera, renderer, mesh;
 var meshFloor, ambientLight, light;
 
 var crate, crateTexture, crateNormalMap, crateBumpMap;
+//Zombie mesh global vars
+var model,zombieAnimated ;
 
 var keyboard = {};
 var player = { height: 1.8, speed: 0.2, turnSpeed: Math.PI * 0.02 };
@@ -21,7 +23,7 @@ function init() {
 	meshFloor.receiveShadow = true;
 	scene.add(meshFloor);
 
-	ambientLight = new THREE.AmbientLight(0xffffff, 0.2);
+	ambientLight = new THREE.AmbientLight(0xffffff, 0.9);
 	scene.add(ambientLight);
 
 	light = new THREE.PointLight(0xffffff, 0.8, 18);
@@ -35,7 +37,7 @@ function init() {
 	camera.position.set(0, player.height, -5);
 	camera.lookAt(new THREE.Vector3(0, player.height, 0));
 
-	renderer = new THREE.WebGLRenderer();
+	renderer = new THREE.WebGLRenderer({ antialias: false });
 	renderer.setSize(1280, 720);
 
 	renderer.shadowMap.enabled = true;
@@ -49,27 +51,50 @@ function init() {
 	// 	scene.add( object );
 
 	// } );
+	var mm = new MyMeshes();
+	// model=mm.importZombie();
+	// console.log("model è dopo importZombie",model)
 
-	// Instantiate a loader
-	var loader = new THREE.GLTFLoader();
 
-	
+	var loaderGLTF = new THREE.GLTFLoader();
+
 	// Load a glTF resource
-	loader.load(
+	loaderGLTF.load(
 		// resource URL
-		'scenes/marioRigged/scene.gltf'
+		//'scenes/zombie_character/scene.gltf'
+		'scenes/the_perfect_steve_rigged/scene.gltf'
 		,
 		// called when the resource is loaded
 		function (gltf) {
-			//gltf.asset.scale.set(0.5,0.5,0.5); // Object
-			gltf.scene.scale.set(0.5,0.5,0.5);
+
+			gltf.scene.scale.set(0.001, 0.001, 0.001);
+			bones = gltf.scene.children[0]
+				.children[0].children[0].children[0].children[0]
+				.children[1].children[0].children[2].skeleton.bones
+			console.log(bones)
+
+
+			gltf.scene.position.y += 1.0
+
+			gltf.scene.children[0].children.forEach(element => {
+				if (element.name.includes("Left") || element.name.includes("Right")) {
+					element.rotateZ(1.5)
+					console.log("->", element)
+				};
+			});
+			model = gltf.scene
 			scene.add(gltf.scene);
-			console.log(gltf)
+
+			console.log("gltd scene", gltf.scene)
 			gltf.animations; // Array<THREE.AnimationClip>
 			gltf.scene; // THREE.Scene
 			gltf.scenes; // Array<THREE.Scene>
 			gltf.cameras; // Array<THREE.Camera>
-			
+
+			zombieAnimated = new ZombieAnimation(bones);
+			zombieAnimated.raisingArmsPose()
+
+
 		},
 		// called while loading is progressing
 		function (xhr) {
@@ -77,22 +102,32 @@ function init() {
 			console.log((xhr.loaded / xhr.total * 100) + '% loaded');
 
 		},
-		// called when loading has errors
-		function (error) {
 
-			console.log('An error happened');
-
-		}
 	);
+
 
 
 
 	document.body.appendChild(renderer.domElement);
 
 	animate();
+
+
 }
 
-function animate() {
+
+let then = 0;
+
+var clock = new THREE.Clock();
+
+const walkSpeed = 1.0
+
+
+function animate(now) {
+	now *= 0.001;  // make it seconds
+	const delta = now - then;
+	then = now;
+
 	requestAnimationFrame(animate);
 
 
@@ -118,6 +153,10 @@ function animate() {
 	}
 	if (keyboard[39]) { // right arrow key
 		camera.rotation.y += player.turnSpeed;
+	}
+
+	if (model) {
+		zombieAnimated.walkingAnimate(delta,walkSpeed)
 	}
 
 	renderer.render(scene, camera);
