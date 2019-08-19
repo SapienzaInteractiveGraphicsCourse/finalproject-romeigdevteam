@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+
+	<link rel="stylesheet" href="css/style.css">
+
+	<!-- libs-->
+	<title>Demo 04</title>
+	<script type="text/javascript" src="build/three.min.js"></script>
+	<script type="text/javascript" src="build/FBXLoader.js"></script>
+	<script type="text/javascript" src="build/inflate-min.js"></script>
+	<script src="https://cdn.rawgit.com/mrdoob/three.js/master/examples/js/loaders/GLTFLoader.js"></script>
+
+	<!-- source-->
+	<script type="text/javascript" src="js/mainScript.js"></script>
+</head>
+
+<body style="text-align:center;">
+	<span style="position:absolute;top:0px;left:0px;"><input type="button" value="Toggle Wireframe"
+			onclick="mesh.material.wireframe=!mesh.material.wireframe;meshFloor.material.wireframe=!meshFloor.material.wireframe;" /><br />WASD
+		to move.<br />Arrow keys to turn.</span>
+</body>
+
+</html>
