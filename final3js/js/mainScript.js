@@ -1,6 +1,7 @@
 
 var scene, camera, renderer, controls;
 var meshFloor, ambientLight, light;
+var weapon;
 
 var crate, crateTexture, crateNormalMap, crateBumpMap;
 //Zombie mesh global vars
@@ -224,6 +225,34 @@ function init() {
 
 	);
 
+	var mtlLoader = new THREE.MTLLoader();
+	mtlLoader.load("./scenes/weapon/uziGold.mtl", function(materials){
+
+		materials.preload();
+		var objLoader = new THREE.OBJLoader();
+		objLoader.setMaterials(materials);
+
+		objLoader.load("./scenes/weapon/uziGold.obj", function(mesh){
+			weapon=mesh;
+
+			weapon.traverse(function(node){
+				if( node instanceof THREE.Mesh ){
+					node.castShadow = true;
+					node.receiveShadow = false;
+				}
+			});
+
+			camera.add(weapon);
+			weapon.position.set(0.4, -0.4, -0.5);
+			weapon.scale.set(10,10,10);
+			weapon.rotation.y = -Math.PI;
+			//weapon.rotation.= Math.PI/4;
+		});
+
+	});
+
+
+
 
 	raycaster = new THREE.Raycaster( new THREE.Vector3(), new THREE.Vector3( 0, - 1, 0 ), 0, 10 );
 
@@ -253,7 +282,7 @@ const walkSpeed = 1.0
 
 let then = 0;
 function animate(now) {
-	
+
 	requestAnimationFrame(animate);
 
 	now *= 0.001;  // make it seconds
@@ -334,6 +363,7 @@ function animate(now) {
 	// if (keyboard[39]) { // right arrow key
 	// 	camera.rotation.y += player.turnSpeed;
 	// }
+
 
 	if (model) {
 		zombieAnimated.walkingAnimate(myDelta,walkSpeed)
