@@ -39,17 +39,17 @@ class ZombieAnimation{
 			}
 		}
 		if (this.torsoRight) {
-			this.bones[ZombieBonesIds.TORSO].rotation.z -= delta * walkSpeed/3.7
-			this.bones[ZombieBonesIds.TORSO].rotation.y -= delta * walkSpeed/3.7
+			this.bones[ZombieBonesIds.TORSO].rotation.z -= delta * walkSpeed/4.5
+			this.bones[ZombieBonesIds.TORSO].rotation.y -= delta * walkSpeed/4.5
 			
-			if(this.bones[ZombieBonesIds.TORSO].rotation.z<-0.1)
+			if(this.bones[ZombieBonesIds.TORSO].rotation.z < - 0.1)
 				this.torsoRight=!this.torsoRight;
 		}
 		else {
-			this.bones[ZombieBonesIds.TORSO].rotation.z += delta * walkSpeed/3.7
-			this.bones[ZombieBonesIds.TORSO].rotation.y += delta * walkSpeed/3.7
+			this.bones[ZombieBonesIds.TORSO].rotation.z += delta * walkSpeed/4.5
+			this.bones[ZombieBonesIds.TORSO].rotation.y += delta * walkSpeed/4.5
 			
-			if(this.bones[ZombieBonesIds.TORSO].rotation.z>0.1)
+			if(this.bones[ZombieBonesIds.TORSO].rotation.z > 0.1)
 				this.torsoRight=!this.torsoRight;
 		}
 

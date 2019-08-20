@@ -20,9 +20,21 @@
 </head>
 
 <body style="text-align:center;">
-	<span style="position:absolute;top:0px;left:0px;"><input type="button" value="Toggle Wireframe"
-			onclick="mesh.material.wireframe=!mesh.material.wireframe;meshFloor.material.wireframe=!meshFloor.material.wireframe;" /><br />WASD
-		to move.<br />Arrow keys to turn.</span>
+	<div class="rectangle">
+		<div id="instructions">
+			<span style="font-size:36px">Click to play</span>
+			<br /><br />
+			Move: WASD<br />
+			Jump: SPACE<br />
+			Look: MOUSE
+
+			<span style="position:absolute;top:0px;left:0px;"><input type="button" value="Toggle Wireframe"
+					onclick="mesh.material.wireframe=!mesh.material.wireframe;meshFloor.material.wireframe=!meshFloor.material.wireframe;" /><br />WASD
+				to move.<br />Arrow keys to turn.</span>
+
+		</div>
+	</div>
+
 </body>
 
 </html>
