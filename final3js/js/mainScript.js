@@ -157,99 +157,14 @@ function init() {
 	document.addEventListener( 'keyup', onKeyUp, false );
 
 
+	//Meshes imports
+
+	initLoading();
 
 
+	//importScenario();
 
-
-
-
-	// var loader = new THREE.FBXLoader();
-	// loader.load( './scene/wolf/Wolf.fbx ', function ( object ) {
-	// 	//object.scaling.set(0.8,0.8,0.8)
-	// 	//object.position.y-= 6
-	// 	object.scale.set(0.1,0.1,0.1)
-	// 	scene.add( object );
-
-	// } );
-	var mm = new MyMeshes();
-	// model=mm.importZombie();
-	// console.log("model è dopo importZombie",model)
-
-
-	var loaderGLTF = new THREE.GLTFLoader();
-
-	// Load a glTF resource
-	loaderGLTF.load(
-		// resource URL
-		//'scenes/zombie_character/scene.gltf'
-		'scenes/the_perfect_steve_rigged/scene.gltf'
-		,
-		// called when the resource is loaded
-		function (gltf) {
-
-			gltf.scene.scale.set(0.001, 0.001, 0.001);
-			bones = gltf.scene.children[0]
-				.children[0].children[0].children[0].children[0]
-				.children[1].children[0].children[2].skeleton.bones
-			console.log(bones)
-
-
-			gltf.scene.position.y += 1.0
-
-			gltf.scene.children[0].children.forEach(element => {
-				if (element.name.includes("Left") || element.name.includes("Right")) {
-					element.rotateZ(1.5)
-					console.log("->", element)
-				};
-			});
-			model = gltf.scene
-			scene.add(gltf.scene);
-
-			console.log("gltd scene", gltf.scene)
-			gltf.animations; // Array<THREE.AnimationClip>
-			gltf.scene; // THREE.Scene
-			gltf.scenes; // Array<THREE.Scene>
-			gltf.cameras; // Array<THREE.Camera>
-
-			zombieAnimated = new ZombieAnimation(bones);
-			zombieAnimated.raisingArmsPose()
-
-
-		},
-		// called while loading is progressing
-		function (xhr) {
-
-			console.log((xhr.loaded / xhr.total * 100) + '% loaded');
-
-		},
-
-	);
-
-	var mtlLoader = new THREE.MTLLoader();
-	mtlLoader.load("./scenes/weapon/uziGold.mtl", function(materials){
-
-		materials.preload();
-		var objLoader = new THREE.OBJLoader();
-		objLoader.setMaterials(materials);
-
-		objLoader.load("./scenes/weapon/uziGold.obj", function(mesh){
-			weapon=mesh;
-
-			weapon.traverse(function(node){
-				if( node instanceof THREE.Mesh ){
-					node.castShadow = true;
-					node.receiveShadow = false;
-				}
-			});
-
-			camera.add(weapon);
-			weapon.position.set(0.4, -0.4, -0.5);
-			weapon.scale.set(10,10,10);
-			weapon.rotation.y = -Math.PI;
-			//weapon.rotation.= Math.PI/4;
-		});
-
-	});
+	
 
 
 
@@ -282,6 +197,20 @@ const walkSpeed = 1.0
 
 let then = 0;
 function animate(now) {
+	
+	
+	// Play the loading screen until resources are loaded.
+	if( RESOURCES_LOADED == false ){
+		requestAnimationFrame(animate);
+		
+		loadingScreen.box.position.x -= 0.05;
+		if( loadingScreen.box.position.x < -10 ) loadingScreen.box.position.x = 10;
+		loadingScreen.box.position.y = Math.sin(loadingScreen.box.position.x);
+		
+		renderer.render(loadingScreen.scene, loadingScreen.camera);
+		return;
+	}
+
 
 	requestAnimationFrame(animate);
 
@@ -336,6 +265,11 @@ function animate(now) {
 
 		}
 
+		if (model) {
+			zombieAnimated.walkingAnimate(myDelta,walkSpeed)
+		}
+	
+
 	}
 
 
@@ -365,9 +299,6 @@ function animate(now) {
 	// }
 
 
-	if (model) {
-		zombieAnimated.walkingAnimate(myDelta,walkSpeed)
-	}
 
 	renderer.render(scene, camera);
 }
