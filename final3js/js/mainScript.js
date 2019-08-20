@@ -1,7 +1,8 @@
-
+var world, mass, body, shape, timeStep=1/60, geometry, material, mesh;
 var scene, camera, renderer, controls;
 var meshFloor, ambientLight, light;
 var weapon;
+var sphereShape, sphereBody,balls=[], ballMeshes=[];
 
 var crate, crateTexture, crateNormalMap, crateBumpMap;
 //Zombie mesh global vars
@@ -14,6 +15,7 @@ var USE_WIREFRAME = false;
 var objects = [];
 
 var raycaster;
+initCannon();
 
 var moveForward = false;
 			var moveBackward = false;
@@ -26,19 +28,70 @@ var moveForward = false;
 			var direction = new THREE.Vector3();
 			var vertex = new THREE.Vector3();
 			var color = new THREE.Color();
+			function initCannon(){
+					// Setup our world
+					world = new CANNON.World();
+					world.quatNormalizeSkip = 0;
+					world.quatNormalizeFast = false;
+
+					var solver = new CANNON.GSSolver();
+
+					world.defaultContactMaterial.contactEquationStiffness = 1e9;
+					world.defaultContactMaterial.contactEquationRelaxation = 4;
+
+					solver.iterations = 7;
+					solver.tolerance = 0.1;
+					var split = true;
+					if(split)
+							world.solver = new CANNON.SplitSolver(solver);
+					else
+							world.solver = solver;
+
+					world.gravity.set(0,-20,0);
+					world.broadphase = new CANNON.NaiveBroadphase();
+
+					// Create a slippery material (friction coefficient = 0.0)
+					physicsMaterial = new CANNON.Material("slipperyMaterial");
+					var physicsContactMaterial = new CANNON.ContactMaterial(physicsMaterial,
+																																	physicsMaterial,
+																																	0.0, // friction coefficient
+																																	0.3  // restitution
+																																	);
+					// We must add the contact materials to the world
+					world.addContactMaterial(physicsContactMaterial);
+
+					// Create a sphere
+					var mass = 5, radius = 1.3;
+					sphereShape = new CANNON.Sphere(radius);
+					sphereBody = new CANNON.Body({ mass: mass });
+					sphereBody.addShape(sphereShape);
+					sphereBody.position.set(0,5,0);
+					sphereBody.linearDamping = 0.9;
+					world.addBody(sphereBody);
+
+					// Create a plane
+					var groundShape = new CANNON.Plane();
+					var groundBody = new CANNON.Body({ mass: 0 });
+					groundBody.addShape(groundShape);
+					groundBody.quaternion.setFromAxisAngle(new CANNON.Vec3(1,0,0),-Math.PI/2);
+					world.addBody(groundBody);
+			}
 
 function init() {
 	scene = new THREE.Scene();
 	camera = new THREE.PerspectiveCamera(90, 1280 / 720, 0.1, 1000);
 
+	geometry = new THREE.PlaneGeometry( 300, 300, 50, 50 );
+	geometry.applyMatrix( new THREE.Matrix4().makeRotationX( - Math.PI / 2 ) );
 
-	meshFloor = new THREE.Mesh(
-		new THREE.PlaneGeometry(20, 20, 10, 10),
-		new THREE.MeshPhongMaterial({ color: 0xffffff, wireframe: USE_WIREFRAME })
-	);
-	meshFloor.rotation.x -= Math.PI / 2;
-	meshFloor.receiveShadow = true;
-	scene.add(meshFloor);
+	material = new THREE.MeshLambertMaterial( { color: 0xdddddd } );
+
+	mesh = new THREE.Mesh( geometry, material );
+	mesh.castShadow = true;
+	mesh.receiveShadow = true;
+	scene.add( mesh );
+
+
 
 	ambientLight = new THREE.AmbientLight(0xffffff, 0.9);
 	scene.add(ambientLight);
@@ -281,9 +334,19 @@ function onWindowResize() {
 const walkSpeed = 1.0
 
 let then = 0;
+var dt = 1/60;
 function animate(now) {
 
 	requestAnimationFrame(animate);
+	world.step(dt);
+
+	// Update ball positions
+	for(var i=0; i<balls.length; i++){
+			ballMeshes[i].position.copy(balls[i].position);
+			ballMeshes[i].quaternion.copy(balls[i].quaternion);
+	}
+
+
 
 	now *= 0.001;  // make it seconds
 
@@ -372,5 +435,51 @@ function animate(now) {
 	renderer.render(scene, camera);
 }
 
+var ballShape = new CANNON.Sphere(0.2);
+var ballGeometry = new THREE.SphereGeometry(ballShape.radius, 32, 32);
+var shootDirection = new THREE.Vector3();
+var shootVelo = 15;
+//raycaster.ray.origin.copy( controls.getObject().position );
+var projector = new THREE.Projector();
+function getShootDir(targetVec){
+		var vector = targetVec;
+		targetVec.set(0,0,1);
+		vector.unproject(camera);
+		var ray = new THREE.Ray(sphereBody.position, vector.sub(sphereBody.position).normalize() );
+		targetVec.copy(ray.direction);
+		console.log(targetVec);
+}
 
+window.addEventListener("click",function(e){
+
+				var x = camera.position.x;
+				var y = camera.position.y;
+				var z = camera.position.z;
+				var ballBody = new CANNON.Body({ mass: 1 });
+				ballBody.addShape(ballShape);
+				var ballMesh = new THREE.Mesh( ballGeometry, material );
+				world.addBody(ballBody);
+				//camera.add(ballMesh);
+				scene.add(ballMesh);
+
+				ballMesh.castShadow = true;
+				ballMesh.receiveShadow = true;
+				balls.push(ballBody);
+				ballMeshes.push(ballMesh);
+				getShootDir(shootDirection);
+				ballBody.velocity.set(  shootDirection.x * shootVelo,
+																shootDirection.y * shootVelo,
+																shootDirection.z * shootVelo);
+
+				// Move the ball outside the player sphere
+				x += shootDirection.x * (sphereShape.radius*1.02 + ballShape.radius);
+				y += shootDirection.y * (sphereShape.radius*1.02 + ballShape.radius);
+				z += shootDirection.z * (sphereShape.radius*1.02 + ballShape.radius);
+				ballBody.position.set(x,y,z);
+				ballMesh.position.set(x,y,z);
+
+
+});
+
+window.onload = initCannon;
 window.onload = init;
