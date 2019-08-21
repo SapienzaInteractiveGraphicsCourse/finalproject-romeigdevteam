@@ -374,12 +374,12 @@ function animate(now) {
 		}
 	}
 	for (var i = 0; i < collisionboxes1.length; i++) {
-		meshesArray[i].position.copy(collisionboxes1[i].position);
+		meshesArray[i].position.copy(collisionboxes1[i].position );
 		meshesArray[i].quaternion.copy(collisionboxes1[i].quaternion);
 	}
 	for (var i = 0; i < collisionboxes1.length; i++) {
-		collisionboxMeshes1[i].position.copy(collisionboxes1[i].position);
-		collisionboxMeshes1[i].quaternion.copy(collisionboxes1[i].quaternion);
+		 collisionboxMeshes1[i].position.copy(collisionboxes1[i].position);
+		 collisionboxMeshes1[i].quaternion.copy(collisionboxes1[i].quaternion);
 	}
 
 
@@ -494,37 +494,6 @@ function getShootDir(targetVec) {
 	targetVec.copy(ray.direction);
 	console.log(targetVec);
 }
-
-window.addEventListener("click", function (e) {
-
-	var x = camera.position.x;
-	var y = camera.position.y;
-	var z = camera.position.z;
-	var ballBody = new CANNON.Body({ mass: 1 });
-	ballBody.addShape(ballShape);
-	var ballMesh = new THREE.Mesh(ballGeometry, ballmaterial);
-	world.addBody(ballBody);
-	//camera.add(ballMesh);
-	scene.add(ballMesh);
-
-	ballMesh.castShadow = true;
-	ballMesh.receiveShadow = true;
-	balls.push(ballBody);
-	ballMeshes.push(ballMesh);
-	getShootDir(shootDirection);
-	ballBody.velocity.set(shootDirection.x * shootVelo,
-		shootDirection.y * shootVelo,
-		shootDirection.z * shootVelo);
-
-	// Move the ball outside the player sphere
-	x += shootDirection.x * (sphereShape.radius * 1.02 + ballShape.radius);
-	y += shootDirection.y * (sphereShape.radius * 1.02 + ballShape.radius);
-	z += shootDirection.z * (sphereShape.radius * 1.02 + ballShape.radius);
-	ballBody.position.set(x, y, z);
-	ballMesh.position.set(x, y, z);
-
-
-});
 
 
 //////////////////////////////////////	END	/////////////////////////////////////

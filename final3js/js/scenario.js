@@ -11,8 +11,8 @@ var loadingScreen = {
 };
 var loadingManager = null;
 var RESOURCES_LOADED = false;
-var zombieROOT=[];
-var numZombie=10;
+var zombieROOT = [];
+var numZombie = 10;
 
 //var boxBody;
 
@@ -48,24 +48,24 @@ var models = {
 
 
 var wallMap = [
-//   0,1,2,3,4,5,6,7,8,9
-    [0,1,1,1,1,1,1,1,1,0],
-    [1,0,0,0,0,0,0,0,0,1],
-    [1,0,0,0,0,0,0,0,0,1],
-    [1,0,0,0,0,0,0,0,0,1],
-    [1,0,0,0,0,0,0,0,0,1],
-    [1,0,0,0,0,0,0,0,0,1],
-    [1,0,0,0,0,0,0,0,0,1],
-    [1,0,0,0,0,0,0,0,0,1],
-    [1,0,0,0,0,0,0,0,0,1],
-    [0,1,1,1,1,1,1,1,1,0]
+    //   0,1,2,3,4,5,6,7,8,9
+    [0, 1, 1, 1, 1, 1, 1, 1, 1, 0],
+    [1, 0, 0, 0, 0, 0, 0, 0, 0, 1],
+    [1, 0, 0, 0, 0, 0, 0, 0, 0, 1],
+    [1, 0, 0, 0, 0, 0, 0, 0, 0, 1],
+    [1, 0, 0, 0, 0, 0, 0, 0, 0, 1],
+    [1, 0, 0, 0, 0, 0, 0, 0, 0, 1],
+    [1, 0, 0, 0, 0, 0, 0, 0, 0, 1],
+    [1, 0, 0, 0, 0, 0, 0, 0, 0, 1],
+    [1, 0, 0, 0, 0, 0, 0, 0, 0, 1],
+    [0, 1, 1, 1, 1, 1, 1, 1, 1, 0]
 ]
 
 // Meshes index
 var meshes = {};
-var meshesArray= [];
-var collisionboxes1=[];
-var collisionboxMeshes1=[];
+var meshesArray = [];
+var collisionboxes1 = [];
+var collisionboxMeshes1 = [];
 
 
 function initLoading() {
@@ -126,8 +126,8 @@ function loadModels() {
     }
 
     //crei vari zombie quanti i
-    for(var i=0; i< numZombie; i++){
-      importZombie(i);
+    for (var i = 0; i < numZombie; i++) {
+        importZombie(i);
 
     }
 
@@ -154,20 +154,20 @@ function onResourcesLoaded() {
     createBoundCube(meshes["rock"]);
     meshesArray.push(meshes["rock"]);
 
-    var cliffs= []
-    for(var i=0; i< wallMap.length; i++){
-        for(var j=0; j< wallMap[i].length; j++){
-            if(wallMap[i][j]){
+    var cliffs = []
+    for (var i = 0; i < wallMap.length; i++) {
+        for (var j = 0; j < wallMap[i].length; j++) {
+            if (wallMap[i][j]) {
                 const UNITSIZE = 3.1;
-                const currCliff= models.cliff.mesh.clone();
+                const currCliff = models.cliff.mesh.clone();
                 //cliffs.push(  currCliff );
-                currCliff.position.set( (i - 10/2)*UNITSIZE  , 0,(j - 10/2)*UNITSIZE);
-                if(i==0)
-                currCliff.rotation.y = Math.PI;
-                else if(j==0)
-                currCliff.rotation.y = Math.PI/2;
-                else if(j==9)
-                currCliff.rotation.y = -Math.PI/2;
+                currCliff.position.set((i - 10 / 2) * UNITSIZE, 0, (j - 10 / 2) * UNITSIZE);
+                if (i == 0)
+                    currCliff.rotation.y = Math.PI;
+                else if (j == 0)
+                    currCliff.rotation.y = Math.PI / 2;
+                else if (j == 9)
+                    currCliff.rotation.y = -Math.PI / 2;
 
                 scene.add(currCliff);
                 //createBoundCube(currCliff);
@@ -219,7 +219,7 @@ function importZombie(i) {
                 .children[1].children[0].children[2].skeleton.bones
             console.log(bones)
 
-            gltf.scene.position.x +=3*i;
+            gltf.scene.position.x += 3 * i;
             gltf.scene.position.y += 1.0;
 
             gltf.scene.children[0].children.forEach(element => {
@@ -257,75 +257,80 @@ function importZombie(i) {
     );
 }
 function createBoundCube(objectMesh) {
-  var bbox = (new THREE.Box3()).setFromObject( objectMesh );
-  var helper = new THREE.Box3Helper( bbox, 0xffff00 );
-  scene.add( helper );
-  var dimensions=bbox.getSize();
+    var bbox = (new THREE.Box3()).setFromObject(objectMesh);
+    var helper = new THREE.Box3Helper(bbox, 0xffff00);
+    scene.add(helper);
+    var dimensions = bbox.getSize();
 
-  var geometry = new THREE.BoxGeometry( dimensions.x, dimensions.y, dimensions.z );
-  var material = new THREE.MeshBasicMaterial( { color: 0xff0000, wireframe: true } );
+    var center = new THREE.Vector3();
+    bbox.getCenter(center);
 
-  var mesh = new THREE.Mesh( geometry, material );
-  mesh.position.copy(objectMesh.position);
-  scene.add( mesh );
-  //mesh.visible=false;
+    //console.log("---------",center,objectMesh.position)
 
-  collisionboxMeshes1.push(mesh);
-  var shape = new CANNON.Box(new CANNON.Vec3(dimensions.x/2, dimensions.y/2, dimensions.z/2));
-  var mass = 1000;
-  var body = new CANNON.Body({
-    mass: 1000
-  });
-  body.addShape(shape);
+    var geometry = new THREE.BoxGeometry(dimensions.x, dimensions.y, dimensions.z);
+    var material = new THREE.MeshBasicMaterial({ color: 0xff0000, wireframe: true });
 
-  body.position.copy(mesh.position);
+    var mesh = new THREE.Mesh(geometry, material);
+    mesh.position.copy(center);
+    scene.add(mesh);
+    //mesh.visible=false;
+
+    collisionboxMeshes1.push(mesh);
+    var shape = new CANNON.Box(new CANNON.Vec3(dimensions.x / 2, dimensions.y / 2, dimensions.z / 2));
+    var mass = 1;
+    var body = new CANNON.Body({
+        mass: mass
+    });
+    body.addShape(shape);
+
+    body.position.copy(mesh.position);
 
 
-  world.addBody(body);
-  collisionboxes1.push(body);
+    world.addBody(body);
+    collisionboxes1.push(body);
 
 
 }
 function createBodyCube(length) {
-  var halfExtents = new CANNON.Vec3(0.5, 0.8 ,0.5);
-  boxShape = new CANNON.Box(halfExtents);
-  boxGeometry = new THREE.BoxGeometry(halfExtents.x*2,halfExtents.y*2,halfExtents.z*2);
-  for(var i=0; i< length; i++){
-    var boxBody = new CANNON.Body({ mass: 1 });
-    boxBody.name = "zombieBox"
-    boxBody.addShape(boxShape);
-    boxBody.position.x+=3*i;
-    boxBody.position.y+=1;
-    world.addBody(boxBody);
-    collisionboxes.push(boxBody);
-    boxBody.addEventListener("collide",function(e){
-                                //e.body.id 1 è IL GROUND
-                  if (e.body.id!=1 && e.body.name=="bullet") { 
-  								        console.log("Collided with body:",e.body);
-  								        console.log("id:",e.body.id);
-                                        console.log(e)
-                                    }                 
-  								//console.log("Contact between bodies:",e.contact);
+    var halfExtents = new CANNON.Vec3(0.5, 0.8, 0.5);
+    boxShape = new CANNON.Box(halfExtents);
+    boxGeometry = new THREE.BoxGeometry(halfExtents.x * 2, halfExtents.y * 2, halfExtents.z * 2);
+    for (var i = 0; i < length; i++) {
+        var boxBody = new CANNON.Body({ mass: 1 });
+        boxBody.name = "zombieBox"
+        boxBody.addShape(boxShape);
+        boxBody.position.x += 3 * i;
+        boxBody.position.y += 1;
+        world.addBody(boxBody);
+        collisionboxes.push(boxBody);
+        boxBody.addEventListener("collide", function (e) {
+            //e.body.id 1 è IL GROUND
+            if (e.body.id != 1 && e.body.name == "bullet") {
+                console.log("Collided with body:", e.body);
+                console.log("id:", e.body.id);
+                console.log(e)
+            }
+            //console.log("Contact between bodies:",e.contact);
 
-  								//console.log(flagHit);
+            //console.log(flagHit);
 
-  						});
-  }
+        });
+    }
 
-  newmaterial= new THREE.MeshLambertMaterial( { color: 0xffffff } );
+    newmaterial = new THREE.MeshLambertMaterial({ color: 0xffffff });
 
-	for(var i=0; i< length; i++){
-		var boxMesh = new THREE.Mesh( boxGeometry,  newmaterial);
-		boxMesh.position.x+=3*i;
-		boxMesh.position.y-=1;
-		//boxMesh.visible=false;
-		scene.add(boxMesh);
-		console.log("Added box external #: ",i);
-		boxMesh.castShadow = true;
-		boxMesh.receiveShadow = true;
+    for (var i = 0; i < length; i++) {
+        var boxMesh = new THREE.Mesh(boxGeometry, newmaterial);
+        boxMesh.position.x += 3 * i;
+        boxMesh.position.y -= 1;
+        //boxMesh.visible=false;
+        scene.add(boxMesh);
+        console.log("Added box external #: ", i);
+        boxMesh.castShadow = true;
+        boxMesh.receiveShadow = true;
         collisionboxMeshes.push(boxMesh);
         console.log(boxMesh)
-	}
+    }
 
 }
 

@@ -211,7 +211,7 @@ function rayColl() {
     // Test if we intersect with any obstacle mesh
     collisions = caster.intersectObjects(wallsArray);
     //console.log(wallsArray,collisions)
-    console.log(rotationPoint.position,rays[i])
+//    console.log(rotationPoint.position,rays[i])
     // And disable that direction if we do
     if (collisions.length > 0 && collisions[0].distance <= distance) {
       console.log("ray collision")
