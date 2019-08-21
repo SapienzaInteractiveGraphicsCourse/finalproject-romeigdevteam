@@ -22,6 +22,7 @@ var moveBackward = false;
 var moveLeft = false;
 var moveRight = false;
 var canJump = false;
+var resume = false; 
 
 var prevTime = performance.now();
 var velocity = new THREE.Vector3();
@@ -68,7 +69,7 @@ function initCannon() {
 	sphereBody.addShape(sphereShape);
 	sphereBody.position.set(0, 5, 0);
 	sphereBody.linearDamping = 0.9;
-	world.addBody(sphereBody);
+	//world.addBody(sphereBody);
 
 	// Create a plane
 	var groundShape = new CANNON.Plane();
@@ -148,7 +149,7 @@ function init() {
 
 	var onKeyDown = function (event) {
 
-		if (controls.isLocked === false)
+		if (controls.isLocked === false && event.keyCode != 13 )
 			return;	//STOP KEYS
 		switch (event.keyCode) {
 
@@ -175,6 +176,9 @@ function init() {
 			case 32: // space
 				if (canJump === true) velocity.y += 100;
 				canJump = false;
+				break;
+			case 13:	//Enter
+				resume= true;
 				break;
 
 		}
@@ -204,6 +208,9 @@ function init() {
 			case 68: // d
 				moveRight = false;
 				break;
+			case 13:
+					resume= false;
+					break;
 
 		}
 
@@ -318,8 +325,11 @@ function animate(now) {
 		if (moveLeft || moveRight) velocity.x = - direction.x * 400.0 * delta;
 
 		if (onObject === true) {
-
+			console.log("wall collision")
+			velocity.x = Math.max(0, velocity.x);
+			velocity.z = Math.max(0, velocity.z);
 			velocity.y = Math.max(0, velocity.y);
+
 			canJump = true;
 
 		}
@@ -346,9 +356,9 @@ function animate(now) {
 		}
 
 		// Detect collisions.
-		if (collisions.length > 0) {
-			detectCollisions();
-		}
+		// if (collisions.length > 0) {
+		// 	detectCollisions();
+		// }
 
 	}
 	else {
