@@ -221,3 +221,7 @@ Old controls
 	// if (keyboard[39]) { // right arrow key
 	// 	camera.rotation.y += player.turnSpeed;
 	// }
+
+
+
+	

@@ -124,8 +124,6 @@ function loadModels() {
 
     }
 
-
-
 }
 
 
@@ -147,7 +145,7 @@ function onResourcesLoaded() {
             if(wallMap[i][j]){
                 const UNITSIZE = 2;
                 const currCliff= models.cliff.mesh.clone();
-                wallsArray.push(currCliff)
+                //cliffs.push(  currCliff );
                 currCliff.position.set( (i - 10/2)*UNITSIZE  , 0,(j - 10/2)*UNITSIZE);
                 if(i==0)
                 currCliff.rotation.y = Math.PI;
@@ -155,16 +153,20 @@ function onResourcesLoaded() {
                 currCliff.rotation.y = Math.PI/2;
                 else if(j==9)
                 currCliff.rotation.y = -Math.PI/2;
+<<<<<<< HEAD
+                calculateCollisionPoints( currCliff,1.0);
+=======
 
+>>>>>>> 80cf3669544736687fb52e9fc0f3ef528ae5297c
                 scene.add(currCliff);
-            
+
             }
         }
-        
+
     }
 
-    
-    
+
+
     meshes["uzi"] = models.uzi.mesh.clone();
     meshes["uzi"].position.set(0.4, -0.4, -0.5);
     meshes["uzi"].scale.set(10, 10, 10);
@@ -180,12 +182,14 @@ function onResourcesLoaded() {
 
 
 
+<<<<<<< HEAD
+function importZombie() {
+=======
 
 
 
 function importZombie(i) {
-
-
+>>>>>>> 80cf3669544736687fb52e9fc0f3ef528ae5297c
 
 
 
@@ -197,6 +201,7 @@ function importZombie(i) {
         ,
         // called when the resource is loaded
         function (gltf) {
+
 
             gltf.scene.scale.set(0.001, 0.001, 0.001);
             bones = gltf.scene.children[0]
@@ -248,19 +253,17 @@ function createBodyCube(length) {
   boxGeometry = new THREE.BoxGeometry(halfExtents.x*2,halfExtents.y*2,halfExtents.z*2);
   for(var i=0; i< length; i++){
     var boxBody = new CANNON.Body({ mass: 1 });
-    boxBody.name = "zombieBox"
     boxBody.addShape(boxShape);
     boxBody.position.x+=3*i;
     boxBody.position.y+=1;
     world.addBody(boxBody);
     collisionboxes.push(boxBody);
     boxBody.addEventListener("collide",function(e){
-                                //e.body.id 1 è IL GROUND
-                  if (e.body.id!=1 && e.body.name=="bullet") { 
+  								//console.log("The sphere just collided with the ground!");
+                  if (e.body.id!=1) { //ID 1 è IL GROUND
   								        console.log("Collided with body:",e.body);
   								        console.log("id:",e.body.id);
-                                        console.log(e)
-                                    }                 
+                  }
   								//console.log("Contact between bodies:",e.contact);
 
   								//console.log(flagHit);
@@ -274,13 +277,12 @@ function createBodyCube(length) {
 		var boxMesh = new THREE.Mesh( boxGeometry,  newmaterial);
 		boxMesh.position.x+=3*i;
 		boxMesh.position.y-=1;
-		//boxMesh.visible=false;
+		boxMesh.visible=false;
 		scene.add(boxMesh);
-		console.log("Added box external #: ",i);
+		console.log("CREATO MESH");
 		boxMesh.castShadow = true;
 		boxMesh.receiveShadow = true;
-        collisionboxMeshes.push(boxMesh);
-        console.log(boxMesh)
+		collisionboxMeshes.push(boxMesh);
 	}
 
 }
