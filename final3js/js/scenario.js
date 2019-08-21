@@ -12,6 +12,8 @@ var loadingScreen = {
 var loadingManager = null;
 var RESOURCES_LOADED = false;
 var zombieROOT=[];
+var numZombie=0;
+
 //var boxBody;
 
 
@@ -61,6 +63,9 @@ var wallMap = [
 
 // Meshes index
 var meshes = {};
+var meshesArray= [];
+var collisionboxes1=[];
+var collisionboxMeshes1=[];
 
 
 function initLoading() {
@@ -117,7 +122,9 @@ function loadModels() {
 
         })(_key);
     }
-    for(var i=0; i< 10; i++){
+
+    //crei vari zombie quanti i
+    for(var i=0; i< numZombie; i++){
       importZombie(i);
 
     }
@@ -130,18 +137,24 @@ function onResourcesLoaded() {
 
     // Clone models into meshes.
     meshes["tree"] = models.tree.mesh.clone();
-    meshes["tree"].position.set(-5, 0, 4);
+    meshes["tree"].position.set(0, 0, 0);
+    //meshes["tree"].position.y=0;
+
     scene.add(meshes["tree"]);
+    createBoundCube(meshes["tree"]);
+    meshesArray.push(meshes["tree"]);
 
     meshes["rock"] = models.rock.mesh.clone();
-    meshes["rock"].position.set(-1, 0, -4);
+    meshes["rock"].position.set(-10, 0, -10);
     scene.add(meshes["rock"]);
+    createBoundCube(meshes["rock"]);
+    meshesArray.push(meshes["rock"]);
 
     var cliffs= []
     for(var i=0; i< wallMap.length; i++){
         for(var j=0; j< wallMap[i].length; j++){
             if(wallMap[i][j]){
-                const UNITSIZE = 2;
+                const UNITSIZE = 3.1;
                 const currCliff= models.cliff.mesh.clone();
                 //cliffs.push(  currCliff );
                 currCliff.position.set( (i - 10/2)*UNITSIZE  , 0,(j - 10/2)*UNITSIZE);
@@ -153,6 +166,8 @@ function onResourcesLoaded() {
                 currCliff.rotation.y = -Math.PI/2;
 
                 scene.add(currCliff);
+                //createBoundCube(currCliff);
+                meshesArray.push(currCliff);
 
             }
         }
@@ -166,7 +181,8 @@ function onResourcesLoaded() {
     meshes["uzi"].scale.set(10, 10, 10);
     meshes["uzi"].rotation.y = -Math.PI;
     camera.add(meshes["uzi"])
-
+    console.log("MESHESSSSSSSSSSSSSSSSSSSSSSSSSSSS");
+    console.log(meshes);
 
 
 
@@ -238,7 +254,36 @@ function importZombie(i) {
 
     );
 }
+function createBoundCube(objectMesh) {
+  var bbox = (new THREE.Box3()).setFromObject( objectMesh );
+  var helper = new THREE.Box3Helper( bbox, 0xffff00 );
+  scene.add( helper );
+  var dimensions=bbox.getSize();
 
+  var geometry = new THREE.BoxGeometry( dimensions.x, dimensions.y, dimensions.z );
+  var material = new THREE.MeshBasicMaterial( { color: 0xff0000, wireframe: true } );
+
+  var mesh = new THREE.Mesh( geometry, material );
+  mesh.position.copy(objectMesh.position);
+  scene.add( mesh );
+  //mesh.visible=false;
+
+  collisionboxMeshes1.push(mesh);
+  var shape = new CANNON.Box(new CANNON.Vec3(dimensions.x/2, dimensions.y/2, dimensions.z/2));
+  var mass = 1000;
+  var body = new CANNON.Body({
+    mass: 1000
+  });
+  body.addShape(shape);
+
+  body.position.copy(mesh.position);
+
+
+  world.addBody(body);
+  collisionboxes1.push(body);
+
+
+}
 function createBodyCube(length) {
   var halfExtents = new CANNON.Vec3(0.5, 0.8 ,0.5);
   boxShape = new CANNON.Box(halfExtents);

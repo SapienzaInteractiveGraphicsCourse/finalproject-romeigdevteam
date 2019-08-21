@@ -26,6 +26,8 @@ var collisionboxes=[];
 var collisionboxMeshes=[];
 
 
+
+
 var raycaster;
 initCannon();
 
@@ -79,7 +81,7 @@ var moveForward = false;
 					sphereBody.addShape(sphereShape);
 					sphereBody.position.set(0,5,0);
 					sphereBody.linearDamping = 0.9;
-					world.addBody(sphereBody);
+					//world.addBody(sphereBody);
 
 					// Create a plane
 					var groundShape = new CANNON.Plane();
@@ -296,8 +298,8 @@ function animate(now) {
 	requestAnimationFrame(animate);
 	world.step(dt);
 
-	if (zombieROOT.length==10 && collisionboxes.length<10) {
-		createBodyCube(zombieROOT.length);
+	if (zombieROOT.length==numZombie && collisionboxes.length<numZombie) {
+		//createBodyCube(zombieROOT.length);
 	}
 	// Update ball positions
 	for(var i=0; i<balls.length; i++){
@@ -315,6 +317,14 @@ function animate(now) {
 				zombieROOT[i].position.copy(collisionboxes[i].position);
 				zombieROOT[i].quaternion.copy(collisionboxes[i].quaternion);
 		}
+	}
+	for(var i=0; i<collisionboxes1.length; i++){
+			meshesArray[i].position.copy(collisionboxes1[i].position);
+			meshesArray[i].quaternion.copy(collisionboxes1[i].quaternion);
+	}
+	for(var i=0; i<collisionboxes1.length; i++){
+			collisionboxMeshes1[i].position.copy(collisionboxes1[i].position);
+			collisionboxMeshes1[i].quaternion.copy(collisionboxes1[i].quaternion);
 	}
 
 
@@ -335,6 +345,10 @@ function animate(now) {
 	const myDelta = now - then;
   	then = now;
 
+
+	var xcam=camera.position.x;
+	var ycam=camera.position.y;
+	var zcam=camera.position.z;
 
 	if ( controls.isLocked === true ) {
 
@@ -381,6 +395,7 @@ function animate(now) {
 
 		}
 
+
 		if (model) {
 			for(var i=0; i<zombieAnimatedArray.length; i++){
 				zombieAnimatedArray[i].walkingAnimate(myDelta,walkSpeed)
@@ -390,6 +405,7 @@ function animate(now) {
 				// Detect collisions.
 
 	}
+
 
 
 
