@@ -3,16 +3,28 @@ var scene, camera, renderer, controls;
 var meshFloor, ambientLight, light;
 var weapon;
 var sphereShape, sphereBody,balls=[], ballMeshes=[];
+var newmaterial;
+var ballmaterial;
 
 var crate, crateTexture, crateNormalMap, crateBumpMap;
 //Zombie mesh global vars
 var model,zombieAnimated ;
+var zombieAnimatedArray= [];
+//var zombieROOT = [];
+//var flagHit=false;
+//var counterDrop=0;
 
 var keyboard = {};
 var player = { height: 1.8, speed: 0.2, turnSpeed: Math.PI * 0.02 };
 var USE_WIREFRAME = false;
 
 var objects = [];
+//var boxBody;
+//var boxMesh;
+var boxShape, boxGeometry;
+var collisionboxes=[];
+var collisionboxMeshes=[];
+
 
 var raycaster;
 initCannon();
@@ -75,17 +87,21 @@ var moveForward = false;
 					groundBody.addShape(groundShape);
 					groundBody.quaternion.setFromAxisAngle(new CANNON.Vec3(1,0,0),-Math.PI/2);
 					world.addBody(groundBody);
+
+
+
+
 			}
 
 function init() {
 	scene = new THREE.Scene();
 	camera = new THREE.PerspectiveCamera(90, 1280 / 720, 0.1, 1000);
 
-	geometry = new THREE.PlaneGeometry( 300, 300, 50, 50 );
+	geometry = new THREE.PlaneGeometry( 300, 300, 50);
 	geometry.applyMatrix( new THREE.Matrix4().makeRotationX( - Math.PI / 2 ) );
 
 	material = new THREE.MeshLambertMaterial( { color: 0xdddddd } );
-
+	ballmaterial= new THREE.MeshLambertMaterial( { color: 0xddffff});
 	mesh = new THREE.Mesh( geometry, material );
 	mesh.castShadow = true;
 	mesh.receiveShadow = true;
@@ -217,7 +233,7 @@ function init() {
 
 	//importScenario();
 
-	
+
 
 
 
@@ -230,6 +246,17 @@ function init() {
 	animate();
 
 	window.addEventListener( 'resize', onWindowResize, false );
+	/*boxBody.addEventListener("collide",function(e){
+								//console.log("The sphere just collided with the ground!");
+								console.log("Collided with body:",e.body);
+								console.log("id:",e.body.id);
+								//console.log("Contact between bodies:",e.contact);
+
+								//console.log(flagHit);
+
+						});
+						*/
+
 
 }
 
@@ -251,16 +278,16 @@ const walkSpeed = 1.0
 let then = 0;
 var dt = 1/60;
 function animate(now) {
-	
-	
+
+
 	// Play the loading screen until resources are loaded.
 	if( RESOURCES_LOADED == false ){
 		requestAnimationFrame(animate);
-		
+
 		loadingScreen.box.position.x -= 0.05;
 		if( loadingScreen.box.position.x < -10 ) loadingScreen.box.position.x = 10;
 		loadingScreen.box.position.y = Math.sin(loadingScreen.box.position.x);
-		
+
 		renderer.render(loadingScreen.scene, loadingScreen.camera);
 		return;
 	}
@@ -269,16 +296,42 @@ function animate(now) {
 	requestAnimationFrame(animate);
 	world.step(dt);
 
+	if (zombieROOT.length==10 && collisionboxes.length<10) {
+		createBodyCube(zombieROOT.length);
+	}
 	// Update ball positions
 	for(var i=0; i<balls.length; i++){
 			ballMeshes[i].position.copy(balls[i].position);
 			ballMeshes[i].quaternion.copy(balls[i].quaternion);
 	}
 
+	for(var i=0; i<collisionboxes.length; i++){
+			collisionboxMeshes[i].position.copy(collisionboxes[i].position);
+			collisionboxMeshes[i].quaternion.copy(collisionboxes[i].quaternion);
+	}
+
+	if (zombieROOT.length==collisionboxes.length) {
+		for(var i=0; i<zombieROOT.length; i++){
+				zombieROOT[i].position.copy(collisionboxes[i].position);
+				zombieROOT[i].quaternion.copy(collisionboxes[i].quaternion);
+		}
+	}
+
 
 
 	now *= 0.001;  // make it seconds
+ /*
+	if (zombieROOT.scene && flagHit && counterDrop<50) {
+		zombieROOT.scene.rotation.x-=0.05;
+		counterDrop+=1;
+		//console.log(counterDrop);
+	}
 
+	if (counterDrop>=300) {
+		flagHit=false;
+		counterDrop=0;
+	}
+	*/
 	const myDelta = now - then;
   	then = now;
 
@@ -329,13 +382,13 @@ function animate(now) {
 		}
 
 		if (model) {
-			zombieAnimated.walkingAnimate(myDelta,walkSpeed)
+			for(var i=0; i<zombieAnimatedArray.length; i++){
+				zombieAnimatedArray[i].walkingAnimate(myDelta,walkSpeed)
+			}
 		}
-	
+
 				// Detect collisions.
-		if ( collisions.length > 0 ) {
-			detectCollisions();
-		}
+
 	}
 
 
@@ -367,7 +420,7 @@ window.addEventListener("click",function(e){
 				var z = camera.position.z;
 				var ballBody = new CANNON.Body({ mass: 1 });
 				ballBody.addShape(ballShape);
-				var ballMesh = new THREE.Mesh( ballGeometry, material );
+				var ballMesh = new THREE.Mesh( ballGeometry, ballmaterial );
 				world.addBody(ballBody);
 				//camera.add(ballMesh);
 				scene.add(ballMesh);

@@ -11,6 +11,8 @@ var loadingScreen = {
 };
 var loadingManager = null;
 var RESOURCES_LOADED = false;
+var zombieROOT=[];
+//var boxBody;
 
 
 // Models index
@@ -115,8 +117,11 @@ function loadModels() {
 
         })(_key);
     }
+    for(var i=0; i< 10; i++){
+      importZombie(i);
 
-    importZombie();
+    }
+
 }
 
 
@@ -146,16 +151,16 @@ function onResourcesLoaded() {
                 currCliff.rotation.y = Math.PI/2;
                 else if(j==9)
                 currCliff.rotation.y = -Math.PI/2;
-                
+
                 scene.add(currCliff);
-            
+
             }
         }
-        
+
     }
 
-    
-    
+
+
     meshes["uzi"] = models.uzi.mesh.clone();
     meshes["uzi"].position.set(0.4, -0.4, -0.5);
     meshes["uzi"].scale.set(10, 10, 10);
@@ -174,7 +179,7 @@ function onResourcesLoaded() {
 
 
 
-function importZombie() {
+function importZombie(i) {
 
 
 
@@ -189,14 +194,15 @@ function importZombie() {
         // called when the resource is loaded
         function (gltf) {
 
+
             gltf.scene.scale.set(0.001, 0.001, 0.001);
             bones = gltf.scene.children[0]
                 .children[0].children[0].children[0].children[0]
                 .children[1].children[0].children[2].skeleton.bones
             console.log(bones)
 
-
-            gltf.scene.position.y += 1.0
+            gltf.scene.position.x +=3*i;
+            gltf.scene.position.y += 1.0;
 
             gltf.scene.children[0].children.forEach(element => {
                 if (element.name.includes("Left") || element.name.includes("Right")) {
@@ -207,14 +213,19 @@ function importZombie() {
             model = gltf.scene
             scene.add(gltf.scene);
 
-            console.log("gltd scene", gltf.scene)
+
+
+            //console.log("gltd scene", gltf.scene)
             gltf.animations; // Array<THREE.AnimationClip>
             gltf.scene; // THREE.Scene
             gltf.scenes; // Array<THREE.Scene>
             gltf.cameras; // Array<THREE.Camera>
+            zombieROOT.push(gltf.scene);
+
 
             zombieAnimated = new ZombieAnimation(bones);
             zombieAnimated.raisingArmsPose()
+            zombieAnimatedArray.push(zombieAnimated);
 
 
         },
@@ -226,6 +237,46 @@ function importZombie() {
         },
 
     );
+}
+
+function createBodyCube(length) {
+  var halfExtents = new CANNON.Vec3(0.5, 0.8 ,0.5);
+  boxShape = new CANNON.Box(halfExtents);
+  boxGeometry = new THREE.BoxGeometry(halfExtents.x*2,halfExtents.y*2,halfExtents.z*2);
+  for(var i=0; i< length; i++){
+    var boxBody = new CANNON.Body({ mass: 1 });
+    boxBody.addShape(boxShape);
+    boxBody.position.x+=3*i;
+    boxBody.position.y+=1;
+    world.addBody(boxBody);
+    collisionboxes.push(boxBody);
+    boxBody.addEventListener("collide",function(e){
+  								//console.log("The sphere just collided with the ground!");
+                  if (e.body.id!=1) { //ID 1 è IL GROUND
+  								        console.log("Collided with body:",e.body);
+  								        console.log("id:",e.body.id);
+                  }
+  								//console.log("Contact between bodies:",e.contact);
+
+  								//console.log(flagHit);
+
+  						});
+  }
+
+  newmaterial= new THREE.MeshLambertMaterial( { color: 0xffffff } );
+
+	for(var i=0; i< length; i++){
+		var boxMesh = new THREE.Mesh( boxGeometry,  newmaterial);
+		boxMesh.position.x+=3*i;
+		boxMesh.position.y-=1;
+		boxMesh.visible=false;
+		scene.add(boxMesh);
+		console.log("CREATO MESH");
+		boxMesh.castShadow = true;
+		boxMesh.receiveShadow = true;
+		collisionboxMeshes.push(boxMesh);
+	}
+
 }
 
 
