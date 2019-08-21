@@ -109,6 +109,17 @@ function loadModels() {
 
                 objLoader.setMaterials(materials);
                 objLoader.load(models[key].obj, function (mesh) {
+
+                  mesh.traverse( function ( child ) {
+
+                      if ( child instanceof THREE.Mesh ) {
+
+                          //child.material = material;
+                          child.geometry.center();
+
+                      }
+
+                  });
                     if (key != "uzi") { //NO Shadow for uzi
                         mesh.traverse(function (node) {
                             if (node instanceof THREE.Mesh) {
@@ -300,11 +311,11 @@ function createBodyCube(length) {
     collisionboxes.push(boxBody);
     boxBody.addEventListener("collide",function(e){
                                 //e.body.id 1 è IL GROUND
-                  if (e.body.id!=1 && e.body.name=="bullet") { 
+                  if (e.body.id!=1 && e.body.name=="bullet") {
   								        console.log("Collided with body:",e.body);
   								        console.log("id:",e.body.id);
                                         console.log(e)
-                                    }                 
+                                    }
   								//console.log("Contact between bodies:",e.contact);
 
   								//console.log(flagHit);

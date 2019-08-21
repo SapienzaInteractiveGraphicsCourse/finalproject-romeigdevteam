@@ -1,9 +1,9 @@
-//array to hold the parameters of all objects. 
+//array to hold the parameters of all objects.
 var collisions = [];
 /*
-Let's create a new object to compute the bounding box of a given object 
-using a nice Threejs class called Box3 that will calculate the needed 
-parameters for you. We are going to call this function calculateCollisionPoints(). 
+Let's create a new object to compute the bounding box of a given object
+using a nice Threejs class called Box3 that will calculate the needed
+parameters for you. We are going to call this function calculateCollisionPoints().
 The reason we do not use the computeBoundingBox() function is that it will not take scale into
  effect.
 */
@@ -129,7 +129,7 @@ function createPlayer() {
   //scene.add(playerBox)
 
   //CANNON
-  // boxShape = new CANNON.Box(halfExtents);  
+  // boxShape = new CANNON.Box(halfExtents);
   // playerBoxBody = new CANNON.Body({ mass: 1, shape: boxShape} );
   // playerBoxBody.name = "playerBox"
   // playerBoxBody.addShape(boxShape);
@@ -198,20 +198,20 @@ function rayColl() {
   var caster = new THREE.Raycaster();
 
 
-  
+
   var collisions, i;
     // Maximum distance from the origin before we consider collision
     var distance = 32;
-    
+
   // For each ray
   for (i = 0; i < rays.length; i += 1) {
     // We reset the raycaster to this direction
     caster.set( rotationPoint.position, rays[i]);
-   // caster.setFromCamera( mouseVector, camera ); 
+   // caster.setFromCamera( mouseVector, camera );
     // Test if we intersect with any obstacle mesh
     collisions = caster.intersectObjects(wallsArray);
     //console.log(wallsArray,collisions)
-    console.log(rotationPoint.position,rays[i])
+    //console.log(rotationPoint.position,rays[i])
     // And disable that direction if we do
     if (collisions.length > 0 && collisions[0].distance <= distance) {
       console.log("ray collision")
