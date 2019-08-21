@@ -8,7 +8,7 @@ var ballmaterial;
 
 var crate, crateTexture, crateNormalMap, crateBumpMap;
 //Zombie mesh global vars
-var model, zombieAnimated,wallsArray=[];
+var model, zombieAnimated, wallsArray = [];
 var zombieAnimatedArray = [];
 //var zombieROOT = [];
 //var flagHit=false;
@@ -353,7 +353,7 @@ function animate(now) {
 	requestAnimationFrame(animate);
 	world.step(dt);
 
-	if (zombieROOT.length == 10 && collisionboxes.length < 10) {
+	if (zombieROOT.length == numZombie && collisionboxes.length < numZombie) {
 		createBodyCube(zombieROOT.length);
 	}
 	// Update ball positions
@@ -372,10 +372,14 @@ function animate(now) {
 			zombieROOT[i].position.copy(collisionboxes[i].position);
 			zombieROOT[i].quaternion.copy(collisionboxes[i].quaternion);
 		}
-
-		// playerBox.position.copy( playerBoxBody.position);
-		// playerBox.quaternion.copy(	playerBoxBody.quaternion);
-
+	}
+	for (var i = 0; i < collisionboxes1.length; i++) {
+		meshesArray[i].position.copy(collisionboxes1[i].position);
+		meshesArray[i].quaternion.copy(collisionboxes1[i].quaternion);
+	}
+	for (var i = 0; i < collisionboxes1.length; i++) {
+		collisionboxMeshes1[i].position.copy(collisionboxes1[i].position);
+		collisionboxMeshes1[i].quaternion.copy(collisionboxes1[i].quaternion);
 	}
 
 
@@ -397,89 +401,135 @@ function animate(now) {
 	then = now;
 
 
-	if (controls.isLocked === true) {
+	var xcam = camera.position.x;
+	var ycam = camera.position.y;
+	var zcam = camera.position.z;
 
-		raycaster.ray.origin.copy(controls.getObject().position);
-		raycaster.ray.origin.y -= 10;
+	raycaster.ray.origin.copy(controls.getObject().position);
+	raycaster.ray.origin.y -= 10;
 
-		var intersections = raycaster.intersectObjects(objects);
+	var intersections = raycaster.intersectObjects(objects);
 
-		var onObject = intersections.length > 0;
+	var onObject = intersections.length > 0;
 
-		var time = performance.now();
-		var delta = (time - prevTime) / 1000.0;
-		prevTime = time;
-
-
-		velocity.x -= velocity.x * 10.0 * delta;
-		velocity.z -= velocity.z * 10.0 * delta;
-
-		velocity.y -= 9.8 * 100.0 * delta; // 100.0 = mass
-
-		direction.z = Number(moveForward) - Number(moveBackward);
-		direction.x = Number(moveLeft) - Number(moveRight);
-		direction.normalize(); // this ensures consistent movements in all directions
+	var time = performance.now();
+	var delta = (time - prevTime) / 1000.0;
+	prevTime = time;
 
 
-		rayColl();
-		//if (moveForward || moveBackward) velocity.z = direction.z * 400.0 * delta;
-		//if (moveLeft || moveRight) velocity.x = direction.x * 400.0 * delta;
-		if (moveForward || moveBackward) velocity.z = - direction.z * 400.0 * delta;
-		if (moveLeft || moveRight) velocity.x = - direction.x * 400.0 * delta;
+	velocity.x -= velocity.x * 10.0 * delta;
+	velocity.z -= velocity.z * 10.0 * delta;
 
-		if (onObject === true) {
-			// console.log("wall collision")
-			// velocity.x = Math.max(0, velocity.x);
-			// velocity.z = Math.max(0, velocity.z);
-			
-			velocity.y = Math.max(0, velocity.y);
-			canJump = true;
+	velocity.y -= 9.8 * 100.0 * delta; // 100.0 = mass
 
-		}
-		controls.getObject().translateX(velocity.x * delta);
-		controls.getObject().position.y += (velocity.y * delta); // new behavior
-		controls.getObject().translateZ(velocity.z * delta);
+	direction.z = Number(moveForward) - Number(moveBackward);
+	direction.x = Number(moveLeft) - Number(moveRight);
+	direction.normalize(); // this ensures consistent movements in all directions
 
-		controls.getObject().translateX(velocity.x * delta);
-		controls.getObject().position.y += (velocity.y * delta); // new behavior
-		controls.getObject().translateZ(velocity.z * delta);
 
-		rotationPoint.position.x = camera.position.x;
-		 rotationPoint.position.y = camera.position.y;
-		 rotationPoint.position.z = camera.position.z;
+	rayColl();
+	//if (moveForward || moveBackward) velocity.z = direction.z * 400.0 * delta;
+	//if (moveLeft || moveRight) velocity.x = direction.x * 400.0 * delta;
+	if (moveForward || moveBackward) velocity.z = - direction.z * 400.0 * delta;
+	if (moveLeft || moveRight) velocity.x = - direction.x * 400.0 * delta;
 
-		//rotationPoint.position.x += 0.1;
+	if (onObject === true) {
+		// console.log("wall collision")
+		// velocity.x = Math.max(0, velocity.x);
+		// velocity.z = Math.max(0, velocity.z);
 
-		if (controls.getObject().position.y < 1.5) {
+		velocity.y = Math.max(0, velocity.y);
+		canJump = true;
 
-			velocity.y = 0;
-			controls.getObject().position.y = 1.5;
+	}
+	controls.getObject().translateX(velocity.x * delta);
+	controls.getObject().position.y += (velocity.y * delta); // new behavior
+	controls.getObject().translateZ(velocity.z * delta);
 
-			canJump = true;
+	controls.getObject().translateX(velocity.x * delta);
+	controls.getObject().position.y += (velocity.y * delta); // new behavior
+	controls.getObject().translateZ(velocity.z * delta);
 
-		}
+	rotationPoint.position.x = camera.position.x;
+	rotationPoint.position.y = camera.position.y;
+	rotationPoint.position.z = camera.position.z;
 
-		if (model) {
-			for (var i = 0; i < zombieAnimatedArray.length; i++) {
-				zombieAnimatedArray[i].walkingAnimate(myDelta, walkSpeed)
-			}
-		}
+	//rotationPoint.position.x += 0.1;
 
-		// // Detect collisions.
-		// if (collisions.length > 0) {
-		// 	detectCollisions();
-		// }
+	if (controls.getObject().position.y < 1.5) {
+
+		velocity.y = 0;
+		controls.getObject().position.y = 1.5;
+
+		canJump = true;
+
 	}
 
+	if (model) {
+		for (var i = 0; i < zombieAnimatedArray.length; i++) {
+			zombieAnimatedArray[i].walkingAnimate(myDelta, walkSpeed)
+		}
+	}
 
-
+	// // Detect collisions.
+	// if (collisions.length > 0) {
+	// 	detectCollisions();
+	// }
 
 
 	renderer.render(scene, camera);
 }
 
+var ballShape = new CANNON.Sphere(0.2);
+var ballGeometry = new THREE.SphereGeometry(ballShape.radius, 32, 32);
+var shootDirection = new THREE.Vector3();
+var shootVelo = 15;
+//raycaster.ray.origin.copy( controls.getObject().position );
+var projector = new THREE.Projector();
+function getShootDir(targetVec) {
+	var vector = targetVec;
+	targetVec.set(0, 0, 1);
+	vector.unproject(camera);
+	var ray = new THREE.Ray(sphereBody.position, vector.sub(sphereBody.position).normalize());
+	targetVec.copy(ray.direction);
+	console.log(targetVec);
+}
+
+window.addEventListener("click", function (e) {
+
+	var x = camera.position.x;
+	var y = camera.position.y;
+	var z = camera.position.z;
+	var ballBody = new CANNON.Body({ mass: 1 });
+	ballBody.addShape(ballShape);
+	var ballMesh = new THREE.Mesh(ballGeometry, ballmaterial);
+	world.addBody(ballBody);
+	//camera.add(ballMesh);
+	scene.add(ballMesh);
+
+	ballMesh.castShadow = true;
+	ballMesh.receiveShadow = true;
+	balls.push(ballBody);
+	ballMeshes.push(ballMesh);
+	getShootDir(shootDirection);
+	ballBody.velocity.set(shootDirection.x * shootVelo,
+		shootDirection.y * shootVelo,
+		shootDirection.z * shootVelo);
+
+	// Move the ball outside the player sphere
+	x += shootDirection.x * (sphereShape.radius * 1.02 + ballShape.radius);
+	y += shootDirection.y * (sphereShape.radius * 1.02 + ballShape.radius);
+	z += shootDirection.z * (sphereShape.radius * 1.02 + ballShape.radius);
+	ballBody.position.set(x, y, z);
+	ballMesh.position.set(x, y, z);
+
+
+});
+
+
 //////////////////////////////////////	END	/////////////////////////////////////
 /////////////////////////////////////////////////////////////////////////////////
+
 
 window.onload = initCannon;
 window.onload = init;
