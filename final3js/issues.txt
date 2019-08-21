@@ -1,2 +1,4 @@
-- Shadow of the weapon only
+- Shadow of the weapon only now box
 - Animation still bugged ?
+- wasd while clicking when not in control lock -> bug sparato lontano
+

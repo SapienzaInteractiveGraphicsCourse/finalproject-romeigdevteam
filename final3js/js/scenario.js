@@ -89,6 +89,8 @@ function initLoading() {
 
 function loadModels() {
 
+    createPlayer();
+
     for (var _key in models) {
         (function (key) {
 
@@ -146,7 +148,7 @@ function onResourcesLoaded() {
                 currCliff.rotation.y = Math.PI/2;
                 else if(j==9)
                 currCliff.rotation.y = -Math.PI/2;
-                
+                calculateCollisionPoints( currCliff,1.0);
                 scene.add(currCliff);
             
             }
@@ -171,12 +173,7 @@ function onResourcesLoaded() {
 
 
 
-
-
-
 function importZombie() {
-
-
 
 
 
