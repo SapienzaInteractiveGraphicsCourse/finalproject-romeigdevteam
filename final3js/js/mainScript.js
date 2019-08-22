@@ -5,8 +5,9 @@ var weapon;
 var sphereShape, balls = [], ballMeshes = [];
 var newmaterial;
 var ballmaterial;
-
+var noZombie=true;
 var crate, crateTexture, crateNormalMap, crateBumpMap;
+var zombieWave=1;
 //Zombie mesh global vars
 var zombieAnimated, wallsArray = [];
 var zombieAnimatedArray = [];
@@ -440,6 +441,21 @@ function animate(now) {
 
 		renderer.render(loadingScreen.scene, loadingScreen.camera);
 		return;
+	}
+
+	//GENERATE THE ZOMBIE WAAAAVE
+	if (noZombie==true) {
+		console.log("INCOMING WAVE NUMBER ", zombieWave);
+		for (var i = 0; i < zombieMap.length; i++) {
+				for (var j = 0; j < zombieMap[i].length; j++) {
+					if (zombieMap[i][j]>0 && zombieMap[i][j]<=zombieWave) {
+						importZombie(i,j);
+						zombieAlive++;
+					}
+				}
+			}
+			zombieWave++;
+			noZombie=false;
 	}
 
 
