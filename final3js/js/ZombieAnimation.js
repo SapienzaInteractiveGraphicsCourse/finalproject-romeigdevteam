@@ -93,8 +93,8 @@ function zombieFollowsCharacter(idx, delta) {
 	//One y axis Rotation
 	if(! body.isDieing )
 	{
-		var diffX = camera.position.x - x;
-		var diffZ = camera.position.z - z;
+		var diffX = playerSphereBody.position.x - x;
+		var diffZ = playerSphereBody.position.z - z;
 		const angle= Math.atan2(diffX, diffZ)
 		if(body.barGui)
 		 body.barGui.rotation.y = angle
@@ -104,8 +104,8 @@ function zombieFollowsCharacter(idx, delta) {
 
 	//Translation
 	//const casualProb= (Math.random()*1000) +1
-	if (x == camera.position.x) { }
-	else if (x > camera.position.x) body.position.x -= speed;
+	if (x == playerSphereBody.position.x) { }
+	else if (x > playerSphereBody.position.x) body.position.x -= speed;
 	else body.position.x += speed;
 
 	//make it jump
@@ -113,8 +113,8 @@ function zombieFollowsCharacter(idx, delta) {
 	// 	body.y = 
 	// }
 
-	if (z == camera.position.z) { }
-	else if (z > camera.position.z) body.position.z -= speed;
+	if (z == playerSphereBody.position.z) { }
+	else if (z > playerSphereBody.position.z) body.position.z -= speed;
 	else body.position.z += speed;
 	
 	}

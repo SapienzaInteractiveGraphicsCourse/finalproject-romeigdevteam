@@ -308,7 +308,7 @@ function init() {
 
 	// 	}
 
-		}
+	//	}
 
 	// var onKeyUp = function (event) {
 
@@ -378,16 +378,8 @@ function init() {
 	animate();
 
 	window.addEventListener('resize', onWindowResize, false);
-								//console.log("Contact between bodies:",e.contact);
-
-								//console.log(flagHit);
-
-						});
-						*/
-
-
+							
 }
-
 function onWindowResize() {
 
 	camera.aspect = window.innerWidth / window.innerHeight;
@@ -623,8 +615,6 @@ function animate(now) {
 
 	//if (moveForward || moveBackward) velocity.z = direction.z * 400.0 * delta;
 	//if (moveLeft || moveRight) velocity.x = direction.x * 400.0 * delta;
-	if (moveForward || moveBackward) velocity.z = - direction.z * 400.0 * delta;
-	if (moveLeft || moveRight) velocity.x = - direction.x * 400.0 * delta;
 
 	// if (wallsArray.length > 0)
 	// 	//rayCollisionsCheck();
