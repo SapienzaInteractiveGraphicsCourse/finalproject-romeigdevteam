@@ -1,6 +1,16 @@
 //array to hold the parameters of all objects.
 var collisions = [];
+/*
+Let's create a new object to compute the bounding box of a given object
+using a nice Threejs class called Box3 that will calculate the needed
+parameters for you. We are going to call this function calculateCollisionPoints().
+The reason we do not use the computeBoundingBox() function is that it will not take scale into
+ effect.
+*/
 
+/**
+ * Calculates collision detection parameters.
+ */
 function calculateCollisionPoints(mesh, scale, type = 'collision') {
   // Compute the bounding box after scale, translation, etc.
   var bbox = new THREE.Box3().setFromObject(mesh);
@@ -107,24 +117,23 @@ function createPlayer() {
   rotationPoint.position.set(camera.position);
   scene.add(rotationPoint);
 
-  var halfExtents = new CANNON.Vec3(0.5, 0.8 ,0.5);
-  var geometry = new THREE.BoxGeometry(halfExtents.x*2,halfExtents.y*2,halfExtents.z*2);
-  //var geometry = new THREE.BoxBufferGeometry(characterSize / 3, characterSize, characterSize / 3);
+  // var halfExtents = new CANNON.Vec3(0.5, 0.8 ,0.5);
+
+  //var geometry = new THREE.BoxGeometry(halfExtents.x*2,halfExtents.y*2,halfExtents.z*2);
+  var geometry = new THREE.BoxBufferGeometry(characterSize / 3, characterSize, characterSize / 3);
   var material = new THREE.MeshPhongMaterial({ color: 0x22dd88 });
   playerBox = new THREE.Mesh(geometry, material);
   //playerBox.visible=false;
-  playerBox.position.set(3,3,3);
-  //rotationPoint.add(playerBox);
-  scene.add(playerBox)
-  
+  playerBox.position.y = characterSize / 2;
+  rotationPoint.add(playerBox);
+  //scene.add(playerBox)
+
   //CANNON
-  boxShape = new CANNON.Box(halfExtents);
-  playerBoxBody = new CANNON.Body({ mass: 1, shape: boxShape} );
-  playerBoxBody.position.set(3,3,3)
-  playerBoxBody.name = "playerBox"
-  playerBoxBody.addShape(boxShape);
-  world.addBody(playerBoxBody);
-  playerBoxBody.angularDamping = 1;
+  // boxShape = new CANNON.Box(halfExtents);
+  // playerBoxBody = new CANNON.Body({ mass: 1, shape: boxShape} );
+  // playerBoxBody.name = "playerBox"
+  // playerBoxBody.addShape(boxShape);
+  // world.addBody(playerBoxBody);
 
 
 
@@ -136,44 +145,80 @@ function createPlayer() {
 
 
 
-function rayCollisionsCheck() {
 
-  var rdp=rayDirectionPoint=30;
+function getComplexBoundingBox(object3D) {
+  var box = null;
+  object3D.traverse(function (obj3D) {
+    if (obj3D.matrixWorldNeedsUpdate) obj3D.updateMatrixWorld();
+    var geometry = obj3D.geometry;
+    // If current is not a geometry (THREE.Geometry), proceed to the next one
+    if (geometry === undefined) return null;
+    // If this object is already bounding box, then use it
+    if (geometry.boundingBox) {
+      var workableBox = geometry.boundingBox.clone();
+      // Move the resulting bounding box to the position of the object itself
+      workableBox.applyMatrix4(obj3D.matrixWorld);
+      if (box === null) {
+        box = workableBox;
+      } else {
+        box.union(workableBox);
+      }
+      // If there is no bounding box for current object - creating
+    } else {
+      var workableGeometry = geometry.clone();
+      // Move the resulting geometry in the position of the object itself
+      workableGeometry.applyMatrix(obj3D.matrixWorld);
+      // Calculate the bounding box for the resulting geometry
+      workableGeometry.computeBoundingBox();
+      if (box === null) {
+        box = workableGeometry.boundingBox;
+      } else {
+        box.union(workableGeometry.boundingBox);
+      }
+    }
+  });
+  return box;
+}
+
+
+function rayColl() {
+
   // Set the rays : one vector for every potential direction
   var rays = [
-    new THREE.Vector3(0, 0.5, rdp),
-    new THREE.Vector3(rdp, 0.5, rdp),
-    new THREE.Vector3(rdp, 0.5, 0),
-    new THREE.Vector3(rdp, 0.5, -rdp),
-    new THREE.Vector3(0, 0.5, -rdp),
-    new THREE.Vector3(-rdp, 0.5, -rdp),
-    new THREE.Vector3(-rdp, 0.5, 0),
-    new THREE.Vector3(-rdp, 0.5, rdp)
+    new THREE.Vector3(0, 0, 100),
+    new THREE.Vector3(100, 0, 100),
+    new THREE.Vector3(100, 0, 0),
+    new THREE.Vector3(100, 0, -100),
+    new THREE.Vector3(0, 0, -100),
+    new THREE.Vector3(-100, 0, -100),
+    new THREE.Vector3(-100, 0, 0),
+    new THREE.Vector3(-100, 0, 100)
   ];
   // And the "RayCaster", able to test for intersections
   var caster = new THREE.Raycaster();
 
 
-  
+
   var collisions, i;
     // Maximum distance from the origin before we consider collision
-    var distance = 2;
+    var distance = 32;
 
   // For each ray
   for (i = 0; i < rays.length; i += 1) {
     // We reset the raycaster to this direction
-    //caster.set( playerBox.position, rays[i]);
-    caster.setFromCamera( rays[i], camera);
-    
-    //drawLine(  rays[i], camera.position )
+    caster.set( rotationPoint.position, rays[i]);
    // caster.setFromCamera( mouseVector, camera );
     // Test if we intersect with any obstacle mesh
-    collisions = caster.intersectObjects(wallsArray,true);
+    collisions = caster.intersectObjects(wallsArray);
     //console.log(wallsArray,collisions)
+<<<<<<< HEAD
+//    console.log(rotationPoint.position,rays[i])
+=======
     //console.log(rotationPoint.position,rays[i])
+>>>>>>> d43d9430eb832a34dfe9c2f303483bec9d3545e2
     // And disable that direction if we do
-    if (collisions.length > 0  && collisions[0].distance <= distance ) {
-     // console.log("ray collision")
+    if (collisions.length > 0 && collisions[0].distance <= distance) {
+      console.log("ray collision")
       // Yep, this.rays[i] gives us : 0 => up, 1 => up-left, 2 => left, ...
       if ((i === 0 || i === 1 || i === 7) && direction.z === 1) {
         direction.setZ(0);
@@ -188,24 +233,5 @@ function rayCollisionsCheck() {
     }
   }
 
-
-}
-
-
-function drawLine(pointA,pointB){
-   // Draw a line from pointA in the given direction at distance 100
-   var direction = new THREE.Vector3( 10, 0, 0 );
-   direction.normalize();
-
-   var distance = 100; // at what distance to determine pointB
-
-   pointB.addVectors ( pointA, direction.multiplyScalar( distance ) );
-
-   var geometry = new THREE.Geometry();
-   geometry.vertices.push( pointA );
-   geometry.vertices.push( pointB );
-   var material = new THREE.LineBasicMaterial( { color : 0xff0000 } );
-   var line = new THREE.Line( geometry, material );
-   scene.add( line );
 
 }

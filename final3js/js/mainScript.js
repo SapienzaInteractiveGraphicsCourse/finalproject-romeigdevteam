@@ -8,7 +8,7 @@ var ballmaterial;
 
 var crate, crateTexture, crateNormalMap, crateBumpMap;
 //Zombie mesh global vars
-var model, zombieAnimated, wallsArray = [];
+var zombieAnimated, wallsArray = [];
 var zombieAnimatedArray = [];
 //var zombieROOT = [];
 //var flagHit=false;
@@ -29,10 +29,8 @@ var collisionboxMeshes = [];
 var raycaster;
 initCannon();
 
-var moveForward = false;
-var moveBackward = false;
-var moveLeft = false;
-var moveRight = false;
+var moveForward = false, moveBackward = false, moveLeft = false, moveRight = false;
+var boxForward = false, boxBackward = false, boxLeft = false, boxRight = false;
 var canJump = false;
 
 var prevTime = performance.now();
@@ -191,6 +189,20 @@ function init() {
 				resume = true;
 				break;
 
+
+			case 73: //left
+				boxLeft = true;
+				break;
+			case 74:  //up
+				boxForward = true;
+				break;
+			case 75:  //right
+				boxRight = true;
+				break;
+			case 76:  //down
+				boxBackward = true;
+				break;
+
 		}
 
 	};
@@ -220,6 +232,19 @@ function init() {
 				break;
 			case 13:
 				resume = false;
+				break;
+
+			case 73: //left
+				boxLeft = false;
+				break;
+			case 74:  //up
+				boxForward = false;
+				break;
+			case 75:  //right
+				boxRight = false;
+				break;
+			case 76:  //down
+				boxBackward = false;
 				break;
 
 		}
@@ -275,11 +300,6 @@ function onWindowResize() {
 
 
 
-var ballShape = new CANNON.Sphere(0.2);
-var ballGeometry = new THREE.SphereGeometry(ballShape.radius, 32, 32);
-var shootDirection = new THREE.Vector3();
-var shootVelo = 15;
-//raycaster.ray.origin.copy( controls.getObject().position );
 var projector = new THREE.Projector();
 function getShootDir(targetVec) {
 	var vector = targetVec;
@@ -289,25 +309,29 @@ function getShootDir(targetVec) {
 	targetVec.copy(ray.direction);
 	console.log(targetVec);
 }
+function fireBullet() {
 
-window.addEventListener("click", function (e) {
-
+	var ballShape = new CANNON.Sphere(0.2);
+	var ballGeometry = new THREE.SphereGeometry(ballShape.radius, 32, 32);
+	var shootDirection = new THREE.Vector3();
+	var shootVelo = 20;
 	var x = camera.position.x;
 	var y = camera.position.y;
 	var z = camera.position.z;
 	var ballBody = new CANNON.Body({ mass: 1 });
 	ballBody.name = "bullet"
 	ballBody.addShape(ballShape);
-	var ballMesh = new THREE.Mesh(ballGeometry, ballmaterial);
-	world.addBody(ballBody);
-	//camera.add(ballMesh);
-	scene.add(ballMesh);
 
+	var ballMesh = new THREE.Mesh(ballGeometry, ballmaterial);
+	ballBody.myMesh = ballMesh;
 	ballMesh.castShadow = true;
 	ballMesh.receiveShadow = true;
 	balls.push(ballBody);
 	ballMeshes.push(ballMesh);
+
+
 	getShootDir(shootDirection);
+
 	ballBody.velocity.set(shootDirection.x * shootVelo,
 		shootDirection.y * shootVelo,
 		shootDirection.z * shootVelo);
@@ -316,12 +340,76 @@ window.addEventListener("click", function (e) {
 	x += shootDirection.x * (sphereShape.radius * 1.02 + ballShape.radius);
 	y += shootDirection.y * (sphereShape.radius * 1.02 + ballShape.radius);
 	z += shootDirection.z * (sphereShape.radius * 1.02 + ballShape.radius);
+
 	ballBody.position.set(x, y, z);
 	ballMesh.position.set(x, y, z);
+	ballBody.life=0;
+	ballBody.postStep = () =>{
+		ballBody.life++
+            if (ballBody.life > 200 ) {
+                byeMeshBody(ballBody)
+            }
+	}
+	
+	world.addBody(ballBody);
+	scene.add(ballMesh);
+}
 
+window.addEventListener("click", function (e) {
 
+	fireBullet();
 });
 
+
+
+
+function removeUselessBodies(){
+    uselessBodies.forEach(e => world.remove(e) )
+}
+function removeUselessMeshes(){
+    uselessMeshes.forEach(e => scene.remove(e) )
+}
+
+
+function updatePositions(){
+
+
+	// Update ball positions
+	for (var i = 0; i < balls.length; i++) {
+		ballMeshes[i].position.copy(balls[i].position);
+		ballMeshes[i].quaternion.copy(balls[i].quaternion);
+	}
+
+	for (var i = 0; i < collisionboxes.length && collisionboxMeshes.length; i++) {
+		collisionboxMeshes[i].position.copy(collisionboxes[i].position);
+		collisionboxMeshes[i].quaternion.copy(collisionboxes[i].quaternion);
+	}
+
+	if (zombieROOT.length == collisionboxes.length) {
+		for (var i = 0; i < zombieROOT.length; i++) {
+			zombieROOT[i].position.copy(collisionboxes[i].position);
+			zombieROOT[i].quaternion.copy(collisionboxes[i].quaternion);
+			
+			collisionboxes[i].barGui.position.copy(collisionboxes[i].position)
+			collisionboxes[i].barGui.position.y+=1;	
+		}
+	}
+	for (var i = 0; i < collisionboxes1.length; i++) {
+		meshesArray[i].position.copy(collisionboxes1[i].position);
+		meshesArray[i].quaternion.copy(collisionboxes1[i].quaternion);
+	}
+	for (var i = 0; i < collisionboxes1.length; i++) {
+		collisionboxMeshes1[i].position.copy(collisionboxes1[i].position);
+		collisionboxMeshes1[i].quaternion.copy(collisionboxes1[i].quaternion);
+		
+		
+	}
+
+	playerBox.position.copy(playerBoxBody.position)
+	playerBox.quaternion.copy(playerBoxBody.quaternion);
+
+
+}
 
 //var clock = new THREE.Clock();
 
@@ -351,52 +439,34 @@ function animate(now) {
 
 
 	requestAnimationFrame(animate);
+
+	
+	updatePositions();
+	
+	removeUselessBodies();
+	removeUselessMeshes();
+	
 	world.step(dt);
 
-	if (zombieROOT.length == numZombie && collisionboxes.length < numZombie) {
-		createBodyCube(zombieROOT.length);
-	}
-	// Update ball positions
-	for (var i = 0; i < balls.length; i++) {
-		ballMeshes[i].position.copy(balls[i].position);
-		ballMeshes[i].quaternion.copy(balls[i].quaternion);
-	}
-
-	for (var i = 0; i < collisionboxes.length; i++) {
-		collisionboxMeshes[i].position.copy(collisionboxes[i].position);
-		collisionboxMeshes[i].quaternion.copy(collisionboxes[i].quaternion);
-	}
-
-	if (zombieROOT.length == collisionboxes.length) {
-		for (var i = 0; i < zombieROOT.length; i++) {
-			zombieROOT[i].position.copy(collisionboxes[i].position);
-			zombieROOT[i].quaternion.copy(collisionboxes[i].quaternion);
-		}
-	}
-	for (var i = 0; i < collisionboxes1.length; i++) {
-		meshesArray[i].position.copy(collisionboxes1[i].position );
-		meshesArray[i].quaternion.copy(collisionboxes1[i].quaternion);
-	}
-	for (var i = 0; i < collisionboxes1.length; i++) {
-		 collisionboxMeshes1[i].position.copy(collisionboxes1[i].position);
-		 collisionboxMeshes1[i].quaternion.copy(collisionboxes1[i].quaternion);
-	}
+	
+	//camera.position.copy(playerBoxBody.position)
 
 
+
+	/*
+	if (zombieROOT.scene && flagHit && counterDrop<50) {
+		zombieROOT.scene.rotation.x-=0.05;
+		counterDrop+=1;
+		//console.log(counterDrop);
+	}
+	
+	if (counterDrop>=300) {
+		flagHit=false;
+		counterDrop=0;
+	}
+	*/
 
 	now *= 0.001;  // make it seconds
-	/*
-	   if (zombieROOT.scene && flagHit && counterDrop<50) {
-		   zombieROOT.scene.rotation.x-=0.05;
-		   counterDrop+=1;
-		   //console.log(counterDrop);
-	   }
-   
-	   if (counterDrop>=300) {
-		   flagHit=false;
-		   counterDrop=0;
-	   }
-	   */
 	const myDelta = now - then;
 	then = now;
 
@@ -426,12 +496,24 @@ function animate(now) {
 	direction.x = Number(moveLeft) - Number(moveRight);
 	direction.normalize(); // this ensures consistent movements in all directions
 
+	if (wallsArray.length > 0)
 
-	rayColl();
-	//if (moveForward || moveBackward) velocity.z = direction.z * 400.0 * delta;
-	//if (moveLeft || moveRight) velocity.x = direction.x * 400.0 * delta;
-	if (moveForward || moveBackward) velocity.z = - direction.z * 400.0 * delta;
+		//rayCollisionsCheck();
+
+		//if (moveForward || moveBackward) velocity.z = direction.z * 400.0 * delta;
+		//if (moveLeft || moveRight) velocity.x = direction.x * 400.0 * delta;
+		if (moveForward || moveBackward) velocity.z = - direction.z * 400.0 * delta;
 	if (moveLeft || moveRight) velocity.x = - direction.x * 400.0 * delta;
+
+	if (boxLeft)
+		playerBoxBody.position.x += -0.1
+	if (boxRight)
+		playerBoxBody.position.x += 0.1
+	if (boxForward)
+		playerBoxBody.position.z += -0.1
+	if (boxBackward)
+		playerBoxBody.position.z += 0.1
+
 
 	if (onObject === true) {
 		// console.log("wall collision")
@@ -465,10 +547,10 @@ function animate(now) {
 
 	}
 
-	if (model) {
+	
 		for (var i = 0; i < zombieAnimatedArray.length; i++) {
 			zombieAnimatedArray[i].walkingAnimate(myDelta, walkSpeed)
-		}
+	
 	}
 
 	// // Detect collisions.
@@ -480,20 +562,7 @@ function animate(now) {
 	renderer.render(scene, camera);
 }
 
-var ballShape = new CANNON.Sphere(0.2);
-var ballGeometry = new THREE.SphereGeometry(ballShape.radius, 32, 32);
-var shootDirection = new THREE.Vector3();
-var shootVelo = 15;
-//raycaster.ray.origin.copy( controls.getObject().position );
-var projector = new THREE.Projector();
-function getShootDir(targetVec) {
-	var vector = targetVec;
-	targetVec.set(0, 0, 1);
-	vector.unproject(camera);
-	var ray = new THREE.Ray(sphereBody.position, vector.sub(sphereBody.position).normalize());
-	targetVec.copy(ray.direction);
-	console.log(targetVec);
-}
+
 
 
 //////////////////////////////////////	END	/////////////////////////////////////
