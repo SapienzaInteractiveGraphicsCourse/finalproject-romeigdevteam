@@ -20,29 +20,40 @@ var uselessMeshes = []
 
 // Models index
 var models = {
-    tree: {
+    1: {
         obj: "./scenes/3d-nature-pack/Models/Tree_01.obj",
         mtl: "./scenes/3d-nature-pack/Models/Tree_01.mtl",
-        mesh: null
+        mesh: null,
+        nameMesh: "tree"
     },
-    rock: {
+
+    2: {
         obj: "./scenes/3d-nature-pack/Models/Rock_1_01.obj",
         mtl: "./scenes/3d-nature-pack/Models/Rock_1_01.mtl",
-        mesh: null
+        mesh: null,
+        nameMesh: "rock"
     },
-    cliff: {
+    3: {
         obj: "./scenes/3d-nature-pack/Models/Brown_Cliff_01.obj",
         mtl: "./scenes/3d-nature-pack/Models/Brown_Cliff_01.mtl",
-        mesh: null
+        mesh: null,
+        nameMesh: "cliff"
 
 
     },
-    uzi: {
+    4: {
         obj: "./scenes/weapon/uziGold.obj",
         mtl: "./scenes/weapon/uziGold.mtl",
-        mesh: null
+        mesh: null,
+        nameMesh: "uzi"
     },
 
+    5: {
+        obj: "./scenes/3d-nature-pack/Models/Fallen_Trunk_01.obj",
+        mtl: "./scenes/3d-nature-pack/Models/Fallen_Trunk_01.mtl",
+        mesh: null,
+        nameMesh: "rock"
+    }
 
 
 };
@@ -50,16 +61,27 @@ var models = {
 
 var wallMap = [
     //0, 1, 2, 3, 4, 5, 6, 7, 8, 9
-    [0, 1, 1, 1, 1, 1, 1, 1, 1, 0],
-    [1, 0, 0, 0, 0, 0, 0, 0, 0, 1],
-    [1, 0, 0, 0, 0, 0, 0, 0, 0, 1],
-    [1, 0, 0, 0, 0, 0, 0, 0, 0, 1],
-    [1, 0, 0, 0, 0, 0, 0, 0, 0, 1],
-    [1, 0, 0, 0, 0, 0, 0, 0, 0, 1],
-    [1, 0, 0, 0, 0, 0, 0, 0, 0, 1],
-    [1, 0, 0, 0, 0, 0, 0, 0, 0, 1],
-    [1, 0, 0, 0, 0, 0, 0, 0, 0, 1],
-    [0, 1, 1, 1, 1, 1, 1, 1, 1, 0]
+    [0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0],
+    [1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1],
+    [1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1],
+    [1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 5, 0, 0, 0, 0, 0, 0, 0, 0, 5, 0, 0, 0, 0, 0, 0, 0, 1],
+    [1, 0, 0, 0, 5, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1],
+    [1, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 2, 0, 0, 0, 0, 0, 0, 1],
+    [1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1],
+    [1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 1],
+    [1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 2, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1],
+    [1, 0, 0, 0, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 5, 0, 0, 0, 0, 0, 0, 1],
+    [1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1],
+    [1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1],
+    [1, 0, 0, 0, 5, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 2, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1],
+    [1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1],
+    [1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1],
+    [1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1],
+    [1, 0, 0, 0, 1, 1, 0, 0, 0, 0, 0, 0, 0, 5, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1],
+    [1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1],
+    [1, 0, 0, 0, 0, 0, 0, 2, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1],
+    [1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1],
+    [0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0]
 ]
 
 // Meshes index
@@ -154,7 +176,7 @@ function loadModels() {
 function onResourcesLoaded() {
 
     // Clone models into meshes.
-    meshes["tree"] = models.tree.mesh.clone();
+  /*  meshes["tree"] = models.tree.mesh.clone();
     meshes["tree"].position.set(0, 2, 0);
     //meshes["tree"].position.y=0;
 
@@ -168,36 +190,31 @@ function onResourcesLoaded() {
     createBoundCube(meshes["rock"]);
     meshesArray.push(meshes["rock"]);
 
-    var cliffs = []
+    var cliffs = []*/
     for (var i = 0; i < wallMap.length; i++) {
         for (var j = 0; j < wallMap[i].length; j++) {
-            if (wallMap[i][j]) {
-                const UNITSIZE = 2.95;
-                const currCliff = models.cliff.mesh.clone();
+          if (wallMap[i][j]!=0) {
+                const UNITSIZE = 1.5;
 
-                //cliffs.push(  currCliff );
-                currCliff.position.set((i - 10 / 2) * UNITSIZE, 1, (j - 10 / 2) * UNITSIZE);
+                const currModel = models[wallMap[i][j]].mesh.clone();
 
-                if (i == 0)
-                    currCliff.rotation.y = Math.PI;
-                else if (j == 0)
-                    currCliff.rotation.y = Math.PI / 2;
-                else if (j == 9)
-                    currCliff.rotation.y = -Math.PI / 2;
+                currModel.position.set((i - 10 / 2) * UNITSIZE, 2, (j - 10 / 2) * UNITSIZE);
 
-                scene.add(currCliff);
-                createBoundCube(currCliff);
-                meshesArray.push(currCliff);
-                wallsArray.push(currCliff)
+                scene.add(currModel);
+                createBoundCube(currModel);
+                meshesArray.push(currModel);
+                wallsArray.push(currModel)
+              }
+
 
             }
-        }
+
 
     }
 
 
 
-    meshes["uzi"] = models.uzi.mesh.clone();
+    meshes["uzi"] = models[4].mesh.clone();
     meshes["uzi"].position.set(0.4, -0.4, -0.5);
     meshes["uzi"].scale.set(10, 10, 10);
     meshes["uzi"].rotation.y = -Math.PI;
@@ -251,7 +268,7 @@ function importZombie(i) {
             zombieAnimated.raisingArmsPose()
             zombieAnimatedArray.push(zombieAnimated); //TODO remove
             zombieMesh.zombieAnimated = zombieAnimated
-                    
+
             createSingleBodyCube(zombieMesh, i)
 
 
@@ -272,7 +289,7 @@ function importZombie(i) {
 
 
 function addLifeBarSprite(zombieObj, value = 10) {
-    
+
     if (value < 0) // also 0?
         return;
 
@@ -304,7 +321,7 @@ function changeLifeBar(zombieObj, value = 10) {
 function createBoundCube(objectMesh) {
     var bbox = (new THREE.Box3()).setFromObject(objectMesh);
     var helper = new THREE.Box3Helper(bbox, 0xffff00);
-    scene.add(helper);
+    //scene.add(helper);
     var dimensions = bbox.getSize();
 
     var geometry = new THREE.BoxGeometry(dimensions.x, dimensions.y, dimensions.z);
@@ -356,7 +373,7 @@ function createBoundCube(objectMesh) {
 //         world.addBody(boxBody);
 //         collisionboxes.push(boxBody);
 //         boxBody.postStep = () => {  //ADDED: counter till be removed
- 
+
 //             if (!boxBody.isDieing)
 //                 return;
 //             boxBody.life--;
@@ -378,7 +395,7 @@ function createBoundCube(objectMesh) {
 //                     return; //zombie in disappearing phase (stai infierendo)
 
 //                 e.target.life -= 1;
-                
+
 
 //                 if (e.target.life == 0) {
 //                     e.target.angularDamping = 0; // enable "ragdoll"
@@ -432,13 +449,13 @@ function createSingleBodyCube(mesh, sidePositionChange = 0) {
     addLifeBarSprite(boxBody)      //ADDED: gui life
 
 
-    
+
 
     boxBody.postStep = () => {  //ADDED: counter till be removed
         if (!boxBody.isDieing)
             return;
         boxBody.life--;
-        
+
         if (boxBody.life < -200)
             byeMeshBody(boxBody)
     }
@@ -458,15 +475,15 @@ function createSingleBodyCube(mesh, sidePositionChange = 0) {
             e.target.life -= 1;
             if(e.target.life == 1)
                 e.target.angularDamping = 0; // enable ragdoll
-                
-                
+
+
             if (e.target.life == 0) {
                 uselessMeshes.push(e.target.barGui)
                 //byeMeshBody(e.target)
                 e.target.isDieing = true;  //start counter to remove it
                 e.target.myMeshes[0].zombieAnimated.stopAnimation();
                 e.target.myMeshes[0].zombieAnimated.dieingArmsPose();
-                
+
                 return;
             }
             uselessMeshes.push(e.target.barGui)
@@ -478,8 +495,8 @@ function createSingleBodyCube(mesh, sidePositionChange = 0) {
         //console.log(flagHit);
 
     });
-    
-   
+
+
 
     var boxMesh = new THREE.Mesh(boxGeometry, newmaterial);
     boxMesh.position.x += 3 * sidePositionChange;
@@ -514,4 +531,3 @@ function byeMeshBody(body, mesh = null) {
     }
 
 }
-
