@@ -5,9 +5,10 @@ var weapon;
 var sphereShape, balls = [], ballMeshes = [];
 var newmaterial;
 var ballmaterial;
+var noZombie=true;
 var playerSphereBody ;
-
 var crate, crateTexture, crateNormalMap, crateBumpMap;
+var zombieWave=1;
 //Zombie mesh global vars
 var zombieAnimated, wallsArray = [];
 var zombieAnimatedArray = [];
@@ -29,7 +30,6 @@ var collisionboxMeshes = [];
 
 var raycaster;
 initCannon();
-
 
 var prevTime = performance.now();
 var velocity = new THREE.Vector3();
@@ -257,8 +257,7 @@ function init() {
 
 	// });
 
-
-
+	
 	// var onKeyDown = function (event) {
 
 	// 	if (controls.isLocked === false && event.keyCode != 13)
@@ -293,7 +292,7 @@ function init() {
 	// 			resume = true;
 	// 			break;
 
-
+		
 	// 		case 73: //left
 	// 			boxLeft = true;
 	// 			break;
@@ -309,7 +308,7 @@ function init() {
 
 	// 	}
 
-	// };
+		}
 
 	// var onKeyUp = function (event) {
 
@@ -379,7 +378,12 @@ function init() {
 	animate();
 
 	window.addEventListener('resize', onWindowResize, false);
+								//console.log("Contact between bodies:",e.contact);
 
+								//console.log(flagHit);
+
+						});
+						*/
 
 
 }
@@ -544,6 +548,21 @@ function animate(now) {
 		return;
 	}
 
+	//GENERATE THE ZOMBIE WAAAAVE
+	if (noZombie==true) {
+		console.log("INCOMING WAVE NUMBER ", zombieWave);
+		for (var i = 0; i < zombieMap.length; i++) {
+				for (var j = 0; j < zombieMap[i].length; j++) {
+					if (zombieMap[i][j]>0 && zombieMap[i][j]<=zombieWave) {
+						importZombie(i,j);
+						zombieAlive++;
+					}
+				}
+			}
+			zombieWave++;
+			noZombie=false;
+	}
+
 
 	requestAnimationFrame(animate);
 
@@ -553,6 +572,7 @@ function animate(now) {
 	}
 	removeUselessBodies();
 	removeUselessMeshes();
+
 
 
 
@@ -566,7 +586,7 @@ function animate(now) {
 		counterDrop+=1;
 		//console.log(counterDrop);
 	}
-	
+
 	if (counterDrop>=300) {
 		flagHit=false;
 		counterDrop=0;
@@ -601,6 +621,10 @@ function animate(now) {
 	//playerBoxBody.position.y += velocity.y * delta; // new behavior
 	//	playerBoxBody.position.z += velocity.z * delta;
 
+	//if (moveForward || moveBackward) velocity.z = direction.z * 400.0 * delta;
+	//if (moveLeft || moveRight) velocity.x = direction.x * 400.0 * delta;
+	if (moveForward || moveBackward) velocity.z = - direction.z * 400.0 * delta;
+	if (moveLeft || moveRight) velocity.x = - direction.x * 400.0 * delta;
 
 	// if (wallsArray.length > 0)
 	// 	//rayCollisionsCheck();
@@ -627,7 +651,7 @@ function animate(now) {
 
 	// }
 
-
+	
 	//  controls.getObject().translateX(velocity.x * delta);
 	//  controls.getObject().position.y += (velocity.y * delta); // new behavior
 	//  controls.getObject().translateZ(velocity.z * delta);
@@ -671,5 +695,5 @@ function animate(now) {
 /////////////////////////////////////////////////////////////////////////////////
 
 
-//window.onload = initCannon;
+window.onload = initCannon;
 window.onload = init;

@@ -1,6 +1,7 @@
 // instantiate a loader
 var loaderGLTF = new THREE.GLTFLoader();
 var loaderTex = new THREE.TextureLoader();
+var zombieAlive=0;
 
 var loadingScreen = {
     scene: new THREE.Scene(),
@@ -13,7 +14,7 @@ var loadingScreen = {
 var loadingManager = null;
 var RESOURCES_LOADED = false;
 var zombieROOT = [];
-var numZombie = 0;
+var numZombie = 10;
 
 var uselessBodies = []
 var uselessMeshes = []
@@ -84,6 +85,32 @@ var wallMap = [
     [0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0]
 ]
 
+var zombieMap = [
+    //0, 1, 2, 3, 4, 5, 6, 7, 8, 9
+    [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+    [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 2, 0, 0],
+    [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 2, 0, 0, 0, 1, 0, 0, 0, 0],
+    [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+            //la camera parte più o meno qua
+    [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+    [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+    [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+    [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 2, 0, 0, 0],
+    [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+    [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0],
+    [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+    [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+    [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 2, 0, 0],
+    [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+    [0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+    [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+    [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+    [0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 2, 0, 0, 0, 0, 0, 0],
+    [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+    [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+    [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+]
+
 // Meshes index
 var meshes = {};
 var meshesArray = [];
@@ -118,6 +145,7 @@ function initLoading() {
 
 
 function loadModels() {
+
 
 
     createSkyBox();
@@ -161,11 +189,17 @@ function loadModels() {
     }
 
     //crei vari zombie quanti i
-    for (var i = 0; i < numZombie; i++) {
-        importZombie(i);
-    }
 
 
+        /*for (var i = 0; i < zombieMap.length; i++) {
+            for (var j = 0; j < zombieMap[i].length; j++) {
+              if (zombieMap[i][j]!=0) {
+                importZombie(i,j);
+              }
+            }
+          }
+
+          */
 
 }
 
@@ -258,7 +292,7 @@ function createSkyBox() {
 }
 
 
-function importZombie(i) {
+function importZombie(i,j) {
 
     // Load a glTF resource
     loaderGLTF.load(
@@ -274,9 +308,16 @@ function importZombie(i) {
                 .children[0].children[0].children[0].children[0]
                 .children[1].children[0].children[2].skeleton.bones
             console.log(bones)
+            const UNITSIZE = 1.5;
 
-            gltf.scene.position.x += 3 * i;
-            gltf.scene.position.y += 1.0;
+            //const currModel = models[wallMap[i][j]].mesh.clone();
+
+            //currModel.position.set((i - 10 / 2) * UNITSIZE, 2, (j - 10 / 2) * UNITSIZE);
+
+
+            //gltf.scene.position.x += 3 * i;
+            //gltf.scene.position.y += 1.0;
+            gltf.scene.position.set((i - 10 / 2) * UNITSIZE, 2, (j - 10 / 2) * UNITSIZE);
 
             gltf.scene.children[0].children.forEach(element => {
                 if (element.name.includes("Left") || element.name.includes("Right")) {
@@ -476,8 +517,9 @@ function createSingleBodyCube(mesh, sidePositionChange = 0) {
     var boxBody = new CANNON.Body({ mass: 1 });
     boxBody.name = "zombieBox"
     boxBody.addShape(boxShape);
-    boxBody.position.x += 3 * sidePositionChange;
-    boxBody.position.y += 1;
+    //boxBody.position.x += 3 * sidePositionChange;
+    //boxBody.position.y += 1;
+    boxBody.position.copy(mesh.position)
     boxBody.life = 10;  // ADDED: life
     boxBody.angularDamping = 1; //ADDED: no ragdoll till death
     boxBody.isDieing = false; //true when start counter to be removed
@@ -492,7 +534,11 @@ function createSingleBodyCube(mesh, sidePositionChange = 0) {
         boxBody.life--;
 
         if (boxBody.life < -200){
-            byeMeshBody(boxBody)
+            byeMeshBody(boxBody);
+            zombieAlive--;
+            if (zombieAlive==0) {
+              noZombie=true;
+            }
            // collisionboxMeshes.splice(boxBody.idInArray,1)
         }
         
@@ -538,8 +584,9 @@ function createSingleBodyCube(mesh, sidePositionChange = 0) {
    
 
     var boxMesh = new THREE.Mesh(boxGeometry, newmaterial);
-    boxMesh.position.x += 3 * sidePositionChange;
-    boxMesh.position.y -= 1;
+    //boxMesh.position.x += 3 * sidePositionChange;
+    //boxMesh.position.y -= 1;
+    boxMesh.position.copy(mesh.position);
     boxMesh.visible = false;
     scene.add(boxMesh);
     console.log("Added box external #: ", sidePositionChange);
