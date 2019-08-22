@@ -99,6 +99,7 @@ function loadModels() {
 
     createPlayer();
 
+    createSkyBox();
     for (var _key in models) {
         (function (key) {
 
@@ -211,7 +212,34 @@ function onResourcesLoaded() {
 
 
 
+function createSkyBox() {
+    //RIGHT ORDER:
+    // 'pos-x.jpg',
+    // 'neg-x.jpg',
+    // 'pos-y.jpg',
+    // 'neg-y.jpg',
+    // 'pos-z.jpg',
+    // 'neg-z.jpg',
 
+
+    const path = "textures/fantasySkyboxes/"
+    const ls = [
+        "Sunny_01A_left.jpg",
+        "Sunny_01A_right.jpg",
+        "Sunny_01A_up.jpg",
+        "Sunny_01A_down.jpg",
+        "Sunny_01A_front.jpg",
+        "Sunny_01A_back.jpg",
+
+    ].map(x => path + x)
+
+
+
+    const loader = new THREE.CubeTextureLoader();
+    const texture = loader.load(ls);
+    scene.background = texture;
+
+}
 
 
 function importZombie(i) {
@@ -220,7 +248,7 @@ function importZombie(i) {
     loaderGLTF.load(
         // resource URL
         //'scenes/zombie_character/scene.gltf'
-        'scenes/the_perfect_steve_rigged/scene.gltf'
+        'scenes/the_perfect_steve_rigged/sceneMyTex.gltf'
         ,
         // called when the resource is loaded
         function (gltf) {
@@ -251,7 +279,7 @@ function importZombie(i) {
             zombieAnimated.raisingArmsPose()
             zombieAnimatedArray.push(zombieAnimated); //TODO remove
             zombieMesh.zombieAnimated = zombieAnimated
-                    
+
             createSingleBodyCube(zombieMesh, i)
 
 
@@ -272,7 +300,7 @@ function importZombie(i) {
 
 
 function addLifeBarSprite(zombieObj, value = 10) {
-    
+
     if (value < 0) // also 0?
         return;
 
@@ -356,7 +384,7 @@ function createBoundCube(objectMesh) {
 //         world.addBody(boxBody);
 //         collisionboxes.push(boxBody);
 //         boxBody.postStep = () => {  //ADDED: counter till be removed
- 
+
 //             if (!boxBody.isDieing)
 //                 return;
 //             boxBody.life--;
@@ -378,7 +406,7 @@ function createBoundCube(objectMesh) {
 //                     return; //zombie in disappearing phase (stai infierendo)
 
 //                 e.target.life -= 1;
-                
+
 
 //                 if (e.target.life == 0) {
 //                     e.target.angularDamping = 0; // enable "ragdoll"
@@ -432,15 +460,18 @@ function createSingleBodyCube(mesh, sidePositionChange = 0) {
     addLifeBarSprite(boxBody)      //ADDED: gui life
 
 
-    
+
 
     boxBody.postStep = () => {  //ADDED: counter till be removed
         if (!boxBody.isDieing)
             return;
         boxBody.life--;
-        
-        if (boxBody.life < -200)
+
+        if (boxBody.life < -200){
             byeMeshBody(boxBody)
+           // collisionboxMeshes.splice(boxBody.idInArray,1)
+        }
+        
     }
     boxBody.addEventListener("collide", function (e) {
         //e.body.id 1 è IL GROUND
@@ -456,17 +487,17 @@ function createSingleBodyCube(mesh, sidePositionChange = 0) {
                 return; //it is in disappearing phase
 
             e.target.life -= 1;
-            if(e.target.life == 1)
+            if (e.target.life == 1)
                 e.target.angularDamping = 0; // enable ragdoll
-                
-                
+
+
             if (e.target.life == 0) {
                 uselessMeshes.push(e.target.barGui)
                 //byeMeshBody(e.target)
                 e.target.isDieing = true;  //start counter to remove it
                 e.target.myMeshes[0].zombieAnimated.stopAnimation();
                 e.target.myMeshes[0].zombieAnimated.dieingArmsPose();
-                
+
                 return;
             }
             uselessMeshes.push(e.target.barGui)
@@ -478,8 +509,8 @@ function createSingleBodyCube(mesh, sidePositionChange = 0) {
         //console.log(flagHit);
 
     });
-    
-   
+
+
 
     var boxMesh = new THREE.Mesh(boxGeometry, newmaterial);
     boxMesh.position.x += 3 * sidePositionChange;
@@ -489,13 +520,13 @@ function createSingleBodyCube(mesh, sidePositionChange = 0) {
     console.log("Added box external #: ", sidePositionChange);
     boxMesh.castShadow = true;
     boxMesh.receiveShadow = true;
-    collisionboxMeshes.push(boxMesh);
+    collisionboxMeshes.push(boxMesh) ;
     console.log(boxMesh)
 
-    boxBody.myMeshes = [mesh,boxMesh]   //TODO: unire con parte mesh e accedere da questo (eliminare forse anche array???)
+    boxBody.myMeshes = [mesh, boxMesh]   //TODO: unire con parte mesh e accedere da questo (eliminare forse anche array???)
 
     world.addBody(boxBody);
-    collisionboxes.push(boxBody);
+    boxMesh.idInArray = collisionboxes.push(boxBody) -1;
 }
 
 
@@ -504,9 +535,9 @@ function byeMeshBody(body, mesh = null) {
         uselessBodies.push(body)
         uselessMeshes.push(body.myMesh)
     }
-    else if("myMeshes" in body && mesh == null){
+    else if ("myMeshes" in body && mesh == null) {
         uselessBodies.push(body)
-        body.myMeshes.forEach(e => { uselessMeshes.push(e)})
+        body.myMeshes.forEach(e => { uselessMeshes.push(e) })
     }
     else {   //separati
         uselessBodies.push(body)

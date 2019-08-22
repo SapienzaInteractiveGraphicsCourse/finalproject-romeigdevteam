@@ -95,9 +95,11 @@ function zombieFollowsCharacter(idx, delta) {
 	{
 		var diffX = camera.position.x - x;
 		var diffZ = camera.position.z - z;
+		const angle= Math.atan2(diffX, diffZ)
+		if(body.barGui)
+		 body.barGui.rotation.y = angle
 		const axis = new CANNON.Vec3(0, 1, 0);
-
-		body.quaternion.setFromAxisAngle(axis, Math.atan2(diffX, diffZ));
+		body.quaternion.setFromAxisAngle(axis,angle);
 	
 
 	//Translation
