@@ -343,14 +343,14 @@ function fireBullet() {
 
 	ballBody.position.set(x, y, z);
 	ballMesh.position.set(x, y, z);
-	ballBody.life=0;
-	ballBody.postStep = () =>{
+	ballBody.life = 0;
+	ballBody.postStep = () => {
 		ballBody.life++
-            if (ballBody.life > 200 ) {
-                byeMeshBody(ballBody)
-            }
+		if (ballBody.life > 200) {
+			byeMeshBody(ballBody)
+		}
 	}
-	
+
 	world.addBody(ballBody);
 	scene.add(ballMesh);
 }
@@ -363,15 +363,15 @@ window.addEventListener("click", function (e) {
 
 
 
-function removeUselessBodies(){
-    uselessBodies.forEach(e => world.remove(e) )
+function removeUselessBodies() {
+	uselessBodies.forEach(e => world.remove(e))
 }
-function removeUselessMeshes(){
-    uselessMeshes.forEach(e => scene.remove(e) )
+function removeUselessMeshes() {
+	uselessMeshes.forEach(e => scene.remove(e))
 }
 
 
-function updatePositions(){
+function updatePositions(delta) {
 
 
 	// Update ball positions
@@ -387,11 +387,16 @@ function updatePositions(){
 
 	if (zombieROOT.length == collisionboxes.length) {
 		for (var i = 0; i < zombieROOT.length; i++) {
+			zombieFollowsCharacter(i, delta);
+
+
 			zombieROOT[i].position.copy(collisionboxes[i].position);
 			zombieROOT[i].quaternion.copy(collisionboxes[i].quaternion);
-			
-			collisionboxes[i].barGui.position.copy(collisionboxes[i].position)
-			collisionboxes[i].barGui.position.y+=1;	
+			if (collisionboxes[i].barGui) {
+				collisionboxes[i].barGui.position.copy(collisionboxes[i].position)
+				collisionboxes[i].barGui.position.y += 1;
+			}
+
 		}
 	}
 	for (var i = 0; i < collisionboxes1.length; i++) {
@@ -401,8 +406,8 @@ function updatePositions(){
 	for (var i = 0; i < collisionboxes1.length; i++) {
 		collisionboxMeshes1[i].position.copy(collisionboxes1[i].position);
 		collisionboxMeshes1[i].quaternion.copy(collisionboxes1[i].quaternion);
-		
-		
+
+
 	}
 
 	playerBox.position.copy(playerBoxBody.position)
@@ -424,6 +429,10 @@ var dt = 1 / 60;
 
 function animate(now) {
 
+	now *= 0.001;  // make it seconds
+	const myDelta = now - then;
+	then = now;
+
 
 	// Play the loading screen until resources are loaded.
 	if (RESOURCES_LOADED == false) {
@@ -440,15 +449,15 @@ function animate(now) {
 
 	requestAnimationFrame(animate);
 
-	
-	updatePositions();
-	
+
+	updatePositions(myDelta);
+
 	removeUselessBodies();
 	removeUselessMeshes();
-	
+
 	world.step(dt);
 
-	
+
 	//camera.position.copy(playerBoxBody.position)
 
 
@@ -466,9 +475,6 @@ function animate(now) {
 	}
 	*/
 
-	now *= 0.001;  // make it seconds
-	const myDelta = now - then;
-	then = now;
 
 
 	var xcam = camera.position.x;
@@ -500,9 +506,9 @@ function animate(now) {
 
 		//rayCollisionsCheck();
 
-		//if (moveForward || moveBackward) velocity.z = direction.z * 400.0 * delta;
-		//if (moveLeft || moveRight) velocity.x = direction.x * 400.0 * delta;
-		if (moveForward || moveBackward) velocity.z = - direction.z * 400.0 * delta;
+	//if (moveForward || moveBackward) velocity.z = direction.z * 400.0 * delta;
+	//if (moveLeft || moveRight) velocity.x = direction.x * 400.0 * delta;
+	if (moveForward || moveBackward) velocity.z = - direction.z * 400.0 * delta;
 	if (moveLeft || moveRight) velocity.x = - direction.x * 400.0 * delta;
 
 	if (boxLeft)
@@ -547,10 +553,10 @@ function animate(now) {
 
 	}
 
-	
-		for (var i = 0; i < zombieAnimatedArray.length; i++) {
-			zombieAnimatedArray[i].walkingAnimate(myDelta, walkSpeed)
-	
+
+	for (var i = 0; i < zombieAnimatedArray.length; i++) {
+		zombieAnimatedArray[i].walkingAnimate(myDelta, walkSpeed)
+
 	}
 
 	// // Detect collisions.

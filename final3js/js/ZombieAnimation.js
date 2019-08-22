@@ -16,9 +16,11 @@ class ZombieAnimation {
 		this.torsoRight = false;
 		this.counter = 0;
 		this.bones = bones
+		this.isAnimated = true;
 	}
 
 	walkingAnimate(delta, walkSpeed) {
+		if(this.isAnimated){
 		if (this.rightStep) {
 			this.bones[ZombieBonesIds.URLEG].rotation.x += delta * walkSpeed
 			this.bones[ZombieBonesIds.ULLEG].rotation.x -= delta * walkSpeed
@@ -48,6 +50,7 @@ class ZombieAnimation {
 			if (this.bones[ZombieBonesIds.TORSO].rotation.z > 0.1)
 				this.torsoRight = !this.torsoRight;
 		}
+	}
 
 	}
 
@@ -55,22 +58,92 @@ class ZombieAnimation {
 		//this.bones[this.URARM].rotateX(0.5)
 		this.bones[ZombieBonesIds.ULARM].rotateY(-0.4)
 		this.bones[ZombieBonesIds.ULARM].rotateX(-1.8)
+	}
+
+	dieingArmsPose() {
+		//this.bones[this.URARM].rotateX(0.5)
+		//const randAng=Math.random()*3*Math.PI/4
+		const fixedAngle=Math.PI/2
+		this.bones[ZombieBonesIds.ULARM].rotateZ(-fixedAngle)
+		this.bones[ZombieBonesIds.ULARM].rotateY(-fixedAngle)
+		
+		this.bones[ZombieBonesIds.URARM].rotateZ(fixedAngle)
+		this.bones[ZombieBonesIds.URARM].rotateY(fixedAngle)
+		
+	}
 
 
+	startAnimation(){
+		this.isAnimated=true;
+	}
+	stopAnimation(){
+		this.isAnimated=false;
 	}
 }
 
 
 
+function zombieFollowsCharacter(idx, delta) {
+	//if(idx > 3) return;
+	const speed = (0.9 + idx / 100) * delta
+	var body = collisionboxes[idx]
+	var x = body.position.x
+	var y = body.position.y
+	var z = body.position.z
+	//One y axis Rotation
+	if(! body.isDieing )
+	{
+		var diffX = camera.position.x - x;
+		var diffZ = camera.position.z - z;
+		const axis = new CANNON.Vec3(0, 1, 0);
 
-class MyMeshes {
+		body.quaternion.setFromAxisAngle(axis, Math.atan2(diffX, diffZ));
+	
 
+	//Translation
+	//const casualProb= (Math.random()*1000) +1
+	if (x == camera.position.x) { }
+	else if (x > camera.position.x) body.position.x -= speed;
+	else body.position.x += speed;
 
+	//make it jump
+	// if( casualProb <10 && y ==0 ){
+	// 	body.y = 
+	// }
 
+	if (z == camera.position.z) { }
+	else if (z > camera.position.z) body.position.z -= speed;
+	else body.position.z += speed;
+	
+	}
 
-
-
-
-
-
+	
 }
+
+// function aStarAlgo(){
+
+// var start = zombieROOT[i].position
+// var frontier = new PriorityQueue()
+// frontier.enqueue(start, 0)
+// var came_from = {}
+// var cost_so_far = {}
+// came_from[start] = null;
+// cost_so_far[start] = 0
+// var goal = new THREE.Vector3(-4,-4,-4)
+// while (! frontier.isEmpty() ){
+//    current = frontier.dequeue()
+
+//    if ( current == goal)
+//       break
+
+//    for (var next in graph.neighbors(current):
+//       new_cost = cost_so_far[current] + graph.cost(current, next)
+//       if next not in cost_so_far or new_cost < cost_so_far[next]:
+//          cost_so_far[next] = new_cost
+//          priority = new_cost + heuristic(goal, next)
+//          frontier.put(next, priority)
+// 		 came_from[next] = current
+
+
+// 		}
+// 	}
