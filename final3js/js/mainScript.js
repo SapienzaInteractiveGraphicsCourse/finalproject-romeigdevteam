@@ -5,6 +5,7 @@ var weapon;
 var sphereShape, balls = [], ballMeshes = [];
 var newmaterial;
 var ballmaterial;
+var playerSphereBody ;
 
 var crate, crateTexture, crateNormalMap, crateBumpMap;
 //Zombie mesh global vars
@@ -29,15 +30,103 @@ var collisionboxMeshes = [];
 var raycaster;
 initCannon();
 
-var moveForward = false, moveBackward = false, moveLeft = false, moveRight = false;
-var boxForward = false, boxBackward = false, boxLeft = false, boxRight = false;
-var canJump = false;
 
 var prevTime = performance.now();
 var velocity = new THREE.Vector3();
 var direction = new THREE.Vector3();
 var vertex = new THREE.Vector3();
 var color = new THREE.Color();
+
+var SUOtime = Date.now()
+function htmlInit(){
+
+
+var blocker = document.getElementById( 'blocker' );
+var instructions = document.getElementById( 'instructions' );
+console.log(instructions)
+var havePointerLock = 'pointerLockElement' in document || 'mozPointerLockElement' in document || 'webkitPointerLockElement' in document;
+
+if ( havePointerLock ) {
+
+	var element = document.body;
+
+	var pointerlockchange = function ( event ) {
+
+		if ( document.pointerLockElement === element || document.mozPointerLockElement === element || document.webkitPointerLockElement === element ) {
+
+			controls.enabled = true;
+
+			blocker.style.display = 'none';
+
+		} else {
+
+			controls.enabled = false;
+
+			blocker.style.display = '-webkit-box';
+			blocker.style.display = '-moz-box';
+			blocker.style.display = 'box';
+
+			instructions.style.display = '';
+
+		}
+
+	}
+
+	var pointerlockerror = function ( event ) {
+		instructions.style.display = '';
+	}
+
+	// Hook pointer lock state change events
+	document.addEventListener( 'pointerlockchange', pointerlockchange, false );
+	document.addEventListener( 'mozpointerlockchange', pointerlockchange, false );
+	document.addEventListener( 'webkitpointerlockchange', pointerlockchange, false );
+
+	document.addEventListener( 'pointerlockerror', pointerlockerror, false );
+	document.addEventListener( 'mozpointerlockerror', pointerlockerror, false );
+	document.addEventListener( 'webkitpointerlockerror', pointerlockerror, false );
+
+	instructions.addEventListener( 'click', function ( event ) {
+		instructions.style.display = 'none';
+
+		// Ask the browser to lock the pointer
+		element.requestPointerLock = element.requestPointerLock || element.mozRequestPointerLock || element.webkitRequestPointerLock;
+
+		if ( /Firefox/i.test( navigator.userAgent ) ) {
+
+			var fullscreenchange = function ( event ) {
+
+				if ( document.fullscreenElement === element || document.mozFullscreenElement === element || document.mozFullScreenElement === element ) {
+
+					document.removeEventListener( 'fullscreenchange', fullscreenchange );
+					document.removeEventListener( 'mozfullscreenchange', fullscreenchange );
+
+					element.requestPointerLock();
+				}
+
+			}
+
+			document.addEventListener( 'fullscreenchange', fullscreenchange, false );
+			document.addEventListener( 'mozfullscreenchange', fullscreenchange, false );
+
+			element.requestFullscreen = element.requestFullscreen || element.mozRequestFullscreen || element.mozRequestFullScreen || element.webkitRequestFullscreen;
+
+			element.requestFullscreen();
+
+		} else {
+
+			element.requestPointerLock();
+
+		}
+
+	}, false );
+
+} else {
+
+	instructions.innerHTML = 'Your browser doesn\'t seem to support Pointer Lock API';
+
+}
+}
+
 function initCannon() {
 	// Setup our world
 	world = new CANNON.World();
@@ -84,8 +173,9 @@ function initCannon() {
 }
 
 function init() {
+	
 	scene = new THREE.Scene();
-	camera = new THREE.PerspectiveCamera(90, 1280 / 720, 0.1, 1000);
+	camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
 
 	geometry = new THREE.PlaneGeometry(300, 300, 50, 50);
 	geometry.applyMatrix(new THREE.Matrix4().makeRotationX(- Math.PI / 2));
@@ -97,6 +187,24 @@ function init() {
 	mesh.receiveShadow = true;
 	scene.add(mesh);
 
+	createPlayer();
+	  // Create a sphere
+	  var mass = 5, radius = 1.3;
+//	  var boxShape = new CANNON.Box( new CANNON.Vec3(0.5, 0.8 ,0.5)  );
+	  sphereShape = new CANNON.Sphere(radius  );
+	//   var slipperyMaterial = new CANNON.Material();
+	// 	slipperyMaterial.friction = 0;
+	// 	sphereShape.material=slipperyMaterial
+	  playerSphereBody = new CANNON.Body({ mass: mass });
+	  playerSphereBody.addShape(sphereShape);
+	  playerSphereBody.position.set(0,5,0);
+	  playerSphereBody.linearDamping = 0.98;
+	  //playerSphereBody.angularDamping = 1;
+	  
+	  world.addBody(playerSphereBody);
+
+	controls = new PointerLockControls(camera,playerSphereBody);
+	scene.add(controls.getObject());
 
 
 	ambientLight = new THREE.AmbientLight(0xffffff, 0.9);
@@ -110,8 +218,11 @@ function init() {
 	scene.add(light);
 
 
-	camera.position.set(0, player.height, -5);
-	camera.lookAt(new THREE.Vector3(0, player.height, 0));
+	// camera.position.set(0, player.height, -5);
+	// camera.lookAt(new THREE.Vector3(0, player.height, 0));
+
+	
+
 
 	renderer = new THREE.WebGLRenderer({ antialias: false });
 	//renderer.setSize(1280, 720);
@@ -122,133 +233,130 @@ function init() {
 
 
 
-	controls = new THREE.PointerLockControls(camera);
+	htmlInit();
 
 
 
-	var instructions = document.getElementById('instructions');
+	//  instructions.addEventListener('click', function () {
 
-	instructions.addEventListener('click', function () {
+	//  	controls.enabled=true;
 
-		controls.lock();
+	//  }, false);
 
-	}, false);
+	// controls.addEventListener('lock', function () {
 
-	controls.addEventListener('lock', function () {
+	// 	instructions.style.display = 'none';
+	// 	//		blocker.style.display = 'none';
 
-		instructions.style.display = 'none';
-		//		blocker.style.display = 'none';
+	// });
 
-	});
+	// controls.addEventListener('unlock', function () {
 
-	controls.addEventListener('unlock', function () {
+	// 	//		blocker.style.display = 'block';
+	// 	instructions.style.display = '';
 
-		//		blocker.style.display = 'block';
-		instructions.style.display = '';
-
-	});
-
-	scene.add(controls.getObject());
+	// });
 
 
-	var onKeyDown = function (event) {
 
-		if (controls.isLocked === false && event.keyCode != 13)
-			return;	//STOP KEYS
-		switch (event.keyCode) {
+	// var onKeyDown = function (event) {
 
-			case 38: // up
-			case 87: // w
-				moveForward = true;
-				break;
+	// 	if (controls.isLocked === false && event.keyCode != 13)
+	// 		return;	//STOP KEYS
+	// 	switch (event.keyCode) {
 
-			case 37: // left
-			case 65: // a
-				moveLeft = true;
-				break;
+	// 		case 38: // up
+	// 		case 87: // w
+	// 			moveForward = true;
+	// 			break;
 
-			case 40: // down
-			case 83: // s
-				moveBackward = true;
-				break;
+	// 		case 37: // left
+	// 		case 65: // a
+	// 			moveLeft = true;
+	// 			break;
 
-			case 39: // right
-			case 68: // d
-				moveRight = true;
-				break;
+	// 		case 40: // down
+	// 		case 83: // s
+	// 			moveBackward = true;
+	// 			break;
 
-			case 32: // space
-				if (canJump === true) velocity.y += 100;
-				canJump = false;
-				break;
-			case 13:	//Enter
-				resume = true;
-				break;
+	// 		case 39: // right
+	// 		case 68: // d
+	// 			moveRight = true;
+	// 			break;
+
+	// 		case 32: // space
+	// 			if (canJump === true) velocity.y += 100;
+	// 			canJump = false;
+	// 			break;
+	// 		case 13:	//Enter
+	// 			resume = true;
+	// 			break;
 
 
-			case 73: //left
-				boxLeft = true;
-				break;
-			case 74:  //up
-				boxForward = true;
-				break;
-			case 75:  //right
-				boxRight = true;
-				break;
-			case 76:  //down
-				boxBackward = true;
-				break;
+	// 		case 73: //left
+	// 			boxLeft = true;
+	// 			break;
+	// 		case 74:  //up
+	// 			boxForward = true;
+	// 			break;
+	// 		case 75:  //right
+	// 			boxRight = true;
+	// 			break;
+	// 		case 76:  //down
+	// 			boxBackward = true;
+	// 			break;
 
-		}
+	// 	}
 
-	};
+	// };
 
-	var onKeyUp = function (event) {
+	// var onKeyUp = function (event) {
 
-		switch (event.keyCode) {
+	// 	switch (event.keyCode) {
 
-			case 38: // up
-			case 87: // w
-				moveForward = false;
-				break;
+	// 		case 38: // up
+	// 		case 87: // w
+	// 			moveForward = false;
+	// 			break;
 
-			case 37: // left
-			case 65: // a
-				moveLeft = false;
-				break;
+	// 		case 37: // left
+	// 		case 65: // a
+	// 			moveLeft = false;
+	// 			break;
 
-			case 40: // down
-			case 83: // s
-				moveBackward = false;
-				break;
+	// 		case 40: // down
+	// 		case 83: // s
+	// 			moveBackward = false;
+	// 			break;
 
-			case 39: // right
-			case 68: // d
-				moveRight = false;
-				break;
-			case 13:
-				resume = false;
-				break;
+	// 		case 39: // right
+	// 		case 68: // d
+	// 			moveRight = false;
+	// 			break;
+	// 		case 13:
+	// 			resume = false;
+	// 			break;
 
-			case 73: //left
-				boxLeft = false;
-				break;
-			case 74:  //up
-				boxForward = false;
-				break;
-			case 75:  //right
-				boxRight = false;
-				break;
-			case 76:  //down
-				boxBackward = false;
-				break;
+	// 		case 73: //left
+	// 			boxLeft = false;
+	// 			break;
+	// 		case 74:  //up
+	// 			boxForward = false;
+	// 			break;
+	// 		case 75:  //right
+	// 			boxRight = false;
+	// 			break;
+	// 		case 76:  //down
+	// 			boxBackward = false;
+	// 			break;
 
-		}
+	// 	}
 
-	};
+	// };
 
-	document.addEventListener('keydown', onKeyDown, false);
-	document.addEventListener('keyup', onKeyUp, false);
+	// document.addEventListener('keydown', onKeyDown, false);
+	// document.addEventListener('keyup', onKeyUp, false);
 
 
 	//Meshes imports
@@ -271,16 +379,7 @@ function init() {
 	animate();
 
 	window.addEventListener('resize', onWindowResize, false);
-	/*boxBody.addEventListener("collide",function(e){
-								//console.log("The sphere just collided with the ground!");
-								console.log("Collided with body:",e.body);
-								console.log("id:",e.body.id);
-								//console.log("Contact between bodies:",e.contact);
 
-								//console.log(flagHit);
-
-						});
-						*/
 
 
 }
@@ -301,9 +400,11 @@ function getShootDir(targetVec) {
 	var vector = targetVec;
 	targetVec.set(0, 0, 1);
 	vector.unproject(camera);
-	var ray = new THREE.Ray(camera.position, vector.sub(camera.position).normalize());
+	var ray = new THREE.Ray(playerSphereBody.position, vector.sub(playerSphereBody.position).normalize() );
 	targetVec.copy(ray.direction);
 	console.log(targetVec);
+
+	
 }
 function fireBullet() {
 
@@ -311,9 +412,9 @@ function fireBullet() {
 	var ballGeometry = new THREE.SphereGeometry(ballShape.radius, 32, 32);
 	var shootDirection = new THREE.Vector3();
 	var shootVelo = 20;
-	var x = camera.position.x;
-	var y = camera.position.y;
-	var z = camera.position.z;
+	var x = playerSphereBody.position.x;
+	var y = playerSphereBody.position.y;
+	var z = playerSphereBody.position.z;
 	var ballBody = new CANNON.Body({ mass: 1 });
 	ballBody.name = "bullet"
 	ballBody.addShape(ballShape);
@@ -408,7 +509,8 @@ function updatePositions(delta) {
 
 	playerBox.position.copy(playerBoxBody.position)
 	playerBox.quaternion.copy(playerBoxBody.quaternion);
-
+	//if(playerBoxBody)
+	//	camera.position.copy(playerBoxBody.position)
 
 }
 
@@ -445,13 +547,13 @@ function animate(now) {
 
 	requestAnimationFrame(animate);
 
-
-	updatePositions(myDelta);
-
+	if (controls.enabled) {
+		updatePositions(myDelta);
+		world.step(dt);
+	}
 	removeUselessBodies();
 	removeUselessMeshes();
 
-	world.step(dt);
 
 
 	//camera.position.copy(playerBoxBody.position)
@@ -464,90 +566,86 @@ function animate(now) {
 		counterDrop+=1;
 		//console.log(counterDrop);
 	}
-
+	
 	if (counterDrop>=300) {
 		flagHit=false;
 		counterDrop=0;
 	}
 	*/
 
+	// raycaster.ray.origin.copy(controls.getObject().position);
+	// raycaster.ray.origin.y -= 10;
 
+	// var intersections = raycaster.intersectObjects(objects);
 
-	var xcam = camera.position.x;
-	var ycam = camera.position.y;
-	var zcam = camera.position.z;
-
-	raycaster.ray.origin.copy(controls.getObject().position);
-	raycaster.ray.origin.y -= 10;
-
-	var intersections = raycaster.intersectObjects(objects);
-
-	var onObject = intersections.length > 0;
+	// var onObject = intersections.length > 0;
 
 	var time = performance.now();
 	var delta = (time - prevTime) / 1000.0;
 	prevTime = time;
 
 
-	velocity.x -= velocity.x * 10.0 * delta;
-	velocity.z -= velocity.z * 10.0 * delta;
+	// velocity.x -= velocity.x * 10.0 * delta;
+	// velocity.z -= velocity.z * 10.0 * delta;
 
-	velocity.y -= 9.8 * 100.0 * delta; // 100.0 = mass
+	// velocity.y -= 9.8 * 100.0 * delta; // 100.0 = mass
 
-	direction.z = Number(moveForward) - Number(moveBackward);
-	direction.x = Number(moveLeft) - Number(moveRight);
-	direction.normalize(); // this ensures consistent movements in all directions
+	// direction.z = Number(moveForward) - Number(moveBackward);
+	// direction.x = Number(moveLeft) - Number(moveRight);
+	// direction.normalize(); // this ensures consistent movements in all directions
 
-	if (wallsArray.length > 0)
+	// if (moveForward || moveBackward) velocity.z = - direction.z * 400.0 * delta;
+	// if (moveLeft || moveRight) velocity.x = - direction.x * 400.0 * delta;
 
-		//rayCollisionsCheck();
-
-	//if (moveForward || moveBackward) velocity.z = direction.z * 400.0 * delta;
-	//if (moveLeft || moveRight) velocity.x = direction.x * 400.0 * delta;
-	if (moveForward || moveBackward) velocity.z = - direction.z * 400.0 * delta;
-	if (moveLeft || moveRight) velocity.x = - direction.x * 400.0 * delta;
-
-	if (boxLeft)
-		playerBoxBody.position.x += -0.1
-	if (boxRight)
-		playerBoxBody.position.x += 0.1
-	if (boxForward)
-		playerBoxBody.position.z += -0.1
-	if (boxBackward)
-		playerBoxBody.position.z += 0.1
+	//	playerBoxBody.position.x += velocity.x * delta ;
+	//playerBoxBody.position.y += velocity.y * delta; // new behavior
+	//	playerBoxBody.position.z += velocity.z * delta;
 
 
-	if (onObject === true) {
-		// console.log("wall collision")
-		// velocity.x = Math.max(0, velocity.x);
-		// velocity.z = Math.max(0, velocity.z);
+	// if (wallsArray.length > 0)
+	// 	//rayCollisionsCheck();
 
-		velocity.y = Math.max(0, velocity.y);
-		canJump = true;
+	// if (moveForward)
+	// playerBoxBody.position.z += 0.1
+	// if (moveBackward)
+	// playerBoxBody.position.z += - 0.1
+	// if (moveRight)
+	// playerBoxBody.position.x += - 0.1
+	// if (moveLeft)
+	// playerBoxBody.position.x += 0.1
 
-	}
-	controls.getObject().translateX(velocity.x * delta);
-	controls.getObject().position.y += (velocity.y * delta); // new behavior
-	controls.getObject().translateZ(velocity.z * delta);
+	//distance = 10;
+	//playerBoxBody.position add direction.multiplyScalar(distance) );
 
-	controls.getObject().translateX(velocity.x * delta);
-	controls.getObject().position.y += (velocity.y * delta); // new behavior
-	controls.getObject().translateZ(velocity.z * delta);
+	// if (onObject === true) {
+	// 	// console.log("wall collision")
+	// 	// velocity.x = Math.max(0, velocity.x);
+	// 	// velocity.z = Math.max(0, velocity.z);
 
-	rotationPoint.position.x = camera.position.x;
-	rotationPoint.position.y = camera.position.y;
-	rotationPoint.position.z = camera.position.z;
+	// 	velocity.y = Math.max(0, velocity.y);
+	// 	canJump = true;
 
-	//rotationPoint.position.x += 0.1;
+	// }
 
-	if (controls.getObject().position.y < 1.5) {
 
-		velocity.y = 0;
-		controls.getObject().position.y = 1.5;
+	//  controls.getObject().translateX(velocity.x * delta);
+	//  controls.getObject().position.y += (velocity.y * delta); // new behavior
+	//  controls.getObject().translateZ(velocity.z * delta);
 
-		canJump = true;
+	//   rotationPoint.position.x = playerBoxBody.position.x;
+	//   rotationPoint.position.y = playerBoxBody.position.y;
+	//   rotationPoint.position.z = playerBoxBody.position.z;
 
-	}
+
+
+	// if (controls.getObject().position.y < 1.5) {
+
+	// 	velocity.y = 0;
+	// 	controls.getObject().position.y = 1.5;
+
+	// 	canJump = true;
+
+	// }
 
 
 	for (var i = 0; i < zombieAnimatedArray.length; i++) {
@@ -559,8 +657,10 @@ function animate(now) {
 	// if (collisions.length > 0) {
 	// 	detectCollisions();
 	// }
-
-
+	controls.update( Date.now() - SUOtime );
+	
+//	controls.update(myDelta);
+	SUOtime = Date.now()
 	renderer.render(scene, camera);
 }
 
@@ -571,5 +671,5 @@ function animate(now) {
 /////////////////////////////////////////////////////////////////////////////////
 
 
-window.onload = initCannon;
+//window.onload = initCannon;
 window.onload = init;

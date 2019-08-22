@@ -7,20 +7,26 @@
 
 	<!-- Ext Libs-->
 	<title>Demo 04</title>
-	
+
 	<script type="text/javascript" src="https://cdn.rawgit.com/mrdoob/three.js/master/build/three.min.js"></script>
-	<script type="text/javascript" src="https://cdn.rawgit.com/mrdoob/three.js/master/examples/js/loaders/FBXLoader.js"></script>
-	<script type="text/javascript" src="https://cdn.rawgit.com/mrdoob/three.js/master/examples/js/loaders/MTLLoader.js"></script>
-	<script type="text/javascript" src="https://cdn.rawgit.com/mrdoob/three.js/master/examples/js/loaders/OBJLoader.js"></script>
-	<script type="text/javascript" src="https://cdn.rawgit.com/mrdoob/three.js/master/examples/js/loaders/GLTFLoader.js"></script>
+	<script type="text/javascript"
+		src="https://cdn.rawgit.com/mrdoob/three.js/master/examples/js/loaders/FBXLoader.js"></script>
+	<script type="text/javascript"
+		src="https://cdn.rawgit.com/mrdoob/three.js/master/examples/js/loaders/MTLLoader.js"></script>
+	<script type="text/javascript"
+		src="https://cdn.rawgit.com/mrdoob/three.js/master/examples/js/loaders/OBJLoader.js"></script>
+	<script type="text/javascript"
+		src="https://cdn.rawgit.com/mrdoob/three.js/master/examples/js/loaders/GLTFLoader.js"></script>
 	<script type="text/javascript" src="build/inflate-min.js"></script>
 	<script src="https://cdnjs.cloudflare.com/ajax/libs/cannon.js/0.6.2/cannon.js"></script>
-	<script src="https://cdn.rawgit.com/mrdoob/three.js/master/examples/js/controls/PointerLockControls.js"></script>
+
+	<!-- <script src="https://cdn.rawgit.com/mrdoob/three.js/master/examples/js/controls/PointerLockControls.js"></script> -->
 	<!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/oimo/1.0.9/oimo.js"></script>
 	<script src="https://cdnjs.cloudflare.com/ajax/libs/oimo/1.0.9/oimo.min.js"></script>
 	-->
 
 	<!--- Builds -->
+	<script type="text/javascript" src="build/PointerLockControls.js"></script>
 	<script type="text/javascript" src="build/physijs_worker.js"></script>
 	<script type="text/javascript" src="build/physi.js"></script>
 	<script type="text/javascript" src="build/ammo.js"></script>
@@ -37,19 +43,19 @@
 
 <body style="text-align:center;">
 	<div class="rectangle">
-		<div id="instructions">
-			<span style="font-size:36px">Click to play</span>
-			<br /><br />
-			Move: WASD<br />
-			Jump: SPACE<br />
-			Look: MOUSE
 
-			<span style="position:absolute;top:0px;left:0px;"><input type="button" value="Toggle Wireframe"
-					onclick="mesh.material.wireframe=!mesh.material.wireframe;meshFloor.material.wireframe=!meshFloor.material.wireframe;" /><br />WASD
-				to move.<br />Arrow keys to turn.</span>
+		<div id="blocker">
+
+			<div id="instructions">
+				<span style="font-size:40px">Click to play</span>
+				<br />
+				(W,A,S,D = Move, SPACE = Jump, MOUSE = Look, CLICK = Shoot)
+			</div>
 
 		</div>
+
 	</div>
+
 
 </body>
 

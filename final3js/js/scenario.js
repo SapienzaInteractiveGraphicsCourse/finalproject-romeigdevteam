@@ -13,7 +13,7 @@ var loadingScreen = {
 var loadingManager = null;
 var RESOURCES_LOADED = false;
 var zombieROOT = [];
-var numZombie = 10;
+var numZombie = 0;
 
 var uselessBodies = []
 var uselessMeshes = []
@@ -119,7 +119,6 @@ function initLoading() {
 
 function loadModels() {
 
-    createPlayer();
 
     createSkyBox();
     for (var _key in models) {
@@ -135,7 +134,7 @@ function loadModels() {
                 objLoader.load(models[key].obj, function (mesh) {
 
                     mesh.traverse(function (child) {
-                        if (key != "uzi") {
+                        if (key != 4) { //uzi
                             if (child instanceof THREE.Mesh) {
 
                                 //child.material = material;
@@ -145,7 +144,7 @@ function loadModels() {
                         }
 
                     });
-                    if (key != "uzi") { //NO Shadow for uzi
+                    if (key != 4 ) { //NO Shadow for uzi
                         mesh.traverse(function (node) {
                             if (node instanceof THREE.Mesh) {
                                 node.castShadow = true;
@@ -296,7 +295,14 @@ function importZombie(i) {
             zombieAnimated.raisingArmsPose()
             zombieAnimatedArray.push(zombieAnimated); //TODO remove
             zombieMesh.zombieAnimated = zombieAnimated
-                    
+            
+            zombieMesh.traverse(function (node) {
+                if (node instanceof THREE.Mesh) {
+                    node.castShadow = true;
+                    node.receiveShadow = true;
+                }
+            })
+
             createSingleBodyCube(zombieMesh, i)
 
 
@@ -350,7 +356,8 @@ function createBoundCube(objectMesh) {
     var bbox = (new THREE.Box3()).setFromObject(objectMesh);
     var helper = new THREE.Box3Helper(bbox, 0xffff00);
     //scene.add(helper);
-    var dimensions = bbox.getSize();
+    var dimensions = new THREE.Vector3(0,0,0); 
+    bbox.getSize(dimensions);
 
     var geometry = new THREE.BoxGeometry(dimensions.x, dimensions.y, dimensions.z);
     var material = new THREE.MeshBasicMaterial({ color: 0xff0000, wireframe: true });
