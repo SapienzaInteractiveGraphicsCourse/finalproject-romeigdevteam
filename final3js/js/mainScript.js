@@ -2,7 +2,7 @@ var world, mass, body, shape, timeStep = 1 / 60, geometry, material, mesh;
 var scene, camera, renderer, controls;
 var meshFloor, ambientLight, light;
 var weapon;
-var sphereShape, sphereBody, balls = [], ballMeshes = [];
+var sphereShape, balls = [], ballMeshes = [];
 var newmaterial;
 var ballmaterial;
 
@@ -73,11 +73,7 @@ function initCannon() {
 	// Create a sphere
 	var mass = 5, radius = 1.3;
 	sphereShape = new CANNON.Sphere(radius);
-	sphereBody = new CANNON.Body({ mass: mass });
-	sphereBody.addShape(sphereShape);
-	sphereBody.position.set(0, 5, 0);
-	sphereBody.linearDamping = 0.9;
-	//world.addBody(sphereBody);
+
 
 	// Create a plane
 	var groundShape = new CANNON.Plane();
@@ -305,7 +301,7 @@ function getShootDir(targetVec) {
 	var vector = targetVec;
 	targetVec.set(0, 0, 1);
 	vector.unproject(camera);
-	var ray = new THREE.Ray(sphereBody.position, vector.sub(sphereBody.position).normalize());
+	var ray = new THREE.Ray(camera.position, vector.sub(camera.position).normalize());
 	targetVec.copy(ray.direction);
 	console.log(targetVec);
 }
@@ -468,7 +464,7 @@ function animate(now) {
 		counterDrop+=1;
 		//console.log(counterDrop);
 	}
-	
+
 	if (counterDrop>=300) {
 		flagHit=false;
 		counterDrop=0;
