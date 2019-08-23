@@ -95,16 +95,17 @@ function zombieFollowsCharacter(idx, delta) {
 	{
 		var diffX = playerSphereBody.position.x - x;
 		var diffZ = playerSphereBody.position.z - z;
+		if((diffX > 0.1 || diffX < -0.1 ) && ( diffZ > 0.1 || diffZ < -0.1  ) ){
 		const angle= Math.atan2(diffX, diffZ)
 		if(body.barGui)
 		 body.barGui.rotation.y = angle
 		const axis = new CANNON.Vec3(0, 1, 0);
 		body.quaternion.setFromAxisAngle(axis,angle);
-	
+	}
 
 	//Translation
 	//const casualProb= (Math.random()*1000) +1
-	if (x == playerSphereBody.position.x) { }
+	if (0.1 > Math.abs( x - playerSphereBody.position.x ) ) { }
 	else if (x > playerSphereBody.position.x) body.position.x -= speed;
 	else body.position.x += speed;
 
@@ -113,7 +114,7 @@ function zombieFollowsCharacter(idx, delta) {
 	// 	body.y = 
 	// }
 
-	if (z == playerSphereBody.position.z) { }
+	if (0.1 > Math.abs( z - playerSphereBody.position.z )) { }
 	else if (z > playerSphereBody.position.z) body.position.z -= speed;
 	else body.position.z += speed;
 	

@@ -5,16 +5,19 @@ var weapon;
 var sphereShape, balls = [], ballMeshes = [];
 var newmaterial;
 var ballmaterial;
-var noZombie=true;
-var playerSphereBody ;
+var noZombie = true;
+var playerSphereBody;
 var crate, crateTexture, crateNormalMap, crateBumpMap;
-var zombieWave=1;
+var zombieWave = 1;
+var isPlayerAiming = false;
 //Zombie mesh global vars
 var zombieAnimated, wallsArray = [];
 var zombieAnimatedArray = [];
 //var zombieROOT = [];
 //var flagHit=false;
 //var counterDrop=0;
+
+var gameOver = false;
 
 var keyboard = {};
 var player = { height: 1.8, speed: 0.2, turnSpeed: Math.PI * 0.02 };
@@ -37,94 +40,94 @@ var direction = new THREE.Vector3();
 var vertex = new THREE.Vector3();
 var color = new THREE.Color();
 
-var SUOtime = Date.now()
-function htmlInit(){
+var controlsTime = Date.now()
+function htmlInit() {
 
 
-var blocker = document.getElementById( 'blocker' );
-var instructions = document.getElementById( 'instructions' );
-console.log(instructions)
-var havePointerLock = 'pointerLockElement' in document || 'mozPointerLockElement' in document || 'webkitPointerLockElement' in document;
+	var blocker = document.getElementById('blocker');
+	var instructions = document.getElementById('instructions');
+	console.log(instructions)
+	var havePointerLock = 'pointerLockElement' in document || 'mozPointerLockElement' in document || 'webkitPointerLockElement' in document;
 
-if ( havePointerLock ) {
+	if (havePointerLock) {
 
-	var element = document.body;
+		var element = document.body;
 
-	var pointerlockchange = function ( event ) {
+		var pointerlockchange = function (event) {
 
-		if ( document.pointerLockElement === element || document.mozPointerLockElement === element || document.webkitPointerLockElement === element ) {
+			if (document.pointerLockElement === element || document.mozPointerLockElement === element || document.webkitPointerLockElement === element) {
 
-			controls.enabled = true;
+				controls.enabled = true;
 
-			blocker.style.display = 'none';
+				blocker.style.display = 'none';
 
-		} else {
+			} else {
 
-			controls.enabled = false;
+				controls.enabled = false;
 
-			blocker.style.display = '-webkit-box';
-			blocker.style.display = '-moz-box';
-			blocker.style.display = 'box';
+				blocker.style.display = '-webkit-box';
+				blocker.style.display = '-moz-box';
+				blocker.style.display = 'box';
 
-			instructions.style.display = '';
-
-		}
-
-	}
-
-	var pointerlockerror = function ( event ) {
-		instructions.style.display = '';
-	}
-
-	// Hook pointer lock state change events
-	document.addEventListener( 'pointerlockchange', pointerlockchange, false );
-	document.addEventListener( 'mozpointerlockchange', pointerlockchange, false );
-	document.addEventListener( 'webkitpointerlockchange', pointerlockchange, false );
-
-	document.addEventListener( 'pointerlockerror', pointerlockerror, false );
-	document.addEventListener( 'mozpointerlockerror', pointerlockerror, false );
-	document.addEventListener( 'webkitpointerlockerror', pointerlockerror, false );
-
-	instructions.addEventListener( 'click', function ( event ) {
-		instructions.style.display = 'none';
-
-		// Ask the browser to lock the pointer
-		element.requestPointerLock = element.requestPointerLock || element.mozRequestPointerLock || element.webkitRequestPointerLock;
-
-		if ( /Firefox/i.test( navigator.userAgent ) ) {
-
-			var fullscreenchange = function ( event ) {
-
-				if ( document.fullscreenElement === element || document.mozFullscreenElement === element || document.mozFullScreenElement === element ) {
-
-					document.removeEventListener( 'fullscreenchange', fullscreenchange );
-					document.removeEventListener( 'mozfullscreenchange', fullscreenchange );
-
-					element.requestPointerLock();
-				}
+				instructions.style.display = '';
 
 			}
 
-			document.addEventListener( 'fullscreenchange', fullscreenchange, false );
-			document.addEventListener( 'mozfullscreenchange', fullscreenchange, false );
-
-			element.requestFullscreen = element.requestFullscreen || element.mozRequestFullscreen || element.mozRequestFullScreen || element.webkitRequestFullscreen;
-
-			element.requestFullscreen();
-
-		} else {
-
-			element.requestPointerLock();
-
 		}
 
-	}, false );
+		var pointerlockerror = function (event) {
+			instructions.style.display = '';
+		}
 
-} else {
+		// Hook pointer lock state change events
+		document.addEventListener('pointerlockchange', pointerlockchange, false);
+		document.addEventListener('mozpointerlockchange', pointerlockchange, false);
+		document.addEventListener('webkitpointerlockchange', pointerlockchange, false);
 
-	instructions.innerHTML = 'Your browser doesn\'t seem to support Pointer Lock API';
+		document.addEventListener('pointerlockerror', pointerlockerror, false);
+		document.addEventListener('mozpointerlockerror', pointerlockerror, false);
+		document.addEventListener('webkitpointerlockerror', pointerlockerror, false);
 
-}
+		instructions.addEventListener('click', function (event) {
+			//instructions.style.display = 'none';
+			$('#intro').fadeOut();
+			// Ask the browser to lock the pointer
+			element.requestPointerLock = element.requestPointerLock || element.mozRequestPointerLock || element.webkitRequestPointerLock;
+
+			if (/Firefox/i.test(navigator.userAgent)) {
+
+				var fullscreenchange = function (event) {
+
+					if (document.fullscreenElement === element || document.mozFullscreenElement === element || document.mozFullScreenElement === element) {
+
+						document.removeEventListener('fullscreenchange', fullscreenchange);
+						document.removeEventListener('mozfullscreenchange', fullscreenchange);
+
+						element.requestPointerLock();
+					}
+
+				}
+
+				document.addEventListener('fullscreenchange', fullscreenchange, false);
+				document.addEventListener('mozfullscreenchange', fullscreenchange, false);
+
+				element.requestFullscreen = element.requestFullscreen || element.mozRequestFullscreen || element.mozRequestFullScreen || element.webkitRequestFullscreen;
+
+				element.requestFullscreen();
+
+			} else {
+
+				element.requestPointerLock();
+
+			}
+
+		}, false);
+
+	} else {
+
+		instructions.innerHTML = 'Your browser doesn\'t seem to support Pointer Lock API';
+
+	}
 }
 
 function initCannon() {
@@ -168,12 +171,13 @@ function initCannon() {
 	var groundShape = new CANNON.Plane();
 	var groundBody = new CANNON.Body({ mass: 0 });
 	groundBody.addShape(groundShape);
+	groundBody.name = "ground"
 	groundBody.quaternion.setFromAxisAngle(new CANNON.Vec3(1, 0, 0), -Math.PI / 2);
 	world.addBody(groundBody);
 }
 
 function init() {
-	
+
 	scene = new THREE.Scene();
 	camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
 
@@ -188,22 +192,23 @@ function init() {
 	scene.add(mesh);
 
 	createPlayer();
-	  // Create a sphere
-	  var mass = 5, radius = 1.3;
-//	  var boxShape = new CANNON.Box( new CANNON.Vec3(0.5, 0.8 ,0.5)  );
-	  sphereShape = new CANNON.Sphere(radius  );
+	// Create a sphere
+	var mass = 5, radius = 1.3;
+	//	  var boxShape = new CANNON.Box( new CANNON.Vec3(0.5, 0.8 ,0.5)  );
+	sphereShape = new CANNON.Sphere(radius);
 	//   var slipperyMaterial = new CANNON.Material();
 	// 	slipperyMaterial.friction = 0;
 	// 	sphereShape.material=slipperyMaterial
-	  playerSphereBody = new CANNON.Body({ mass: mass });
-	  playerSphereBody.addShape(sphereShape);
-	  playerSphereBody.position.set(0,5,0);
-	  playerSphereBody.linearDamping = 0.98;
-	  //playerSphereBody.angularDamping = 1;
-	  
-	  world.addBody(playerSphereBody);
+	playerSphereBody = new CANNON.Body({ mass: mass });
+	playerSphereBody.name = "playerBox"
+	playerSphereBody.addShape(sphereShape);
+	playerSphereBody.position.set(0, 5, 0);
+	playerSphereBody.linearDamping = 0.98;
+	//playerSphereBody.angularDamping = 1;
 
-	controls = new PointerLockControls(camera,playerSphereBody);
+	world.addBody(playerSphereBody);
+
+	controls = new PointerLockControls(camera, playerSphereBody);
 	scene.add(controls.getObject());
 
 
@@ -221,7 +226,7 @@ function init() {
 	// camera.position.set(0, player.height, -5);
 	// camera.lookAt(new THREE.Vector3(0, player.height, 0));
 
-	
+
 
 
 	renderer = new THREE.WebGLRenderer({ antialias: false });
@@ -234,7 +239,7 @@ function init() {
 
 
 	htmlInit();
-
+	jQueryInit();
 
 
 	//  instructions.addEventListener('click', function () {
@@ -257,7 +262,7 @@ function init() {
 
 	// });
 
-	
+
 	// var onKeyDown = function (event) {
 
 	// 	if (controls.isLocked === false && event.keyCode != 13)
@@ -292,7 +297,7 @@ function init() {
 	// 			resume = true;
 	// 			break;
 
-		
+
 	// 		case 73: //left
 	// 			boxLeft = true;
 	// 			break;
@@ -378,7 +383,7 @@ function init() {
 	animate();
 
 	window.addEventListener('resize', onWindowResize, false);
-							
+
 }
 function onWindowResize() {
 
@@ -386,6 +391,7 @@ function onWindowResize() {
 	camera.updateProjectionMatrix();
 
 	renderer.setSize(window.innerWidth, window.innerHeight);
+	$('#intro, #hurt').css({ width: WINWIDTH, height: WINHEIGHT, });
 
 }
 
@@ -396,11 +402,11 @@ function getShootDir(targetVec) {
 	var vector = targetVec;
 	targetVec.set(0, 0, 1);
 	vector.unproject(camera);
-	var ray = new THREE.Ray(playerSphereBody.position, vector.sub(playerSphereBody.position).normalize() );
+	var ray = new THREE.Ray(playerSphereBody.position, vector.sub(playerSphereBody.position).normalize());
 	targetVec.copy(ray.direction);
 	console.log(targetVec);
 
-	
+
 }
 function fireBullet() {
 
@@ -449,8 +455,27 @@ function fireBullet() {
 }
 
 window.addEventListener("click", function (e) {
+	if (e.button == 0) //left click
+		fireBullet();
+	else if (e.button == 2) {
+		if (isPlayerAiming) {
+			isPlayerAiming = false;
+			meshes["uzi"].position.setX(camera.position.x)
+			meshes["uzi"].position.setY(camera.position.y -0.25)
+			//Zoom in
+			camera.fov -= 25;
+			camera.updateProjectionMatrix();
+		}
+		else {
+			isPlayerAiming = true;
+			meshes["uzi"].position.copy( meshes["uzi"].freeAim )
+			//Zoom out back to initial
+			camera.fov = 75;
+			camera.updateProjectionMatrix();
 
-	fireBullet();
+		}
+	}
+
 });
 
 
@@ -541,140 +566,54 @@ function animate(now) {
 	}
 
 	//GENERATE THE ZOMBIE WAAAAVE
-	if (noZombie==true) {
+	if (noZombie == true) {
 		console.log("INCOMING WAVE NUMBER ", zombieWave);
 		for (var i = 0; i < zombieMap.length; i++) {
-				for (var j = 0; j < zombieMap[i].length; j++) {
-					if (zombieMap[i][j]>0 && zombieMap[i][j]<=zombieWave) {
-						importZombie(i,j);
-						zombieAlive++;
-					}
+			for (var j = 0; j < zombieMap[i].length; j++) {
+				var level = zombieMap[i][j]
+				if (level > 0 && level <= zombieWave) {
+					importZombie(i, j, level);
+					zombieAlive++;
 				}
 			}
-			zombieWave++;
-			noZombie=false;
+		}
+		zombieWave++;
+		noZombie = false;
 	}
 
 
 	requestAnimationFrame(animate);
 
-	if (controls.enabled) {
+	if (controls.enabled && !gameOver) {	//NOT IN PAUSE
 		updatePositions(myDelta);
 		world.step(dt);
+
+		for (var i = 0; i < zombieAnimatedArray.length; i++) {
+			zombieAnimatedArray[i].walkingAnimate(myDelta, walkSpeed)
+
+		}
 	}
 	removeUselessBodies();
 	removeUselessMeshes();
 
+	checkPlayerLife()
 
 
-
-	//camera.position.copy(playerBoxBody.position)
-
-
-
-	/*
-	if (zombieROOT.scene && flagHit && counterDrop<50) {
-		zombieROOT.scene.rotation.x-=0.05;
-		counterDrop+=1;
-		//console.log(counterDrop);
-	}
-
-	if (counterDrop>=300) {
-		flagHit=false;
-		counterDrop=0;
-	}
-	*/
-
-	// raycaster.ray.origin.copy(controls.getObject().position);
-	// raycaster.ray.origin.y -= 10;
-
-	// var intersections = raycaster.intersectObjects(objects);
-
-	// var onObject = intersections.length > 0;
-
-	var time = performance.now();
+	time = performance.now();
 	var delta = (time - prevTime) / 1000.0;
 	prevTime = time;
 
 
-	// velocity.x -= velocity.x * 10.0 * delta;
-	// velocity.z -= velocity.z * 10.0 * delta;
-
-	// velocity.y -= 9.8 * 100.0 * delta; // 100.0 = mass
-
-	// direction.z = Number(moveForward) - Number(moveBackward);
-	// direction.x = Number(moveLeft) - Number(moveRight);
-	// direction.normalize(); // this ensures consistent movements in all directions
-
-	// if (moveForward || moveBackward) velocity.z = - direction.z * 400.0 * delta;
-	// if (moveLeft || moveRight) velocity.x = - direction.x * 400.0 * delta;
-
-	//	playerBoxBody.position.x += velocity.x * delta ;
-	//playerBoxBody.position.y += velocity.y * delta; // new behavior
-	//	playerBoxBody.position.z += velocity.z * delta;
-
-	//if (moveForward || moveBackward) velocity.z = direction.z * 400.0 * delta;
-	//if (moveLeft || moveRight) velocity.x = direction.x * 400.0 * delta;
-
-	// if (wallsArray.length > 0)
-	// 	//rayCollisionsCheck();
-
-	// if (moveForward)
-	// playerBoxBody.position.z += 0.1
-	// if (moveBackward)
-	// playerBoxBody.position.z += - 0.1
-	// if (moveRight)
-	// playerBoxBody.position.x += - 0.1
-	// if (moveLeft)
-	// playerBoxBody.position.x += 0.1
-
-	//distance = 10;
-	//playerBoxBody.position add direction.multiplyScalar(distance) );
-
-	// if (onObject === true) {
-	// 	// console.log("wall collision")
-	// 	// velocity.x = Math.max(0, velocity.x);
-	// 	// velocity.z = Math.max(0, velocity.z);
-
-	// 	velocity.y = Math.max(0, velocity.y);
-	// 	canJump = true;
-
-	// }
-
-	
-	//  controls.getObject().translateX(velocity.x * delta);
-	//  controls.getObject().position.y += (velocity.y * delta); // new behavior
-	//  controls.getObject().translateZ(velocity.z * delta);
-
-	//   rotationPoint.position.x = playerBoxBody.position.x;
-	//   rotationPoint.position.y = playerBoxBody.position.y;
-	//   rotationPoint.position.z = playerBoxBody.position.z;
 
 
-
-	// if (controls.getObject().position.y < 1.5) {
-
-	// 	velocity.y = 0;
-	// 	controls.getObject().position.y = 1.5;
-
-	// 	canJump = true;
-
-	// }
-
-
-	for (var i = 0; i < zombieAnimatedArray.length; i++) {
-		zombieAnimatedArray[i].walkingAnimate(myDelta, walkSpeed)
-
-	}
 
 	// // Detect collisions.
 	// if (collisions.length > 0) {
 	// 	detectCollisions();
 	// }
-	controls.update( Date.now() - SUOtime );
-	
-//	controls.update(myDelta);
-	SUOtime = Date.now()
+	controls.update(Date.now() - controlsTime);
+
+	controlsTime = Date.now()
 	renderer.render(scene, camera);
 }
 
@@ -685,5 +624,4 @@ function animate(now) {
 /////////////////////////////////////////////////////////////////////////////////
 
 
-window.onload = initCannon;
 window.onload = init;

@@ -1,7 +1,6 @@
 // instantiate a loader
 var loaderGLTF = new THREE.GLTFLoader();
 var loaderTex = new THREE.TextureLoader();
-var zombieAlive=0;
 
 var loadingScreen = {
     scene: new THREE.Scene(),
@@ -16,8 +15,10 @@ var RESOURCES_LOADED = false;
 var zombieROOT = [];
 var numZombie = 10;
 
+var zombieAlive = 0;
 var uselessBodies = []
 var uselessMeshes = []
+
 
 // Models index
 var models = {
@@ -91,7 +92,7 @@ var zombieMap = [
     [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 2, 0, 0],
     [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 2, 0, 0, 0, 1, 0, 0, 0, 0],
     [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-            //la camera parte più o meno qua
+    //la camera parte più o meno qua
     [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
     [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
     [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
@@ -172,7 +173,7 @@ function loadModels() {
                         }
 
                     });
-                    if (key != 4 ) { //NO Shadow for uzi
+                    if (key != 4) { //NO Shadow for uzi
                         mesh.traverse(function (node) {
                             if (node instanceof THREE.Mesh) {
                                 node.castShadow = true;
@@ -191,15 +192,15 @@ function loadModels() {
     //crei vari zombie quanti i
 
 
-        /*for (var i = 0; i < zombieMap.length; i++) {
-            for (var j = 0; j < zombieMap[i].length; j++) {
-              if (zombieMap[i][j]!=0) {
-                importZombie(i,j);
-              }
-            }
+    /*for (var i = 0; i < zombieMap.length; i++) {
+        for (var j = 0; j < zombieMap[i].length; j++) {
+          if (zombieMap[i][j]!=0) {
+            importZombie(i,j);
           }
+        }
+      }
 
-          */
+      */
 
 }
 
@@ -210,24 +211,24 @@ function loadModels() {
 function onResourcesLoaded() {
 
     // Clone models into meshes.
-  /*  meshes["tree"] = models.tree.mesh.clone();
-    meshes["tree"].position.set(0, 2, 0);
-    //meshes["tree"].position.y=0;
-
-    scene.add(meshes["tree"]);
-    createBoundCube(meshes["tree"]);
-    meshesArray.push(meshes["tree"]);
-
-    meshes["rock"] = models.rock.mesh.clone();
-    meshes["rock"].position.set(-10, 0, -10);
-    scene.add(meshes["rock"]);
-    createBoundCube(meshes["rock"]);
-    meshesArray.push(meshes["rock"]);
-
-    var cliffs = []*/
+    /*  meshes["tree"] = models.tree.mesh.clone();
+      meshes["tree"].position.set(0, 2, 0);
+      //meshes["tree"].position.y=0;
+  
+      scene.add(meshes["tree"]);
+      createBoundCube(meshes["tree"]);
+      meshesArray.push(meshes["tree"]);
+  
+      meshes["rock"] = models.rock.mesh.clone();
+      meshes["rock"].position.set(-10, 0, -10);
+      scene.add(meshes["rock"]);
+      createBoundCube(meshes["rock"]);
+      meshesArray.push(meshes["rock"]);
+  
+      var cliffs = []*/
     for (var i = 0; i < wallMap.length; i++) {
         for (var j = 0; j < wallMap[i].length; j++) {
-          if (wallMap[i][j]!=0) {
+            if (wallMap[i][j] != 0) {
                 const UNITSIZE = 1.5;
 
                 const currModel = models[wallMap[i][j]].mesh.clone();
@@ -238,10 +239,10 @@ function onResourcesLoaded() {
                 createBoundCube(currModel);
                 meshesArray.push(currModel);
                 wallsArray.push(currModel)
-              }
-
-
             }
+
+
+        }
 
 
     }
@@ -250,6 +251,8 @@ function onResourcesLoaded() {
 
     meshes["uzi"] = models[4].mesh.clone();
     meshes["uzi"].position.set(0.4, -0.4, -0.5);
+    meshes["uzi"].freeAim = new THREE.Vector3(0.4, -0.4, -0.5);
+    
     meshes["uzi"].scale.set(10, 10, 10);
     meshes["uzi"].rotation.y = -Math.PI;
     camera.add(meshes["uzi"])
@@ -292,7 +295,7 @@ function createSkyBox() {
 }
 
 
-function importZombie(i,j) {
+function importZombie(i, j, level = 1) {
 
     // Load a glTF resource
     loaderGLTF.load(
@@ -336,7 +339,7 @@ function importZombie(i,j) {
             zombieAnimated.raisingArmsPose()
             zombieAnimatedArray.push(zombieAnimated); //TODO remove
             zombieMesh.zombieAnimated = zombieAnimated
-            
+
             zombieMesh.traverse(function (node) {
                 if (node instanceof THREE.Mesh) {
                     node.castShadow = true;
@@ -344,7 +347,7 @@ function importZombie(i,j) {
                 }
             })
 
-            createSingleBodyCube(zombieMesh, i)
+            createSingleBodyCube(zombieMesh, i, level)
 
 
         },
@@ -364,7 +367,7 @@ function importZombie(i,j) {
 
 
 function addLifeBarSprite(zombieObj, value = 10) {
-    
+
     if (value < 0) // also 0?
         return;
 
@@ -397,7 +400,7 @@ function createBoundCube(objectMesh) {
     var bbox = (new THREE.Box3()).setFromObject(objectMesh);
     var helper = new THREE.Box3Helper(bbox, 0xffff00);
     //scene.add(helper);
-    var dimensions = new THREE.Vector3(0,0,0); 
+    var dimensions = new THREE.Vector3(0, 0, 0);
     bbox.getSize(dimensions);
 
     var geometry = new THREE.BoxGeometry(dimensions.x, dimensions.y, dimensions.z);
@@ -425,89 +428,8 @@ function createBoundCube(objectMesh) {
 
 }
 
-// TODO REMOVE IT!!!
 
-// function createBodyCube() {
-//     var halfExtents = new CANNON.Vec3(0.5, 0.8, 0.5);
-//     boxShape = new CANNON.Box(halfExtents);
-//     boxGeometry = new THREE.BoxGeometry(halfExtents.x * 2, halfExtents.y * 2, halfExtents.z * 2);
-
-//     newmaterial = new THREE.MeshLambertMaterial({ color: 0xffffff });
-//     var length = zombieROOT.length;
-//     for (var i = 0; i < length; i++) {
-//         var boxBody = new CANNON.Body({ mass: 1 });
-//         boxBody.name = "zombieBox"
-//         boxBody.addShape(boxShape);
-//         boxBody.position.x += 3 * i;
-//         boxBody.position.y += 1;
-//         boxBody.myMesh = zombieROOT[i]   //TODO: unire con parte mesh e accedere da questo (eliminare forse anche array???)
-//         boxBody.life = 10;  // ADDED: life
-//         boxBody.angularDamping = 1; //ADDED: no ragdoll till death
-//         boxBody.isDieing = false; //true when start counter to be removed
-//         addLifeBarSprite(boxBody)      //ADDED: gui life
-
-//         world.addBody(boxBody);
-//         collisionboxes.push(boxBody);
-//         boxBody.postStep = () => {  //ADDED: counter till be removed
- 
-//             if (!boxBody.isDieing)
-//                 return;
-//             boxBody.life--;
-//             if (boxBody.life < -200)
-//                 byeMeshBody(boxBody)
-//         }
-//         boxBody.addEventListener("collide", function (e) {
-//             //e.body.id 1 è IL GROUND
-//             if (e.body.id != 1 && e.body.name == "bullet" && e.target.name == "zombieBox") {
-//                 console.log("Collided with body:", e);
-//                 console.log("id:", e.body.id);
-//                 console.log(e)
-
-//                 //remove bullet
-//                 uselessBodies.push(e.body)
-//                 uselessMeshes.push(e.body.myMesh) //funzione byeBodyMesh(e.body) fa entrambe
-
-//                 if (e.target.life < 0)
-//                     return; //zombie in disappearing phase (stai infierendo)
-
-//                 e.target.life -= 1;
-                
-
-//                 if (e.target.life == 0) {
-//                     e.target.angularDamping = 0; // enable "ragdoll"
-//                     uselessMeshes.push(e.target.barGui)
-//                     //byeMeshBody(e.target)
-//                     e.target.isDieing = true;  //start counter to remove it
-//                     return;
-//                 }
-//                 changeLifeBar(e.target, e.target.life) //update gui bar
-
-//             }
-//             //console.log("Contact between bodies:",e.contact);
-
-//             //console.log(flagHit);
-
-//         });
-
-//         var boxMesh = new THREE.Mesh(boxGeometry, newmaterial);
-//         boxMesh.position.x += 3 * i;
-//         boxMesh.position.y -= 1;
-//         boxMesh.visible = false;
-//         scene.add(boxMesh);
-//         console.log("Added box external #: ", i);
-//         boxMesh.castShadow = true;
-//         boxMesh.receiveShadow = true;
-//         collisionboxMeshes.push(boxMesh);
-//         console.log(boxMesh)
-//     }
-
-// }
-
-
-
-//TODO REPLACE IT!!!!
-
-function createSingleBodyCube(mesh, sidePositionChange = 0) {
+function createSingleBodyCube(mesh, sidePositionChange = 0, level = 1) {
     var halfExtents = new CANNON.Vec3(0.5, 0.8, 0.5);
     boxShape = new CANNON.Box(halfExtents);
     boxGeometry = new THREE.BoxGeometry(halfExtents.x * 2, halfExtents.y * 2, halfExtents.z * 2);
@@ -516,6 +438,7 @@ function createSingleBodyCube(mesh, sidePositionChange = 0) {
 
     var boxBody = new CANNON.Body({ mass: 1 });
     boxBody.name = "zombieBox"
+    boxBody.damage = 2 * level;
     boxBody.addShape(boxShape);
     //boxBody.position.x += 3 * sidePositionChange;
     //boxBody.position.y += 1;
@@ -526,27 +449,29 @@ function createSingleBodyCube(mesh, sidePositionChange = 0) {
     addLifeBarSprite(boxBody)      //ADDED: gui life
 
 
-    
+
 
     boxBody.postStep = () => {  //ADDED: counter till be removed
         if (!boxBody.isDieing)
             return;
         boxBody.life--;
 
-        if (boxBody.life < -200){
+        if (boxBody.life < -200) {
             byeMeshBody(boxBody);
             zombieAlive--;
-            if (zombieAlive==0) {
-              noZombie=true;
+            if (zombieAlive == 0) {
+                noZombie = true;
             }
-           // collisionboxMeshes.splice(boxBody.idInArray,1)
+            // collisionboxMeshes.splice(boxBody.idInArray,1)
         }
-        
+
 
     }
     boxBody.addEventListener("collide", function (e) {
-        //e.body.id 1 è IL GROUND
-        if (e.body.id != 1 && e.body.name == "bullet" && e.target.name == "zombieBox") {
+        //e.body.id -> 1 is ground
+        if (e.target.name != "zombieBox" || e.body.id == 0 || e.body.name == "ground" || e.target.name == "ground")
+            return;
+        if (e.body.name == "bullet" && e.target.name == "zombieBox") {
             console.log("Collided with body:", e);
             console.log("id:", e.body.id);
             console.log(e)
@@ -562,6 +487,7 @@ function createSingleBodyCube(mesh, sidePositionChange = 0) {
                 e.target.angularDamping = 0; // enable ragdoll
 
 
+
             if (e.target.life == 0) {
                 uselessMeshes.push(e.target.barGui)
                 //byeMeshBody(e.target)
@@ -575,13 +501,25 @@ function createSingleBodyCube(mesh, sidePositionChange = 0) {
             addLifeBarSprite(e.target, e.target.life) //update gui bar
 
         }
-        //console.log("Contact between bodies:",e.contact);
+
+        else if (e.body.name == "playerBox" && e.target.name == "zombieBox") {
+
+            $('#hurt').fadeIn(75);
+            // ... hurt the player ...
+            playerLife -= e.target.damage;
+            changePlayerLifeBar(playerLife)
+            $('#hurt').fadeOut(350);
+        }
+        else {
+            //console.log("Contact between bodies:",e.contact);
+
+        }
 
         //console.log(flagHit);
 
     });
-    
-   
+
+
 
     var boxMesh = new THREE.Mesh(boxGeometry, newmaterial);
     //boxMesh.position.x += 3 * sidePositionChange;
@@ -592,14 +530,17 @@ function createSingleBodyCube(mesh, sidePositionChange = 0) {
     console.log("Added box external #: ", sidePositionChange);
     boxMesh.castShadow = true;
     boxMesh.receiveShadow = true;
-    collisionboxMeshes.push(boxMesh) ;
+    collisionboxMeshes.push(boxMesh);
     console.log(boxMesh)
 
     boxBody.myMeshes = [mesh, boxMesh]   //TODO: unire con parte mesh e accedere da questo (eliminare forse anche array???)
 
     world.addBody(boxBody);
-    boxMesh.idInArray = collisionboxes.push(boxBody) -1;
+    boxMesh.idInArray = collisionboxes.push(boxBody) - 1;
 }
+
+
+
 
 
 function byeMeshBody(body, mesh = null) {
@@ -618,3 +559,41 @@ function byeMeshBody(body, mesh = null) {
 
 }
 
+
+
+
+
+// TODO AUDIOOOOO
+
+
+// var listener = new THREE.AudioListener();
+// camera.add( listener );
+// var sounds={
+//     "gameOver": {
+//         path: "vattelo/a/pija",
+//         audio: null 
+//     },
+// }
+// var audioLoader ;
+
+// function initSounds(){
+//     sounds.push()
+
+// }
+// function addSound(path){
+
+//     // create a global audio source
+//     for( var _key in sounds){
+//         sounds[_key].audio = new THREE.Audio(listener)
+//     }
+    
+//     // load a sound and set it as the Audio object's buffer
+     
+//     audioLoader = new THREE.AudioLoader();
+//     audioLoader.load( path, function( buffer ) {
+//     sound.setBuffer( buffer );
+//     sound.setLoop( true );
+//     sound.setVolume( 0.5 );
+//     sound.play();
+//     });
+// }

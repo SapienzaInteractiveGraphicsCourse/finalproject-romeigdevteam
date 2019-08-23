@@ -1,25 +1,25 @@
 
-
-  function stopMovement() {
-    velocity.x = 0
-    velocity.z = 0 //none
-    moveLeft = false
-    moveRight = false
-    moveForward = false
-    moveBackward = false;
-
-
-    //console.log("WALL HIT")
-
-  }
-
-
-
+var playerLife = 8;  // LIFE
 
 var characterSize = 2.0
 var rotationPoint;
 var playerBox;
 var playerBoxBody;
+
+
+
+function stopMovement() {
+  velocity.x = 0
+  velocity.z = 0 //none
+  moveLeft = false
+  moveRight = false
+  moveForward = false
+  moveBackward = false;
+
+
+  //console.log("WALL HIT")
+
+}
 
 function createPlayer() {
 
@@ -27,28 +27,36 @@ function createPlayer() {
   rotationPoint.position.set(camera.position);
   scene.add(rotationPoint);
 
-  var halfExtents = new CANNON.Vec3(0.5, 0.8 ,0.5);
-  var geometry = new THREE.BoxGeometry(halfExtents.x*2,halfExtents.y*2,halfExtents.z*2);
+  var halfExtents = new CANNON.Vec3(0.5, 0.8, 0.5);
+  var geometry = new THREE.BoxGeometry(halfExtents.x * 2, halfExtents.y * 2, halfExtents.z * 2);
   //var geometry = new THREE.BoxBufferGeometry(characterSize / 3, characterSize, characterSize / 3);
   var material = new THREE.MeshPhongMaterial({ color: 0x22dd88 });
   playerBox = new THREE.Mesh(geometry, material);
   //playerBox.visible=false;
-  playerBox.position.set(3,3,3);
+  playerBox.position.set(3, 3, 3);
   rotationPoint.add(playerBox);
   scene.add(playerBox)
-  
+
   //CANNON
   boxShape = new CANNON.Box(halfExtents);
-  playerBoxBody = new CANNON.Body({ mass: 1, shape: boxShape} );
-  playerBoxBody.position.set(0,0,0)
+  playerBoxBody = new CANNON.Body({ mass: 1, shape: boxShape });
+  playerBoxBody.position.set(0, 0, 0)
   playerBoxBody.name = "playerBox"
   playerBox.angularDamping = 1;
   playerBoxBody.addShape(boxShape);
   world.addBody(playerBoxBody);
   playerBoxBody.angularDamping = 1;
 
-  
 
+
+
+}
+
+function checkPlayerLife() {
+  if (playerLife <= 0) {
+    fadeOutAll();
+    gameOver=true;
+  }
 
 }
 
@@ -57,10 +65,9 @@ function createPlayer() {
 
 
 
-
 function rayCollisionsCheck() {
 
-  var rdp=rayDirectionPoint=30;
+  var rdp = rayDirectionPoint = 30;
   // Set the rays : one vector for every potential direction
   var rays = [
     new THREE.Vector3(0, 0.5, rdp),
@@ -76,26 +83,26 @@ function rayCollisionsCheck() {
   var caster = new THREE.Raycaster();
 
 
-  
+
   var collisions, i;
-    // Maximum distance from the origin before we consider collision
-    var distance = 2;
+  // Maximum distance from the origin before we consider collision
+  var distance = 2;
 
   // For each ray
   for (i = 0; i < rays.length; i += 1) {
     // We reset the raycaster to this direction
     //caster.set( playerBox.position, rays[i]);
-    caster.setFromCamera( rays[i], camera);
-    
+    caster.setFromCamera(rays[i], camera);
+
     //drawLine(  rays[i], camera.position )
-   // caster.setFromCamera( mouseVector, camera );
+    // caster.setFromCamera( mouseVector, camera );
     // Test if we intersect with any obstacle mesh
-    collisions = caster.intersectObjects(wallsArray,true);
+    collisions = caster.intersectObjects(wallsArray, true);
     //console.log(wallsArray,collisions)
     //console.log(rotationPoint.position,rays[i])
     // And disable that direction if we do
-    if (collisions.length > 0  && collisions[0].distance <= distance ) {
-     // console.log("ray collision")
+    if (collisions.length > 0 && collisions[0].distance <= distance) {
+      // console.log("ray collision")
       // Yep, this.rays[i] gives us : 0 => up, 1 => up-left, 2 => left, ...
       if ((i === 0 || i === 1 || i === 7) && direction.z === 1) {
         direction.setZ(0);
@@ -114,20 +121,20 @@ function rayCollisionsCheck() {
 }
 
 
-function drawLine(pointA,pointB){
-   // Draw a line from pointA in the given direction at distance 100
-   var direction = new THREE.Vector3( 10, 0, 0 );
-   direction.normalize();
+function drawLine(pointA, pointB) {
+  // Draw a line from pointA in the given direction at distance 100
+  var direction = new THREE.Vector3(10, 0, 0);
+  direction.normalize();
 
-   var distance = 100; // at what distance to determine pointB
+  var distance = 100; // at what distance to determine pointB
 
-   pointB.addVectors ( pointA, direction.multiplyScalar( distance ) );
+  pointB.addVectors(pointA, direction.multiplyScalar(distance));
 
-   var geometry = new THREE.Geometry();
-   geometry.vertices.push( pointA );
-   geometry.vertices.push( pointB );
-   var material = new THREE.LineBasicMaterial( { color : 0xff0000 } );
-   var line = new THREE.Line( geometry, material );
-   scene.add( line );
+  var geometry = new THREE.Geometry();
+  geometry.vertices.push(pointA);
+  geometry.vertices.push(pointB);
+  var material = new THREE.LineBasicMaterial({ color: 0xff0000 });
+  var line = new THREE.Line(geometry, material);
+  scene.add(line);
 
 }
