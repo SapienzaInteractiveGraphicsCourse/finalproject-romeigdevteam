@@ -70,7 +70,7 @@ body {
     pointer-events: none;
     position: absolute;
     top: 0;
-    z-index: 1002;
+    z-index: 100;
   }
 
 
@@ -167,3 +167,69 @@ body {
     width: 100%;
     vertical-align: middle;
 }
+
+#roundTextDiv{
+  display: none;
+    pointer-events: none;
+    position: absolute;
+    top: 0;
+    z-index: 100;
+    white-space: nowrap;
+
+}
+
+#roundText{
+  pointer-events: none;
+  position: absolute;
+  width: 40%;
+  left: 30%;  
+}
+#valueDiv{
+  pointer-events: none;
+  position: relative;
+  height: 88%;
+  left: 20%;
+  top:7%
+}
+#roundValue{
+  height: inherit;
+  left: inherit;
+  
+}
+
+#reloadText{
+  display: none;
+  pointer-events: none;
+  position: absolute;
+  font-family: "Ruslan Display","Times New Roman", Times, serif;
+  top: 50%;
+  font-size: 200%;
+  bottom: 3%;
+  left: 50%;
+  color: white
+
+}
+
+#ammoDiv{
+  pointer-events: none;
+  position: absolute;
+  width: 50%;
+  bottom: 1%;
+  left: 1%;
+   text-align: left;
+   font-family: "Plaster","Times New Roman", Times, serif;
+  
+  }
+
+#ammoDiv img{
+  width: 25%;
+  }
+
+
+  #ammoDiv a{
+    bottom: 20%;
+    font-size: 300%;
+    color: #B5923C
+    }
+  
+

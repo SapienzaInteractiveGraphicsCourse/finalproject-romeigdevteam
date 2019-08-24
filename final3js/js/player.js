@@ -1,12 +1,16 @@
 
-var playerLife = 8;  // LIFE
+const NUMBULLETS = 30,
+  PLAYERLIFE = 8
+
+var playerLife = PLAYERLIFE;  // LIFE
 
 var characterSize = 2.0
 var rotationPoint;
 var playerBox;
 var playerBoxBody;
 
-
+var numBullets = NUMBULLETS
+//var gunRecoil = 0;
 
 function stopMovement() {
   velocity.x = 0
@@ -55,7 +59,7 @@ function createPlayer() {
 function checkPlayerLife() {
   if (playerLife <= 0) {
     fadeOutAll();
-    gameOver=true;
+    gameOver = true;
   }
 
 }
@@ -138,3 +142,36 @@ function drawLine(pointA, pointB) {
   scene.add(line);
 
 }
+
+// function recoilAnimation() {
+
+//   if (gunRecoil > 0) {
+//     // var maxRecoil = new THREE.Quaternion(); 
+//     // maxRecoil.setFromEuler(new THREE.Euler(20.0, 0, 0) );
+//     // // Dampen towards the target rotation
+//     // recoilMod.rotation = Three.Slerp(recoilMod.rotation, maxRecoil, Time.deltaTime * recoilSpeed);
+//     // weapon.transform.localEulerAngles.x = recoilMod.localEulerAngles.x;
+
+//     meshes["uzi"].rotation += 0.1
+//   }
+//   else {
+//     gunRecoil = 0;
+//     // var minRecoil = Quaternion.Euler(0, 0, 0);
+//     // // Dampen towards the target rotation
+//     // recoilMod.rotation = Quaternion.Slerp(recoilMod.rotation, minRecoil, Time.deltaTime * recoilSpeed / 2);
+//     // weapon.transform.localEulerAngles.x = recoilMod.localEulerAngles.x;
+//   }
+
+
+// gunRecoil += 0.1
+// 			meshes["uzi"].rotation.x += gunRecoil
+
+// if(gunRecoil){
+//   gunRecoil -= 0.5
+// }
+//   if(gunRecoil < 0)
+//   gunRecoil = 0
+
+// meshes["uzi"].rotation.x += gunRecoil
+
+// }

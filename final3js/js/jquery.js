@@ -13,8 +13,16 @@ var WINWIDTH = window.innerWidth,
 // 	});
 // });
 
+var reloadingInterval;
 
 function jQueryInit() {
+    //Load some fonts (Although this is not jq )
+    WebFont.load({
+        google: {
+            families: ['Plaster','Droid Sans', 'Droid Serif','Ruslan Display']
+        }
+    });
+
     // Set up the brief red flash that shows when you get hurt
     $('body').append('<div id="hurt"></div>');
     $('#hurt').css({ width: WINWIDTH, height: WINHEIGHT, });
@@ -25,11 +33,32 @@ function jQueryInit() {
     //Credits + istr.
     //$('body').append('<div id="credits"><p>Created by <a href="http://www.isaacsukin.com/">Isaac Sukin</a> using <a href="http://mrdoob.github.com/three.js/">Three.js</a><br />WASD to move, mouse to look, click to shoot</p></div>');
 
+    // Health bat
     $('body').append('<div class="total"></div><div class="healthArea"><div class="valueLife"></div><div class="health-box"><div class="health-bar-red"></div><div class="health-bar"></div><div class="health-bar-text"></div></div></div>');
 
+    // Retina aim pointer image
     // $('body').append('<div class="verticalhorizontal"><img src="./sprites/retinas/White/crosshair042.png" alt="centered image" /></div>');
     // $('img').click(false)
+
+    // Current Round text ( appearas at starting of each round )
+    $("body").append('<div class="row" id="roundTextDiv">')
+    $('#roundTextDiv').css({ width: WINWIDTH, height: WINHEIGHT / 4.0, });
+    $('#roundTextDiv').append("<img class='column' id='roundText' src='./sprites/round/round.png' ><div id='valueDiv'></div>");
+    $("body").append('</div>')
+
+    //Reload text
+    $("body").append('<div id="reloadText"> Reload [R] </div>')
+
+    //Ammo Icon
+    $("body").append('<div id="ammoDiv"> <img  src="./sprites/hud/ammoIcon.png" > <a></a> </div>')
+
+
 }
+
+/*
+
+    LIFEBAR 
+*/
 
 
 var maxHealth = playerLife,
@@ -104,4 +133,48 @@ function fadeOutAll() {
     $('.healthArea', ".valueLife", ".health-box", ".health-bar-red", ".health-bar", ".health-bar-text").fadeOut();
     $('.intro').fadeIn();
     $('.intro').html('Ouch! Click to restart...');
+}
+
+
+function jqAppearCurrentRoundText() {
+    $('#roundTextDiv').fadeIn(3000);
+
+    if (zombieWave < 10) {
+        const htmlString = "<img class='column' id='roundValue' src=' ./sprites/round/" + zombieWave + ".png '>"
+        $('#valueDiv').html(htmlString)
+    }
+    else {
+        //digitRight: zombieWave % 10  
+        //digitLeft: Math.floor((1234 / 10) % 10); 
+        const htmlString = "<img class='column' id='roundValue' src=' ./sprites/round/"
+            + (zombieWave % 10) + ".png '>"
+            + "<img class='column' id='roundValue' src=' ./sprites/round/"
+            + (Math.floor((zombieWave / 10) % 10)) + ".png '>"
+        $('#valueDiv').html(htmlString)
+    }
+
+    $('#roundTextDiv').fadeOut(3000);
+}
+
+
+function jqNeedReload(){
+    if(reloadingInterval)
+        return
+        $("#reloadText").fadeIn(500)
+        $("#reloadText").fadeOut(500)
+    reloadingInterval = setInterval( () =>{
+        $("#reloadText").fadeIn(500)
+        $("#reloadText").fadeOut(500)
+    }, 1000);
+    
+}
+
+function jqUpdateAmmo(mode=""){
+    if(mode=="sliding"){
+        //TODO better animation
+        
+    }
+    $("#ammoDiv a").html(numBullets)
+
+    
 }

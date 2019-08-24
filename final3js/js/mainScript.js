@@ -17,6 +17,8 @@ var zombieAnimatedArray = [];
 //var flagHit=false;
 //var counterDrop=0;
 
+var myDelta;
+
 var gameOver = false;
 
 var keyboard = {};
@@ -184,12 +186,19 @@ function init() {
 	geometry = new THREE.PlaneGeometry(300, 300, 50, 50);
 	geometry.applyMatrix(new THREE.Matrix4().makeRotationX(- Math.PI / 2));
 
-	material = new THREE.MeshLambertMaterial({ color: 0xdddddd });
+	const floorTexture = new THREE.TextureLoader().load("./textures/bdPack/grass.png", function (texture) {
+
+		texture.wrapS = texture.wrapT = THREE.RepeatWrapping;
+		//texture.offset.set( 0, 0 );
+		texture.repeat.set(200, 200);
+	});
+
+	material = new THREE.MeshLambertMaterial({ map: floorTexture });
 	ballmaterial = new THREE.MeshLambertMaterial({ color: 0xddffff });
-	mesh = new THREE.Mesh(geometry, material);
-	mesh.castShadow = true;
-	mesh.receiveShadow = true;
-	scene.add(mesh);
+	meshFloor = new THREE.Mesh(geometry, material);
+	meshFloor.castShadow = true;
+	meshFloor.receiveShadow = true;
+	scene.add(meshFloor);
 
 	createPlayer();
 	// Create a sphere
@@ -404,12 +413,13 @@ function getShootDir(targetVec) {
 	vector.unproject(camera);
 	var ray = new THREE.Ray(playerSphereBody.position, vector.sub(playerSphereBody.position).normalize());
 	targetVec.copy(ray.direction);
-	console.log(targetVec);
+	//console.log("bulletDirection",targetVec);
 
 
 }
 function fireBullet() {
-
+	numBullets--;
+	jqUpdateAmmo();
 	var ballShape = new CANNON.Sphere(0.2);
 	var ballGeometry = new THREE.SphereGeometry(ballShape.radius, 32, 32);
 	var shootDirection = new THREE.Vector3();
@@ -455,20 +465,28 @@ function fireBullet() {
 }
 
 window.addEventListener("click", function (e) {
+
 	if (e.button == 0) //left click
-		fireBullet();
-	else if (e.button == 2) {
+		if (numBullets > 0) {
+			fireBullet();
+			
+		}
+		else {
+			jqNeedReload();
+			//TODO arma scarica sound
+		}
+	else if (e.button == 2) {	//Right click
 		if (isPlayerAiming) {
 			isPlayerAiming = false;
 			meshes["uzi"].position.setX(camera.position.x)
-			meshes["uzi"].position.setY(camera.position.y -0.25)
+			meshes["uzi"].position.setY(camera.position.y - 0.25)
 			//Zoom in
 			camera.fov -= 25;
 			camera.updateProjectionMatrix();
 		}
 		else {
 			isPlayerAiming = true;
-			meshes["uzi"].position.copy( meshes["uzi"].freeAim )
+			meshes["uzi"].position.copy(meshes["uzi"].freeAim)
 			//Zoom out back to initial
 			camera.fov = 75;
 			camera.updateProjectionMatrix();
@@ -490,6 +508,7 @@ function removeUselessMeshes() {
 
 
 function updatePositions(delta) {
+
 
 
 	// Update ball positions
@@ -532,7 +551,7 @@ function updatePositions(delta) {
 	playerBox.quaternion.copy(playerBoxBody.quaternion);
 	//if(playerBoxBody)
 	//	camera.position.copy(playerBoxBody.position)
-
+	
 }
 
 //var clock = new THREE.Clock();
@@ -549,7 +568,7 @@ var dt = 1 / 60;
 function animate(now) {
 
 	now *= 0.001;  // make it seconds
-	const myDelta = now - then;
+	myDelta = now - then;
 	then = now;
 
 
@@ -568,6 +587,7 @@ function animate(now) {
 	//GENERATE THE ZOMBIE WAAAAVE
 	if (noZombie == true) {
 		console.log("INCOMING WAVE NUMBER ", zombieWave);
+		jqAppearCurrentRoundText()
 		for (var i = 0; i < zombieMap.length; i++) {
 			for (var j = 0; j < zombieMap[i].length; j++) {
 				var level = zombieMap[i][j]
@@ -592,6 +612,24 @@ function animate(now) {
 			zombieAnimatedArray[i].walkingAnimate(myDelta, walkSpeed)
 
 		}
+		if (canReload) {
+			if (numBullets != NUMBULLETS) {
+				setTimeout(() => {
+					numBullets = NUMBULLETS;
+					jqUpdateAmmo("sliding");
+				}, 500)
+				//TODO reload sound play
+
+
+				if (reloadingInterval) {
+					//Stop reload [R] jquery animation
+					clearInterval(reloadingInterval);
+					reloadingInterval = null;
+				}
+			}
+		}
+
+
 	}
 	removeUselessBodies();
 	removeUselessMeshes();

@@ -2,6 +2,9 @@
  * @author mrdoob / http://mrdoob.com/
  * @author schteppe / https://github.com/schteppe
  */
+
+var canReload = false;
+
  var PointerLockControls = function ( camera, cannonBody ) {
 
     var eyeYPos = 2; // eyes are 2 meters above the ground
@@ -82,6 +85,11 @@
                 moveRight = true;
                 break;
 
+            case 82:    //r
+                if(!canReload)
+                    canReload = true;
+                break;
+
             case 32: // space
                 if ( canJump === true ){
                     velocity.y = jumpVelocity;
@@ -115,6 +123,9 @@
             case 68: // d
                 moveRight = false;
                 break;
+            case 82:    //r
+            canReload = false;
+            break;
 
         }
 
