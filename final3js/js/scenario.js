@@ -2,16 +2,10 @@
 var loaderGLTF = new THREE.GLTFLoader();
 var loaderTex = new THREE.TextureLoader();
 
-var loadingScreen = {
-    scene: new THREE.Scene(),
-    camera: new THREE.PerspectiveCamera(90, 1280 / 720, 0.1, 100),
-    box: new THREE.Mesh(
-        new THREE.BoxGeometry(0.5, 0.5, 0.5),
-        new THREE.MeshBasicMaterial({ color: 0x4444ff })
-    )
-};
+
 var loadingManager = null;
 var RESOURCES_LOADED = false;
+var PLAYGAME = false;
 var zombieROOT = [];
 var numZombie = 10;
 
@@ -72,13 +66,15 @@ var collisionboxMeshes1 = [];
 function initLoading() {
     // Set up the loading screen's scene.
     // It can be treated just like our main scene.
-    loadingScreen.box.position.set(0, 0, 5);
-    loadingScreen.camera.lookAt(loadingScreen.box.position);
-    loadingScreen.scene.add(loadingScreen.box);
+    
+    // loadingScreen.box.position.set(0, 0, 5);
+    // loadingScreen.camera.lookAt(loadingScreen.box.position);
+    // loadingScreen.scene.add(loadingScreen.box);
 
     // Create a loading manager to set RESOURCES_LOADED when appropriate.
     // Pass loadingManager to all resource loaders.
     loadingManager = new THREE.LoadingManager();
+
     loadingManager.onProgress = function (item, loaded, total) {
         console.log(item, loaded, total);
     };
@@ -87,6 +83,9 @@ function initLoading() {
         console.log("loaded all resources");
         RESOURCES_LOADED = true;
         onResourcesLoaded();
+
+        htmlCloseLoading();
+
     };
 
     loadModels();

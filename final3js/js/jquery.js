@@ -13,15 +13,22 @@ var WINWIDTH = window.innerWidth,
 // 	});
 // });
 
+
+function htmlCloseLoading(){
+    const loadingScreen = document.getElementById( 'loading-screen' );
+    loadingScreen.classList.add( 'fade-out' );
+    console.log("stop loading animation");
+    // optional: remove loader from DOM via event listener
+    $('#loading-screen').fadeOut(30);
+    $('#loading-screen').html=""
+}
+
+
+
 var reloadingInterval;
 
 function jQueryInit() {
-    //Load some fonts (Although this is not jq )
-    WebFont.load({
-        google: {
-            families: ['Plaster','Droid Sans', 'Droid Serif','Ruslan Display']
-        }
-    });
+    
 
     // Set up the brief red flash that shows when you get hurt
     $('body').append('<div id="hurt"></div>');
@@ -125,14 +132,22 @@ function restartPlayerLifeBar() {
 }
 
 
-
+//On game over
 function fadeOutAll() {
 
     $(renderer.domElement).fadeOut();
 
-    $('.healthArea', ".valueLife", ".health-box", ".health-bar-red", ".health-bar", ".health-bar-text").fadeOut();
+    //$('.healthArea', ".valueLife", ".health-box", ".health-bar-red", ".health-bar", ".health-bar-text").fadeOut();
+    $('.healthArea').fadeOut();
+    $('#ammoDiv').fadeOut();
+    
     $('.intro').fadeIn();
-    $('.intro').html('Ouch! Click to restart...');
+    $('#loseText').append(zombieWave - 1)
+    setInterval(() =>{ 
+        $('#gameOverScreen').fadeIn(500);
+        $('#gameOverScreen').fadeOut(500)
+    }
+    ,1000)
 }
 
 

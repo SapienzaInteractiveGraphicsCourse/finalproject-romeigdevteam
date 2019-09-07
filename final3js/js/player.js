@@ -57,9 +57,10 @@ function createPlayer() {
 }
 
 function checkPlayerLife() {
-  if (playerLife <= 0) {
+  if (playerLife <= 0 && !gameOver) {
     fadeOutAll();
     gameOver = true;
+    controls.enabled = false;
   }
 
 }

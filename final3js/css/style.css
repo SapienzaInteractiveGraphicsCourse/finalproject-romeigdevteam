@@ -45,9 +45,227 @@ body {
 
     cursor: pointer;
 
-    background-color:rgba(0, 0, 0, 0.5);
+    background-color:rgba(1, 104, 240, 0.5);
  
 }
+
+/*
+////////////////////////////////////////////////////////////////////////////////
+                              Loading
+////////////////////////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////////////////////
+*/
+@import url(https://fonts.googleapis.com/css?family=Quattrocento+Sans);
+.loading {
+  pointer-events: none;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: #000;
+  z-index: 9999;
+}
+
+.loading-text {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  margin: auto;
+  text-align: center;
+  width: 100%;
+  height: 100px;
+  line-height: 100px;
+}
+.loading-text span {
+  display: inline-block;
+  margin: 0 5px;
+  color: #fff;
+  font-family: 'Creepster','Quattrocento Sans', sans-serif;
+  font-size: 250%
+}
+.loading-text span:nth-child(1) { 
+  -webkit-filter: blur(0px);
+          filter: blur(0px);
+  -webkit-animation: blur-text 1.5s 0s infinite linear alternate;
+          animation: blur-text 1.5s 0s infinite linear alternate;
+}
+.loading-text span:nth-child(2) {
+  -webkit-filter: blur(0px);
+          filter: blur(0px);
+  -webkit-animation: blur-text 1.5s 0.1s infinite linear alternate;
+          animation: blur-text 1.5s 0.1s infinite linear alternate;
+}
+.loading-text span:nth-child(3) {
+  -webkit-filter: blur(0px);
+          filter: blur(0px);
+  -webkit-animation: blur-text 1.5s 0.2s infinite linear alternate;
+          animation: blur-text 1.5s 0.2s infinite linear alternate;
+}
+.loading-text span:nth-child(4) {
+  -webkit-filter: blur(0px);
+          filter: blur(0px);
+  -webkit-animation: blur-text 1.5s 0.3s infinite linear alternate;
+          animation: blur-text 1.5s 0.3s infinite linear alternate;
+}
+.loading-text span:nth-child(5) {
+  -webkit-filter: blur(0px);
+          filter: blur(0px);
+  -webkit-animation: blur-text 1.5s 0.4s infinite linear alternate;
+          animation: blur-text 1.5s 0.4s infinite linear alternate;
+}
+.loading-text span:nth-child(6) {
+  -webkit-filter: blur(0px);
+          filter: blur(0px);
+  -webkit-animation: blur-text 1.5s 0.5s infinite linear alternate;
+          animation: blur-text 1.5s 0.5s infinite linear alternate;
+}
+.loading-text span:nth-child(7) {
+  -webkit-filter: blur(0px);
+          filter: blur(0px);
+  -webkit-animation: blur-text 1.5s 0.6s infinite linear alternate;
+          animation: blur-text 1.5s 0.6s infinite linear alternate;
+}
+
+@-webkit-keyframes blur-text {
+  0% {
+    -webkit-filter: blur(0px);
+            filter: blur(0px);
+  }
+  100% {
+    -webkit-filter: blur(4px);
+            filter: blur(4px);
+  }
+}
+
+@keyframes blur-text {
+  0% {
+    -webkit-filter: blur(0px);
+            filter: blur(0px);
+  }
+  100% {
+    -webkit-filter: blur(4px);
+            filter: blur(4px);
+  }
+}
+
+
+/*
+////////////////////////////////////////////////////////////////////////////////
+                              PRESCENE
+////////////////////////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////////////////////
+*/
+
+.mod {    
+  width:100%;
+  height: 100%;
+  text-align: center;
+  background-color: rgba(0,0,0,0.5);
+  position: absolute;
+
+  -webkit-border-radius: 10px;
+  -moz-border-radius: 10px;
+  border-radius: 10px;
+  -webkit-box-shadow: 0 0 3px rgba(0,0,0,.1);
+  -moz-box-shadow: 0 0 3px rgba(0,0,0,.1);
+  box-shadow: 0 0 3px rgba(0,0,0,.1);
+}
+
+
+/* button styles */
+
+#playBtn {
+  position: relative;
+  bottom: -400px;
+  color: #fff;
+  font-family: 'Creepster','Quattrocento Sans', sans-serif;
+  font-size: 30px;
+  -webkit-text-stroke-width: 1px;
+  -webkit-text-stroke-color: black;
+
+}
+.btn {
+  position: relative;
+  
+  z-index: 1;
+  display: inline-block;
+  padding: 10px 20px 18px;
+  text-shadow: 0 -1px 1px rgba(19,65,88,.8);
+  background: #1a74a1;
+  -webkit-border-radius: 8px;
+     -moz-border-radius: 8px;
+          border-radius: 8px;
+  -webkit-box-shadow: 0 10px 20px rgba(0,0,0,.35), inset 0 -1px 1px rgba(255,255,255,.15);
+     -moz-box-shadow: 0 10px 20px rgba(0,0,0,.35), inset 0 -1px 1px rgba(255,255,255,.15);
+          box-shadow: 0 10px 20px rgba(0,0,0,.35), inset 0 -1px 1px rgba(255,255,255,.15);
+  -webkit-transition-property: -webkit-box-shadow; /* drop padding as pseudo-element trans not supported */
+     -moz-transition-property: padding, -moz-box-shadow;       
+       -o-transition-property: box-shadow; /* drop padding as pseudo-element trans not supported */
+          transition-property: padding, box-shadow;
+  -webkit-transition-duration: .2s;
+     -moz-transition-duration: .2s;
+       -o-transition-duration: .2s;
+          transition-duration: .2s;
+  -webkit-transition-timing-function: ease-in-out;
+     -moz-transition-timing-function: ease-in-out;
+       -o-transition-timing-function: ease-in-out;
+          transition-timing-function: ease-in-out;
+}
+
+.btn:active {
+  padding: 14px 20px 14px;  
+  -webkit-box-shadow: 0 6px 15px rgba(0,0,0,.3), inset 0 -1px 1px rgba(255,255,255,.15);
+     -moz-box-shadow: 0 6px 15px rgba(0,0,0,.3), inset 0 -1px 1px rgba(255,255,255,.15);
+          box-shadow: 0 6px 15px rgba(0,0,0,.3), inset 0 -1px 1px rgba(255,255,255,.15);
+}
+
+.btn:disabled {
+  opacity: 0.3;
+}
+
+.btn:before {
+  content: "";
+  position: absolute;
+  z-index: -1;
+  top: 0; 
+  bottom: 4px; 
+  left: 0; 
+  right: 0;
+  background: #3194c6;
+  background: -webkit-gradient(linear, 0% 0%, 0% 100%, from(#3194c6), to(#5bacd6));
+  background: -moz-linear-gradient(#3194c6, #5bacd6);
+  background: linear-gradient(#3194c6, #5bacd6);
+  -webkit-border-radius: 8px;
+     -moz-border-radius: 8px;
+          border-radius: 8px;
+  -webkit-transform: translate(0, -4px);  
+     -moz-transform: translate(0, -4px);  
+       -o-transform: translate(0, -4px);  
+          transform: translate(0, -4px);
+  -webkit-transition: -webkit-transform .2s ease-in-out;
+     -moz-transition: -moz-transform .2s ease-in-out;
+       -o-transition: -o-transform .2s ease-in-out;
+          transition: transform .2s ease-in-out;
+}
+
+.btn:active:before {
+  -webkit-transform: translate(0, 0);  
+     -moz-transform: translate(0, 0);  
+       -o-transform: translate(0, 0);  
+          transform: translate(0, 0);
+}
+
+
+
+/*
+////////////////////////////////////////////////////////////////////////////////
+                              HUD
+////////////////////////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////////////////////
+*/
 
 
 #blocker {
@@ -58,7 +276,7 @@ body {
     height: 100%;
 
     background-color: rgba(0,0,0,0.5);
-
+    display: none;
 }
 
 
@@ -79,6 +297,7 @@ body {
     position: absolute;
     right: 10px;
     z-index: 100;
+    display: none;
   }
   #credits {
     font-size: 12px;
@@ -113,7 +332,8 @@ body {
         text-align: center;
         left: 32%;
         top: 92%;
-      
+        display: none;
+         
   }
 
   .health-box {
@@ -218,7 +438,7 @@ body {
   left: 1%;
    text-align: left;
    font-family: "Plaster","Times New Roman", Times, serif;
-  
+  display: none;
   }
 
 #ammoDiv img{
@@ -232,4 +452,81 @@ body {
     color: #B5923C
     }
   
+
+#gameOverScreen{
+  display: none;
+  position: absolute;
+  text-align: center;
+  font-family: 'Creepster','Quattrocento Sans', sans-serif;
+  font-size: 250%
+}
+
+
+#loseText{
+  position:relative;
+  bottom: -200px;
+  left: 50%;
+  color: red;
+  background: none;
+  border: none
+}
+
+#restartBtn{
+  
+  background: none;
+  border: none;
+  cursor: pointer;
+  line-height: 1.5;
+  font: 700 1.2rem 'Roboto Slab', sans-serif;
+  padding: 1em 2em;
+  letter-spacing: 0.05rem;
+
+  
+  bottom: -400px;
+  color: black;
+  left: 3px;
+  box-shadow: inset 0 0 0 4px #58afd1;
+  color: #58afd1;
+  transition: color 0.25s 0.0833333333s;
+  position: relative;
+}
+.draw-border:focus {
+  outline: 2px dotted #55d7dc;
+}
+.draw-border::before, .draw-border::after {
+  border: 0 solid transparent;
+  box-sizing: border-box;
+  content: '';
+  pointer-events: none;
+  position: absolute;
+  width: 0;
+  height: 0;
+  bottom: 0;
+  right: 0;
+}
+.draw-border::before {
+  border-bottom-width: 4px;
+  border-left-width: 4px;
+}
+.draw-border::after {
+  border-top-width: 4px;
+  border-right-width: 4px;
+}
+.draw-border:hover {
+  color: #ffe593;
+}
+.draw-border:hover::before, .draw-border:hover::after {
+  border-color: #ffe593;
+  transition: border-color 0s, width 0.25s, height 0.25s;
+  width: 100%;
+  height: 100%;
+}
+.draw-border:hover::before {
+  transition-delay: 0s, 0s, 0.25s;
+}
+.draw-border:hover::after {
+  transition-delay: 0s, 0.25s, 0s;
+}
+
+
 

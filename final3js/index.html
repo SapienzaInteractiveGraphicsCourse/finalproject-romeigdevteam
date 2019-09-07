@@ -19,14 +19,13 @@
 		src="https://cdn.rawgit.com/mrdoob/three.js/master/examples/js/loaders/GLTFLoader.js"></script>
 	<script type="text/javascript" src="build/inflate-min.js"></script>
 	<script src="https://cdnjs.cloudflare.com/ajax/libs/cannon.js/0.6.2/cannon.js"></script>
-	<script
-	src="https://code.jquery.com/jquery-3.4.1.min.js"
-	integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo="
-	crossorigin="anonymous"></script>
-	<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/webfont/1.6.28/webfontloader.js"></script>
-	
+	<script src="https://code.jquery.com/jquery-3.4.1.min.js"
+		integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo=" crossorigin="anonymous"></script>
+	<script type="text/javascript"
+		src="https://cdnjs.cloudflare.com/ajax/libs/webfont/1.6.28/webfontloader.js"></script>
+
 	<!-- <script src="https://cdn.rawgit.com/mrdoob/three.js/master/examples/js/controls/PointerLockControls.js"></script> -->
-	
+
 	<!--- Builds -->
 	<script type="text/javascript" src="build/PointerLockControls.js"></script>
 	<script type="text/javascript" src="build/physijs_worker.js"></script>
@@ -42,10 +41,43 @@
 	<script type="text/javascript" src="js/player.js"></script>
 	<script type="text/javascript" src="js/jquery.js"></script>
 	<script type="text/javascript" src="js/bitMaps.js"></script>
+	<script type="text/javascript" src="js/preScene.js"></script>
+	
 
+
+
+	
+	<script>
+	//Load some fonts
+	WebFont.load({
+			google: {
+				families: ['Creepster','Plaster','Droid Sans', 'Droid Serif','Ruslan Display']
+			}
+		});
+	</script>
 </head>
 
+	<!-- Loading screen -->
 <body style="text-align:center;">
+
+	<div class="loading" id="loading-screen">
+		<div class="loading-text">
+			<span class="loading-text-words">L</span>
+			<span class="loading-text-words">O</span>
+			<span class="loading-text-words">A</span>
+			<span class="loading-text-words">D</span>
+			<span class="loading-text-words">I</span>
+			<span class="loading-text-words">N</span>
+			<span class="loading-text-words">G</span>
+		</div>
+	</div>
+
+	<!-- PreScene -->
+<div class="mod">
+    <p id="playBtn" class="btn" disabled="true">Start!</a>
+</div>
+
+<!-- Scene -->
 	<div class="rectangle">
 
 		<div id="blocker">
@@ -53,12 +85,20 @@
 			<div id="instructions" class="intro">
 				<span style="font-size:40px">Click to play</span>
 				<br />
-				(W,A,S,D = Move, SPACE = Jump, MOUSE = Look, CLICK = Shoot)
+				(W,A,S,D = Move, SPACE = Jump, MOUSE = Look, CLICK SX = Shoot, CLICK DX = Aim, R = Reload)
 			</div>
 
 		</div>
 
 	</div>
+
+	<div id="gameOverScreen">
+		<p id="loseText" >You lose, your score was: </p>
+		<button id="restartBtn" class="draw-border">Restart</button>
+	</div>
+
+
+
 
 
 </body>

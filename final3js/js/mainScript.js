@@ -63,7 +63,7 @@ function htmlInit() {
 
 				blocker.style.display = 'none';
 
-			} else {
+			} else if(!gameOver){
 
 				controls.enabled = false;
 
@@ -130,6 +130,9 @@ function htmlInit() {
 		instructions.innerHTML = 'Your browser doesn\'t seem to support Pointer Lock API';
 
 	}
+	document.getElementById("restartBtn").onclick = function() {
+		location.reload();
+	}
 }
 
 function initCannon() {
@@ -179,6 +182,8 @@ function initCannon() {
 }
 
 function init() {
+
+	preSceneInit()
 
 	scene = new THREE.Scene();
 	camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
@@ -251,125 +256,6 @@ function init() {
 	jQueryInit();
 
 
-	//  instructions.addEventListener('click', function () {
-
-	//  	controls.enabled=true;
-
-	//  }, false);
-
-	// controls.addEventListener('lock', function () {
-
-	// 	instructions.style.display = 'none';
-	// 	//		blocker.style.display = 'none';
-
-	// });
-
-	// controls.addEventListener('unlock', function () {
-
-	// 	//		blocker.style.display = 'block';
-	// 	instructions.style.display = '';
-
-	// });
-
-
-	// var onKeyDown = function (event) {
-
-	// 	if (controls.isLocked === false && event.keyCode != 13)
-	// 		return;	//STOP KEYS
-	// 	switch (event.keyCode) {
-
-	// 		case 38: // up
-	// 		case 87: // w
-	// 			moveForward = true;
-	// 			break;
-
-	// 		case 37: // left
-	// 		case 65: // a
-	// 			moveLeft = true;
-	// 			break;
-
-	// 		case 40: // down
-	// 		case 83: // s
-	// 			moveBackward = true;
-	// 			break;
-
-	// 		case 39: // right
-	// 		case 68: // d
-	// 			moveRight = true;
-	// 			break;
-
-	// 		case 32: // space
-	// 			if (canJump === true) velocity.y += 100;
-	// 			canJump = false;
-	// 			break;
-	// 		case 13:	//Enter
-	// 			resume = true;
-	// 			break;
-
-
-	// 		case 73: //left
-	// 			boxLeft = true;
-	// 			break;
-	// 		case 74:  //up
-	// 			boxForward = true;
-	// 			break;
-	// 		case 75:  //right
-	// 			boxRight = true;
-	// 			break;
-	// 		case 76:  //down
-	// 			boxBackward = true;
-	// 			break;
-
-	// 	}
-
-	//	}
-
-	// var onKeyUp = function (event) {
-
-	// 	switch (event.keyCode) {
-
-	// 		case 38: // up
-	// 		case 87: // w
-	// 			moveForward = false;
-	// 			break;
-
-	// 		case 37: // left
-	// 		case 65: // a
-	// 			moveLeft = false;
-	// 			break;
-
-	// 		case 40: // down
-	// 		case 83: // s
-	// 			moveBackward = false;
-	// 			break;
-
-	// 		case 39: // right
-	// 		case 68: // d
-	// 			moveRight = false;
-	// 			break;
-	// 		case 13:
-	// 			resume = false;
-	// 			break;
-
-	// 		case 73: //left
-	// 			boxLeft = false;
-	// 			break;
-	// 		case 74:  //up
-	// 			boxForward = false;
-	// 			break;
-	// 		case 75:  //right
-	// 			boxRight = false;
-	// 			break;
-	// 		case 76:  //down
-	// 			boxBackward = false;
-	// 			break;
-
-	// 	}
-
-	// };
-
-	// document.addEventListener('keydown', onKeyDown, false);
-	// document.addEventListener('keyup', onKeyUp, false);
 
 
 	//Meshes imports
@@ -465,7 +351,7 @@ function fireBullet() {
 }
 
 window.addEventListener("click", function (e) {
-
+	if(PLAYGAME && !gameOver){
 	if (e.button == 0) //left click
 		if (numBullets > 0) {
 			fireBullet();
@@ -493,7 +379,7 @@ window.addEventListener("click", function (e) {
 
 		}
 	}
-
+}
 });
 
 
@@ -573,14 +459,18 @@ function animate(now) {
 
 
 	// Play the loading screen until resources are loaded.
-	if (RESOURCES_LOADED == false) {
+	if (RESOURCES_LOADED == false || PLAYGAME==false) {
 		requestAnimationFrame(animate);
 
-		loadingScreen.box.position.x -= 0.05;
-		if (loadingScreen.box.position.x < -10) loadingScreen.box.position.x = 10;
-		loadingScreen.box.position.y = Math.sin(loadingScreen.box.position.x);
+		// loadingScreen.box.position.x -= 0.05;
+		// if (loadingScreen.box.position.x < -10) loadingScreen.box.position.x = 10;
+		// loadingScreen.box.position.y = Math.sin(loadingScreen.box.position.x);
 
-		renderer.render(loadingScreen.scene, loadingScreen.camera);
+		// renderer.render(loadingScreen.scene, loadingScreen.camera);
+
+		preSceneAnimate()
+		
+
 		return;
 	}
 
