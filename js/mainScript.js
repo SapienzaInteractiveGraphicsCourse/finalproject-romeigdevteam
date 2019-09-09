@@ -63,7 +63,7 @@ function htmlInit() {
 
 				blocker.style.display = 'none';
 
-			} else if(!gameOver){
+			} else if (!gameOver) {
 
 				controls.enabled = false;
 
@@ -130,7 +130,7 @@ function htmlInit() {
 		instructions.innerHTML = 'Your browser doesn\'t seem to support Pointer Lock API';
 
 	}
-	document.getElementById("restartBtn").onclick = function() {
+	document.getElementById("restartBtn").onclick = function () {
 		location.reload();
 	}
 }
@@ -351,35 +351,42 @@ function fireBullet() {
 }
 
 window.addEventListener("click", function (e) {
-	if(PLAYGAME && !gameOver){
-	if (e.button == 0) //left click
-		if (numBullets > 0) {
-			fireBullet();
-			
-		}
-		else {
-			jqNeedReload();
-			//TODO arma scarica sound
-		}
-	else if (e.button == 2) {	//Right click
-		if (isPlayerAiming) {
-			isPlayerAiming = false;
-			meshes["uzi"].position.setX(camera.position.x)
-			meshes["uzi"].position.setY(camera.position.y - 0.25)
-			//Zoom in
-			camera.fov -= 25;
-			camera.updateProjectionMatrix();
-		}
-		else {
-			isPlayerAiming = true;
-			meshes["uzi"].position.copy(meshes["uzi"].freeAim)
-			//Zoom out back to initial
-			camera.fov = 75;
-			camera.updateProjectionMatrix();
 
+
+	if (PLAYGAME && !gameOver && controls.enabled) {	//IN GAME
+		if (e.button == 0) //left click
+			if (numBullets > 0) {
+				fireBullet();
+
+			}
+			else {
+				jqNeedReload();
+				//TODO arma scarica sound
+			}
+		else if (e.button == 2) {	//Right click 
+			if (!isPlayerAiming) {
+				isPlayerAiming = !isPlayerAiming;
+				meshes[ preModels[selectedGun].nameMesh ].position.setX(camera.position.x)
+				meshes[ preModels[selectedGun].nameMesh ].position.setY(camera.position.y - 0.25)
+				//Zoom in
+				camera.fov -= 25;
+				camera.updateProjectionMatrix();
+			}
+			else {
+				isPlayerAiming = !isPlayerAiming;
+				meshes[ preModels[selectedGun].nameMesh ].position.copy(meshes[ preModels[selectedGun].nameMesh ].freeAim)
+				//Zoom out back to initial
+				camera.fov = 75;
+				camera.updateProjectionMatrix();
+
+			}
 		}
 	}
-}
+	else if (!PLAYGAME && !gameOver ){ //PRESCENE
+		raycast(e)
+
+	}
+
 });
 
 
@@ -437,7 +444,7 @@ function updatePositions(delta) {
 	playerBox.quaternion.copy(playerBoxBody.quaternion);
 	//if(playerBoxBody)
 	//	camera.position.copy(playerBoxBody.position)
-	
+
 }
 
 //var clock = new THREE.Clock();
@@ -459,7 +466,7 @@ function animate(now) {
 
 
 	// Play the loading screen until resources are loaded.
-	if (RESOURCES_LOADED == false || PLAYGAME==false) {
+	if (RESOURCES_LOADED == false || PLAYGAME == false) {
 		requestAnimationFrame(animate);
 
 		// loadingScreen.box.position.x -= 0.05;
@@ -469,7 +476,7 @@ function animate(now) {
 		// renderer.render(loadingScreen.scene, loadingScreen.camera);
 
 		preSceneAnimate()
-		
+
 
 		return;
 	}

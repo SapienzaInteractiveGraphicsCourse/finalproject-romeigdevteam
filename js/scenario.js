@@ -38,8 +38,8 @@ var models = {
 
     },
     4: {
-        obj: "./scenes/weapon/uziGold.obj",
-        mtl: "./scenes/weapon/uziGold.mtl",
+        obj: "./scenes/weapons/uziGold.obj",
+        mtl: "./scenes/weapons/uziGold.mtl",
         mesh: null,
         nameMesh: "uzi"
     },
@@ -49,7 +49,21 @@ var models = {
         mtl: "./scenes/3d-nature-pack/Models/Fallen_Trunk_01.mtl",
         mesh: null,
         nameMesh: "rock"
+    },
+    6: {
+        obj: "./scenes/weapons/machinegun.obj",
+        mtl: "./scenes/weapons/machinegun.mtl",
+        mesh: null,
+        nameMesh: "machinegun"
+    },
+    7: {
+        obj: "./scenes/weapons/sniper.obj",
+        mtl: "./scenes/weapons/sniper.mtl",
+        mesh: null,
+        nameMesh: "sniper"
     }
+
+
 
 
 };
@@ -66,7 +80,7 @@ var collisionboxMeshes1 = [];
 function initLoading() {
     // Set up the loading screen's scene.
     // It can be treated just like our main scene.
-    
+
     // loadingScreen.box.position.set(0, 0, 5);
     // loadingScreen.camera.lookAt(loadingScreen.box.position);
     // loadingScreen.scene.add(loadingScreen.box);
@@ -111,23 +125,21 @@ function loadModels() {
                 objLoader.setMaterials(materials);
                 objLoader.load(models[key].obj, function (mesh) {
 
-                    mesh.traverse(function (child) {
-                        if (key != 4) { //uzi
-                            if (child instanceof THREE.Mesh) {
+                   //not guns 
+                   if (key != 4 && key != 6 && key != 7) { 
+                                
+                        mesh.traverse(function (child) {
 
+                            if (child instanceof THREE.Mesh) {
                                 //child.material = material;
                                 child.geometry.center();
 
-                            }
-                        }
 
-                    });
-                    if (key != 4) { //NO Shadow for uzi
-                        mesh.traverse(function (node) {
-                            if (node instanceof THREE.Mesh) {
-                                node.castShadow = true;
-                                node.receiveShadow = true;
+                                //( Shadow for objects)
+                                child.castShadow = true;
+                                child.receiveShadow = true;
                             }
+                        
                         });
                     }
                     models[key].mesh = mesh;
@@ -196,23 +208,18 @@ function onResourcesLoaded() {
 
     }
 
-
-
-    meshes["uzi"] = models[4].mesh.clone();
-    meshes["uzi"].position.set(0.4, -0.4, -0.5);
-    meshes["uzi"].freeAim = new THREE.Vector3(0.4, -0.4, -0.5);
-    
-    meshes["uzi"].scale.set(10, 10, 10);
-    meshes["uzi"].rotation.y = -Math.PI;
-    camera.add(meshes["uzi"])
-
-
-
-
-
 }
 
+function addSelectedGunToCamera(){
+    meshes[preModels[selectedGun].nameMesh] = models[ preIdxToIdx[selectedGun] ].mesh.clone();
+    meshes[preModels[selectedGun].nameMesh].position.set(0.4, -0.4, -0.5);
+    meshes[preModels[selectedGun].nameMesh].freeAim = new THREE.Vector3(0.4, -0.4, -0.5);
 
+    meshes[preModels[selectedGun].nameMesh].scale.set(10, 10, 10);
+    meshes[preModels[selectedGun].nameMesh].rotation.y = -Math.PI;
+    camera.add(meshes[preModels[selectedGun].nameMesh])
+
+}
 
 function createSkyBox() {
     //RIGHT ORDER:
@@ -535,9 +542,9 @@ function byeMeshBody(body, mesh = null) {
 //     for( var _key in sounds){
 //         sounds[_key].audio = new THREE.Audio(listener)
 //     }
-    
+
 //     // load a sound and set it as the Audio object's buffer
-     
+
 //     audioLoader = new THREE.AudioLoader();
 //     audioLoader.load( path, function( buffer ) {
 //     sound.setBuffer( buffer );
