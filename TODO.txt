@@ -1,0 +1,14 @@
+- make character shadow (now can be a box)
+- check zombies animation bug
+- check wasd while clicking when not in control lock -> bug sparato lontano
+- remove red box line of objects (making it flaggable)
+- fix bug of zombie keep touching you not hurting
+- fix css layout and colors
+- ADD TEXTURES 
+- fix ball trajectory when shooting in free Aim
+- add real rounds instead of balls (opt)
+- make different weapon damages, mag and reload time
+- add these info into preScene
+- add objects 
+- enlarge game field 
+- MAKE REPORT

@@ -1,5 +1,5 @@
 
-BONES SCHEMA
+ZOMBIE BONES SCHEMA
 
 bones[1] - R LEG 			
 bones[4] - L LEG
