@@ -7,7 +7,7 @@
 - ADD TEXTURES 
 - fix ball trajectory when shooting in free Aim
 - add real rounds instead of balls (opt)
-- make different weapon damages, mag and reload time
+- make different weapon damages, mag and reload time (mirino)
 - add these info into preScene
 - add objects 
 - enlarge game field 
