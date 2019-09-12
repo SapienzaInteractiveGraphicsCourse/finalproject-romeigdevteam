@@ -62,7 +62,6 @@ function checkPlayerLife() {
     gameOver = true;
     controls.enabled = false;
   }
-
 }
 
 

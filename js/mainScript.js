@@ -58,8 +58,8 @@ function htmlInit() {
 		var pointerlockchange = function (event) {
 
 			if (document.pointerLockElement === element || document.mozPointerLockElement === element || document.webkitPointerLockElement === element) {
-
-				controls.enabled = true;
+				if(!gameOver)
+					controls.enabled = true;
 
 				blocker.style.display = 'none';
 
