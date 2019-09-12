@@ -4,7 +4,7 @@
 - remove red box line of objects (making it flaggable)
 - fix bug of zombie keep touching you not hurting
 - fix css layout and colors
-- ADD TEXTURES 
+- ADD TEXTURES (introducing simple mesh with nice textures instead of models)
 - fix ball trajectory when shooting in free Aim
 - add real rounds instead of balls (opt)
 - make different weapon damages, mag and reload time (mirino)
@@ -13,7 +13,9 @@
 - enlarge game field 
 - add reload animation: weapon down or rotate mag (opt)
 - add recoil (rinculo) animation (opt)
-- fix absence of mouse pointer when gameOver occurs
+- fix absence of mouse pointer when gameOver occurs (maybe easily fixed with redirecting to another page)
+- fix life of enemies getting stucked on the air
+
 
 - MAKE REPORT
 
