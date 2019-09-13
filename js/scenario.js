@@ -125,9 +125,9 @@ function loadModels() {
                 objLoader.setMaterials(materials);
                 objLoader.load(models[key].obj, function (mesh) {
 
-                   //not guns 
-                   if (key != 4 && key != 6 && key != 7) { 
-                                
+                   //not guns
+                   if (key != 4 && key != 6 && key != 7) {
+
                         mesh.traverse(function (child) {
 
                             if (child instanceof THREE.Mesh) {
@@ -139,7 +139,7 @@ function loadModels() {
                                 child.castShadow = true;
                                 child.receiveShadow = true;
                             }
-                        
+
                         });
                     }
                     models[key].mesh = mesh;
@@ -175,17 +175,17 @@ function onResourcesLoaded() {
     /*  meshes["tree"] = models.tree.mesh.clone();
       meshes["tree"].position.set(0, 2, 0);
       //meshes["tree"].position.y=0;
-  
+
       scene.add(meshes["tree"]);
       createBoundCube(meshes["tree"]);
       meshesArray.push(meshes["tree"]);
-  
+
       meshes["rock"] = models.rock.mesh.clone();
       meshes["rock"].position.set(-10, 0, -10);
       scene.add(meshes["rock"]);
       createBoundCube(meshes["rock"]);
       meshesArray.push(meshes["rock"]);
-  
+
       var cliffs = []*/
     for (var i = 0; i < wallMap.length; i++) {
         for (var j = 0; j < wallMap[i].length; j++) {
@@ -527,7 +527,7 @@ function byeMeshBody(body, mesh = null) {
 // var sounds={
 //     "gameOver": {
 //         path: "vattelo/a/pija",
-//         audio: null 
+//         audio: null
 //     },
 // }
 // var audioLoader ;

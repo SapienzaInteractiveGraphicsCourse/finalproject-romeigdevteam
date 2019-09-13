@@ -1,7 +1,7 @@
 - make character shadow (now can be a box)
 - check zombies animation bug
 - check wasd while clicking when not in control lock -> bug sparato lontano
-- remove red box line of objects (making it flaggable)
+- remove red box line of objects (making it flaggable) //LET'S DO THIS
 - fix bug of zombie keep touching you not hurting
 - fix css layout and colors
 - ADD TEXTURES (introducing simple mesh with nice textures instead of models)
@@ -9,8 +9,8 @@
 - add real rounds instead of balls (opt)
 - make different weapon damages, mag and reload time (mirino)
 - add these info into preScene
-- add objects 
-- enlarge game field 
+- add objects
+- enlarge game field
 - add reload animation: weapon down or rotate mag (opt)
 - add recoil (rinculo) animation (opt)
 - fix absence of mouse pointer when gameOver occurs (maybe easily fixed with redirecting to another page)
@@ -18,4 +18,3 @@
 
 
 - MAKE REPORT
-
