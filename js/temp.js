@@ -1,4 +1,4 @@
-// instantiate a loader
+/*// instantiate a loader
 var loaderGLTF = new THREE.GLTFLoader();
 
 var loadingScreen = {
@@ -25,9 +25,9 @@ var models = {
 		mtl:"./scenes/weapon/uziGold.mtl",
 		mesh: null
     },
-    
-    
-    
+
+
+
 };
 
 // Meshes index
@@ -40,23 +40,23 @@ function initLoading(){
     loadingScreen.box.position.set(0,0,5);
 	loadingScreen.camera.lookAt(loadingScreen.box.position);
 	loadingScreen.scene.add(loadingScreen.box);
-	
+
 	// Create a loading manager to set RESOURCES_LOADED when appropriate.
 	// Pass loadingManager to all resource loaders.
 	loadingManager = new THREE.LoadingManager();
 	loadingManager.onProgress = function(item, loaded, total){
 		console.log(item, loaded, total);
 	};
-	
+
 	loadingManager.onLoad = function(){
 		console.log("loaded all resources");
 		RESOURCES_LOADED = true;
 		onResourcesLoaded();
 	};
-	
+
 	loadModels();
-	
-	
+
+
 }
 
 
@@ -64,16 +64,16 @@ function loadModels(){
 
     for( var _key in models ){
 		(function(key){
-			
+
 			var mtlLoader = new THREE.MTLLoader(loadingManager);
 			mtlLoader.load(models[key].mtl, function(materials){
 				materials.preload();
-				
+
 				var objLoader = new THREE.OBJLoader(loadingManager);
-				
+
 				objLoader.setMaterials(materials);
 				objLoader.load(models[key].obj, function(mesh){
-					
+
 					mesh.traverse(function(node){
 						if( node instanceof THREE.Mesh ){
 							node.castShadow = true;
@@ -81,20 +81,20 @@ function loadModels(){
 						}
 					});
 					models[key].mesh = mesh;
-					
+
 				});
 			});
-			
+
 		})(_key);
     }
-    
+
     importZombie();
 }
 
 
 
 function onResourcesLoaded(){
-	
+
 	// Clone models into meshes.
 	meshes["tree"] = models.tree.mesh.clone();
 	meshes["tree"].position.set(-5, 0, 4);
@@ -105,10 +105,10 @@ function onResourcesLoaded(){
     meshes["uzi"].scale.set(10, 10, 10);
     meshes["uzi"].rotation.y = -Math.PI;
     camera.add(meshes["uzi"])
-	
-    
-	
-	
+
+
+
+
 }
 
 
@@ -221,7 +221,3 @@ Old controls
 	// if (keyboard[39]) { // right arrow key
 	// 	camera.rotation.y += player.turnSpeed;
 	// }
-
-
-
-	

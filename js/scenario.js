@@ -365,7 +365,7 @@ function createBoundCube(objectMesh) {
     var mesh = new THREE.Mesh(geometry, material);
     mesh.position.copy(objectMesh.position);
     scene.add(mesh);
-    //mesh.visible=false;
+    mesh.visible=false;
 
     collisionboxMeshes1.push(mesh);
     var shape = new CANNON.Box(new CANNON.Vec3(dimensions.x / 2, dimensions.y / 2, dimensions.z / 2));
@@ -553,3 +553,11 @@ function byeMeshBody(body, mesh = null) {
 //     sound.play();
 //     });
 // }
+window.addEventListener("keydown", function (e) {
+    if (e.keyCode === 13) {  //checks whether the pressed key is "Enter"
+        for (var key in collisionboxMeshes1) {
+          collisionboxMeshes1[key].visible=!(collisionboxMeshes1[key].visible);
+          console.log(collisionboxMeshes1[key])
+        }
+    }
+});

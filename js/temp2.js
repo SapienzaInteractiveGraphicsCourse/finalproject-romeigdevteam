@@ -1,4 +1,4 @@
-for (var i in meshes) {
+/*for (var i in meshes) {
     if (meshes[i].lengh > 1) //array
     {
 
@@ -9,6 +9,4 @@ for (var i in meshes) {
     else {
         meshes[i].position = boxes[i].position
     }
-}
-
-
+}*/

@@ -213,7 +213,7 @@ function init() {
 	//   var slipperyMaterial = new CANNON.Material();
 	// 	slipperyMaterial.friction = 0;
 	// 	sphereShape.material=slipperyMaterial
-	playerSphereBody = new CANNON.Body({ mass: mass });
+	playerSphereBody = new CANNON.Body({ mass: 1000 });
 	playerSphereBody.name = "playerBox"
 	playerSphereBody.addShape(sphereShape);
 	playerSphereBody.position.set(0, 5, 0);
@@ -363,7 +363,7 @@ window.addEventListener("click", function (e) {
 				jqNeedReload();
 				//TODO arma scarica sound
 			}
-		else if (e.button == 2) {	//Right click 
+		else if (e.button == 2) {	//Right click
 			if (!isPlayerAiming) {
 				isPlayerAiming = !isPlayerAiming;
 				meshes[ preModels[selectedGun].nameMesh ].position.setX(camera.position.x)
@@ -423,19 +423,30 @@ function updatePositions(delta) {
 			zombieROOT[i].position.copy(collisionboxes[i].position);
 			zombieROOT[i].quaternion.copy(collisionboxes[i].quaternion);
 			if (collisionboxes[i].barGui) {
-				collisionboxes[i].barGui.position.copy(collisionboxes[i].position)
+				collisionboxes[i].barGui.position.copy(collisionboxes[i].position);
+				collisionboxes[i].barGui.quaternion.copy(collisionboxes[i].quaternion);
 				collisionboxes[i].barGui.position.y += 1;
 			}
 
 		}
 	}
 	for (var i = 0; i < collisionboxes1.length; i++) {
-		meshesArray[i].position.copy(collisionboxes1[i].position);
-		meshesArray[i].quaternion.copy(collisionboxes1[i].quaternion);
+		//THIS IS TO STOP THE TREMBLE OF THE TREES BUT IS PROVVISORY
+		//TODO SOLVE THIS
+		var tremble=meshesArray[i].position.y-collisionboxes1[i].position.y;
+		if (!(tremble<0.002 && tremble>-0.002)) {
+			meshesArray[i].position.copy(collisionboxes1[i].position);
+			meshesArray[i].quaternion.copy(collisionboxes1[i].quaternion);
+		}
 	}
 	for (var i = 0; i < collisionboxes1.length; i++) {
-		collisionboxMeshes1[i].position.copy(collisionboxes1[i].position);
-		collisionboxMeshes1[i].quaternion.copy(collisionboxes1[i].quaternion);
+		//THIS IS TO STOP THE TREMBLE OF THE TREES BUT IS PROVVISORY
+		//TODO SOLVE THIS
+		var tremble=collisionboxMeshes1[i].position.y-collisionboxes1[i].position.y;
+		if (!(tremble<0.002 && tremble>-0.002)) {
+			collisionboxMeshes1[i].position.copy(collisionboxes1[i].position);
+			collisionboxMeshes1[i].quaternion.copy(collisionboxes1[i].quaternion);
+		}
 
 
 	}
