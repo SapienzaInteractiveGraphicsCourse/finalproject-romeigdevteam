@@ -58,6 +58,12 @@ function createPlayer() {
 
 function checkPlayerLife() {
   if (playerLife <= 0 && !gameOver) {
+    window.location.href = "GameOverScreen.html";
+    setInterval(() =>{
+        $('#gameOverScreen').fadeIn(500);
+        $('#gameOverScreen').fadeOut(500)
+    }
+    ,1000)
     fadeOutAll();
     gameOver = true;
     controls.enabled = false;
@@ -68,7 +74,7 @@ function checkPlayerLife() {
 
 function checkCanTakeDamage() {
   //this is the time of INVULNERABILITY OF THE PLAYER
-  //THE PLAYER CAN'T BE DAMAGED UNTIL THIS TIMER GOES OUT 
+  //THE PLAYER CAN'T BE DAMAGED UNTIL THIS TIMER GOES OUT
   setTimeout(function(){ canTakeDamage=true }, 2000);
 }
 

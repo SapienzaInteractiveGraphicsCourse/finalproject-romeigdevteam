@@ -28,7 +28,7 @@ function htmlCloseLoading(){
 var reloadingInterval;
 
 function jQueryInit() {
-    
+
 
     // Set up the brief red flash that shows when you get hurt
     $('body').append('<div id="hurt"></div>');
@@ -64,7 +64,7 @@ function jQueryInit() {
 
 /*
 
-    LIFEBAR 
+    LIFEBAR
 */
 
 
@@ -126,7 +126,7 @@ function changePlayerLifeBar(curHealth) {
 }
 
 function restartPlayerLifeBar() {
-    //Was going to have a game over/restart function here. 
+    //Was going to have a game over/restart function here.
     $('.health-bar-red, .health-bar');
     $('.message-box').html("You've been knocked down! Thing's are looking bad.");
 }
@@ -140,10 +140,11 @@ function fadeOutAll() {
     //$('.healthArea', ".valueLife", ".health-box", ".health-bar-red", ".health-bar", ".health-bar-text").fadeOut();
     $('.healthArea').fadeOut();
     $('#ammoDiv').fadeOut();
-    
+
     $('.intro').fadeIn();
     $('#loseText').append(zombieWave - 1)
-    setInterval(() =>{ 
+    window.location.href = "GameOverScreen.html";
+    setInterval(() =>{
         $('#gameOverScreen').fadeIn(500);
         $('#gameOverScreen').fadeOut(500)
     }
@@ -159,8 +160,8 @@ function jqAppearCurrentRoundText() {
         $('#valueDiv').html(htmlString)
     }
     else {
-        //digitRight: zombieWave % 10  
-        //digitLeft: Math.floor((1234 / 10) % 10); 
+        //digitRight: zombieWave % 10
+        //digitLeft: Math.floor((1234 / 10) % 10);
         const htmlString = "<img class='column' id='roundValue' src=' ./sprites/round/"
             + (zombieWave % 10) + ".png '>"
             + "<img class='column' id='roundValue' src=' ./sprites/round/"
@@ -181,15 +182,15 @@ function jqNeedReload(){
         $("#reloadText").fadeIn(500)
         $("#reloadText").fadeOut(500)
     }, 1000);
-    
+
 }
 
 function jqUpdateAmmo(mode=""){
     if(mode=="sliding"){
         //TODO better animation
-        
+
     }
     $("#ammoDiv a").html(numBullets)
 
-    
+
 }

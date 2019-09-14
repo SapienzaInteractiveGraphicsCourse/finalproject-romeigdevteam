@@ -14,7 +14,8 @@
 - add reload animation: weapon down or rotate mag (opt)
 - add recoil (rinculo) animation (opt)
 - fix absence of mouse pointer when gameOver occurs (maybe easily fixed with redirecting to another page)
-- fix life of enemies getting stucked on the air
+- fix life of enemies getting stucked on the ai
+-THE MESHES TREMBLE! HOW TO FIX THEM? MAYBE THE PROBLEM IS THE FLOOR THAT IS NOT EXACTLY ON THE GROUND
 
 
 - MAKE REPORT

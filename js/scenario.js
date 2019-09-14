@@ -471,7 +471,27 @@ function createSingleBodyCube(mesh, sidePositionChange = 0, level = 1) {
               $('#hurt').fadeOut(350);
             }
             //THIS IS THE JUMPAWAY OF THE ZOMBIES AFTER THEY TOUCH YOU
-            e.target.velocity.set(11,11,11);
+            var jumpVelo=10;
+            var jumpDirX;
+            var jumpDirZ;
+            var differencePosX=e.target.position.x-e.body.position.x;
+            var differencePosZ=e.target.position.z-e.body.position.z;
+            if (differencePosX>0) {
+              jumpDirX=1;
+            }
+            else {
+              jumpDirX=-1;
+            }
+            if (differencePosZ>0) {
+              jumpDirZ=1;
+            }
+            else {
+              jumpDirZ=-1;
+            }
+
+
+
+            e.target.velocity.set(jumpDirX*jumpVelo,jumpVelo,jumpDirZ*jumpVelo);
 
         }
         else {

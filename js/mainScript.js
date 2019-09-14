@@ -130,9 +130,7 @@ function htmlInit() {
 		instructions.innerHTML = 'Your browser doesn\'t seem to support Pointer Lock API';
 
 	}
-	document.getElementById("restartBtn").onclick = function () {
-		location.reload();
-	}
+
 }
 
 function initCannon() {
@@ -303,6 +301,7 @@ function getShootDir(targetVec) {
 
 
 }
+
 function fireBullet() {
 	numBullets--;
 	jqUpdateAmmo();
@@ -330,6 +329,7 @@ function fireBullet() {
 	ballBody.velocity.set(shootDirection.x * shootVelo,
 		shootDirection.y * shootVelo,
 		shootDirection.z * shootVelo);
+	
 
 	// Move the ball outside the player sphere
 	x += shootDirection.x * (sphereShape.radius * 1.02 + ballShape.radius);
