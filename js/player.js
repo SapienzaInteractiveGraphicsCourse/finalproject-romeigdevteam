@@ -66,6 +66,13 @@ function checkPlayerLife() {
 
 
 
+function checkCanTakeDamage() {
+  //this is the time of INVULNERABILITY OF THE PLAYER
+  //THE PLAYER CAN'T BE DAMAGED UNTIL THIS TIMER GOES OUT 
+  setTimeout(function(){ canTakeDamage=true }, 2000);
+}
+
+
 
 
 
@@ -146,7 +153,7 @@ function drawLine(pointA, pointB) {
 // function recoilAnimation() {
 
 //   if (gunRecoil > 0) {
-//     // var maxRecoil = new THREE.Quaternion(); 
+//     // var maxRecoil = new THREE.Quaternion();
 //     // maxRecoil.setFromEuler(new THREE.Euler(20.0, 0, 0) );
 //     // // Dampen towards the target rotation
 //     // recoilMod.rotation = Three.Slerp(recoilMod.rotation, maxRecoil, Time.deltaTime * recoilSpeed);

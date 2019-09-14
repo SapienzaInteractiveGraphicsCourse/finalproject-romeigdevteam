@@ -1,7 +1,7 @@
 // instantiate a loader
 var loaderGLTF = new THREE.GLTFLoader();
 var loaderTex = new THREE.TextureLoader();
-
+var canTakeDamage=true;
 
 var loadingManager = null;
 var RESOURCES_LOADED = false;
@@ -461,10 +461,18 @@ function createSingleBodyCube(mesh, sidePositionChange = 0, level = 1) {
         else if (e.body.name == "playerBox" && e.target.name == "zombieBox" && !e.target.isDieing) {
 
             // ... hurt the player ...
-            $('#hurt').fadeIn(30);
-            playerLife -= e.target.damage;
-            changePlayerLifeBar(playerLife)
-            $('#hurt').fadeOut(350);
+
+            if (canTakeDamage) {
+              $('#hurt').fadeIn(30);
+              playerLife -= e.target.damage;
+              changePlayerLifeBar(playerLife);
+              canTakeDamage=false;
+              checkCanTakeDamage();
+              $('#hurt').fadeOut(350);
+            }
+            //THIS IS THE JUMPAWAY OF THE ZOMBIES AFTER THEY TOUCH YOU
+            e.target.velocity.set(11,11,11);
+
         }
         else {
             //console.log("Contact between bodies:",e.contact);

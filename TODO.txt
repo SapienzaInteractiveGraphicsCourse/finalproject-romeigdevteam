@@ -1,8 +1,8 @@
 - make character shadow (now can be a box)
 - check zombies animation bug
 - check wasd while clicking when not in control lock -> bug sparato lontano
-- remove red box line of objects (making it flaggable) //LET'S DO THIS
-- fix bug of zombie keep touching you not hurting
+- remove red box line of objects (making it flaggable) //DOOONE YOU HAVE TO PRESS ENTER
+- fix bug of zombie keep touching you not hurting//DONE, NEED TO BE TESTED MORE TO BE SURE IF IT WORKS
 - fix css layout and colors
 - ADD TEXTURES (introducing simple mesh with nice textures instead of models)
 - fix ball trajectory when shooting in free Aim
