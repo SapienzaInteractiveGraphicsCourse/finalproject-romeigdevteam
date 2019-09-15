@@ -370,7 +370,7 @@ window.onmousedown = function(e) {
 						if (numBullets > 0) {
 							fireBullet();
 						}
-					}, 100);
+					}, rateoFire);
 				}
 				else {
 					if (rateoTime==true) {

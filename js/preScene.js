@@ -143,7 +143,8 @@ function preSceneAnimate() {
           veloBullet=20;
           weaponSelected=2;
           rateoFlag=true;
-          weaponDamage=1;
+          rateoFire=250;
+          weaponDamage=3.0;
           weaponBullets=30;
           numBullets=weaponBullets;
         }
@@ -152,10 +153,10 @@ function preSceneAnimate() {
           preMeshes[selectedGun].position.x += 1;
           veloBullet=30;
           weaponSelected=1;
-          rateoFlag=false;
-          rateoFire=2000;
-          weaponDamage=3.0;
-          weaponBullets=8;
+          rateoFlag=true;
+          rateoFire=100;
+          weaponDamage=1.0;
+          weaponBullets=15;
           numBullets=weaponBullets;
 
         }
@@ -165,9 +166,9 @@ function preSceneAnimate() {
           veloBullet=50;
           weaponSelected=3;
           rateoFlag=false;
-          rateoFire=4000;
+          rateoFire=1000;
           weaponDamage=5.0;
-          weaponBullets=1;
+          weaponBullets=3;
           numBullets=weaponBullets;
 
         }
