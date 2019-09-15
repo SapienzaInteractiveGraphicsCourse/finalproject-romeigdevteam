@@ -24,6 +24,7 @@ var preModels = {
 var preScene, preCamera, renderer, preMeshes = [];
 var sizeBullet;
 var veloBullet;
+var weaponSelected;
 
 function preSceneInit() {
 
@@ -135,20 +136,24 @@ function preSceneAnimate() {
     if (selectedGun != -1 && preMeshes[selectedGun].position.z < 150) {
         if (selectedGun==2) { //assault rifle
           preMeshes[selectedGun].position.z += 1;
+          veloBullet=20;
+          weaponSelected=2;
         }
         else if (selectedGun==1) { //UZI OR PISTOL
           preMeshes[selectedGun].position.z += 1;
           preMeshes[selectedGun].position.x += 1;
-
+          veloBullet=30;
+          weaponSelected=1;
         }
         else if (selectedGun==3){ //SNIPER RIFLE
           preMeshes[selectedGun].position.z += 1;
           preMeshes[selectedGun].position.x -= 1;
+          veloBullet=50;
+          weaponSelected=3;
         }
     }
 
     renderer.render(preScene, preCamera);
-
 
 }
 

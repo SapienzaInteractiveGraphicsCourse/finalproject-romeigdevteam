@@ -376,6 +376,12 @@ function createBoundCube(objectMesh) {
     body.addShape(shape);
 
     body.position.copy(mesh.position);
+    // Allow sleeping
+    world.allowSleep = true;
+    body.allowSleep = true;
+    // Sleep parameters
+    body.sleepSpeedLimit = 1; // Body will feel sleepy if speed<1 (speed == norm of velocity)
+    body.sleepTimeLimit = 1; // Body falls asleep after 1s of sleepiness
 
 
     world.addBody(body);

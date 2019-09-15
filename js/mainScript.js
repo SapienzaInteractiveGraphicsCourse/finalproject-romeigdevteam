@@ -211,12 +211,13 @@ function init() {
 	//   var slipperyMaterial = new CANNON.Material();
 	// 	slipperyMaterial.friction = 0;
 	// 	sphereShape.material=slipperyMaterial
-	playerSphereBody = new CANNON.Body({ mass: 1000 });
+	playerSphereBody = new CANNON.Body({ mass: 100 });
 	playerSphereBody.name = "playerBox"
 	playerSphereBody.addShape(sphereShape);
 	playerSphereBody.position.set(0, 5, 0);
 	playerSphereBody.linearDamping = 0.98;
 	//playerSphereBody.angularDamping = 1;
+	playerSphereBody.allowSleep = false;//NEEDED BECAUSE WITHOUT THIS IF YOU DON'T MOVE THE PLAYER FOR SOME TIME HE WILL SLEEP AND STOP MOVING
 
 	world.addBody(playerSphereBody);
 
@@ -308,7 +309,7 @@ function fireBullet() {
 	var ballShape = new CANNON.Sphere(0.2);
 	var ballGeometry = new THREE.SphereGeometry(ballShape.radius, 32, 32);
 	var shootDirection = new THREE.Vector3();
-	var shootVelo = 20;
+	var shootVelo = veloBullet;
 	var x = playerSphereBody.position.x;
 	var y = playerSphereBody.position.y;
 	var z = playerSphereBody.position.z;
@@ -433,20 +434,18 @@ function updatePositions(delta) {
 	for (var i = 0; i < collisionboxes1.length; i++) {
 		//THIS IS TO STOP THE TREMBLE OF THE TREES BUT IS PROVVISORY
 		//TODO SOLVE THIS
-		var tremble=meshesArray[i].position.y-collisionboxes1[i].position.y;
-		if (!(tremble<0.002 && tremble>-0.002)) {
+
 			meshesArray[i].position.copy(collisionboxes1[i].position);
 			meshesArray[i].quaternion.copy(collisionboxes1[i].quaternion);
-		}
+
 	}
 	for (var i = 0; i < collisionboxes1.length; i++) {
 		//THIS IS TO STOP THE TREMBLE OF THE TREES BUT IS PROVVISORY
 		//TODO SOLVE THIS
-		var tremble=collisionboxMeshes1[i].position.y-collisionboxes1[i].position.y;
-		if (!(tremble<0.002 && tremble>-0.002)) {
+
 			collisionboxMeshes1[i].position.copy(collisionboxes1[i].position);
 			collisionboxMeshes1[i].quaternion.copy(collisionboxes1[i].quaternion);
-		}
+
 
 
 	}
