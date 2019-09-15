@@ -135,8 +135,6 @@ function preSceneAnimate() {
     if (selectedGun != -1 && preMeshes[selectedGun].position.z < 150) {
         if (selectedGun==2) { //assault rifle
           preMeshes[selectedGun].position.z += 1;
-          console.log("cavallooooooooooooooooooooooooo");
-          console.log(preMeshes[1].position.x);
         }
         else if (selectedGun==1) { //UZI OR PISTOL
           preMeshes[selectedGun].position.z += 1;
