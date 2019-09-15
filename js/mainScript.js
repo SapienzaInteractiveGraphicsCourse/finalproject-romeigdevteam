@@ -329,7 +329,7 @@ function fireBullet() {
 	ballBody.velocity.set(shootDirection.x * shootVelo,
 		shootDirection.y * shootVelo,
 		shootDirection.z * shootVelo);
-	
+
 
 	// Move the ball outside the player sphere
 	x += shootDirection.x * (sphereShape.radius * 1.02 + ballShape.radius);

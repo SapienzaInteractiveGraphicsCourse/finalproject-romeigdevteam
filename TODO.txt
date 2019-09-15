@@ -13,8 +13,8 @@
 - enlarge game field
 - add reload animation: weapon down or rotate mag (opt)
 - add recoil (rinculo) animation (opt)
-- fix absence of mouse pointer when gameOver occurs (maybe easily fixed with redirecting to another page)
-- fix life of enemies getting stucked on the ai
+- fix absence of mouse pointer when gameOver occurs (maybe easily fixed with redirecting to another page) //ALMOST DONE, WE NEED TO PUT THE CSS
+- fix life of enemies getting stucked on the air
 -THE MESHES TREMBLE! HOW TO FIX THEM? MAYBE THE PROBLEM IS THE FLOOR THAT IS NOT EXACTLY ON THE GROUND
 
 

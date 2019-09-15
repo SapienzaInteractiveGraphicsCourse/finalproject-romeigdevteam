@@ -22,6 +22,8 @@ var preModels = {
 };
 
 var preScene, preCamera, renderer, preMeshes = [];
+var sizeBullet;
+var veloBullet;
 
 function preSceneInit() {
 
@@ -37,7 +39,7 @@ function preSceneInit() {
             $('.healthArea').fadeIn("slow");
             $('#ammoDiv').fadeIn("slow");
             $('#preSceneDiv').css({ display: "none" })
-            
+
 
         }
     }
@@ -50,7 +52,7 @@ function preSceneInit() {
     var geometry = new THREE.CubeGeometry(200, 200, 200);
     var material = new THREE.MeshNormalMaterial();
 
-    // preMeshes[0]= new THREE.Mesh(geometry, material);   //TEST cube 
+    // preMeshes[0]= new THREE.Mesh(geometry, material);   //TEST cube
     // preScene.add(preMeshes[0]);
 
     // preMeshes[0].visible = false;
@@ -120,7 +122,7 @@ function preSceneAnimate() {
 
     // if(preScene.meshes.length > 0){
     //     preScene.meshes.forEach(m => m.rotation.y+=0.1)
-    // }    
+    // }
     // // loadingScreen.box.position.x -= 0.05;
     // // if (loadingScreen.box.position.x < -10) loadingScreen.box.position.x = 10;
     // // loadingScreen.box.position.y = Math.sin(loadingScreen.box.position.x);
@@ -131,8 +133,20 @@ function preSceneAnimate() {
         )
     }
     if (selectedGun != -1 && preMeshes[selectedGun].position.z < 150) {
+        if (selectedGun==2) { //assault rifle
+          preMeshes[selectedGun].position.z += 1;
+          console.log("cavallooooooooooooooooooooooooo");
+          console.log(preMeshes[1].position.x);
+        }
+        else if (selectedGun==1) { //UZI OR PISTOL
+          preMeshes[selectedGun].position.z += 1;
+          preMeshes[selectedGun].position.x += 1;
 
-        preMeshes[selectedGun].position.z += 1
+        }
+        else if (selectedGun==3){ //SNIPER RIFLE
+          preMeshes[selectedGun].position.z += 1;
+          preMeshes[selectedGun].position.x -= 1;
+        }
     }
 
     renderer.render(preScene, preCamera);
@@ -189,16 +203,17 @@ function raycast(e) {
         if (intersects[i].object.parent.nameMesh && intersects[i].object.parent.nameMesh in gunNameToIdx) {
             if (selectedGun != -1 && selectedGun != gunNameToIdx[intersects[i].object.parent]) { //changed selected gun
                 preMeshes[selectedGun].position.z = 100    //back to default position
-
+                preMeshes[1].position.x=-75;
+                preMeshes[3].position.x=75;
             }
 
             if(selectedGun==-1){
                 $("#playBtn").css({ opacity: 1 })
             }
             selectedGun = gunNameToIdx[intersects[i].object.parent.nameMesh]
-            
+
         }
-        
+
 
         /*
             An intersection has the following properties :
@@ -212,4 +227,3 @@ function raycast(e) {
     }
 
 }
-
