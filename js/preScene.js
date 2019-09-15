@@ -25,6 +25,10 @@ var preScene, preCamera, renderer, preMeshes = [];
 var sizeBullet;
 var veloBullet;
 var weaponSelected;
+var rateoFire;
+var rateoFlag;
+var rateoTime=true;
+var weaponDamage;
 
 function preSceneInit() {
 
@@ -138,18 +142,34 @@ function preSceneAnimate() {
           preMeshes[selectedGun].position.z += 1;
           veloBullet=20;
           weaponSelected=2;
+          rateoFlag=true;
+          weaponDamage=1;
+          weaponBullets=30;
+          numBullets=weaponBullets;
         }
         else if (selectedGun==1) { //UZI OR PISTOL
           preMeshes[selectedGun].position.z += 1;
           preMeshes[selectedGun].position.x += 1;
           veloBullet=30;
           weaponSelected=1;
+          rateoFlag=false;
+          rateoFire=2000;
+          weaponDamage=3.0;
+          weaponBullets=8;
+          numBullets=weaponBullets;
+
         }
         else if (selectedGun==3){ //SNIPER RIFLE
           preMeshes[selectedGun].position.z += 1;
           preMeshes[selectedGun].position.x -= 1;
           veloBullet=50;
           weaponSelected=3;
+          rateoFlag=false;
+          rateoFire=4000;
+          weaponDamage=5.0;
+          weaponBullets=1;
+          numBullets=weaponBullets;
+
         }
     }
 

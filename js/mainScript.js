@@ -351,14 +351,34 @@ function fireBullet() {
 	scene.add(ballMesh);
 }
 
-window.addEventListener("click", function (e) {
+function checkRateoTime() {
+  //this is the time of rateo OF THE PLAYER
+  //THE PLAYER CAN'T shot AGAIN UNTIL THIS TIMER GOES OUT
+  setTimeout(function(){ rateoTime=true }, rateoFire);
+}
 
+var intervalId;
+
+window.onmousedown = function(e) {
 
 	if (PLAYGAME && !gameOver && controls.enabled) {	//IN GAME
 		if (e.button == 0) //left click
 			if (numBullets > 0) {
-				fireBullet();
-
+				//fireBullet();
+				if (rateoFlag==true) {
+					intervalId = setInterval(function(){
+						if (numBullets > 0) {
+							fireBullet();
+						}
+					}, 100);
+				}
+				else {
+					if (rateoTime==true) {
+						fireBullet();
+						rateoTime=false;
+						checkRateoTime();
+					}
+				}
 			}
 			else {
 				jqNeedReload();
@@ -388,7 +408,11 @@ window.addEventListener("click", function (e) {
 
 	}
 
-});
+};
+
+window.onmouseup = function(e) {
+	clearInterval(intervalId);
+};
 
 
 
@@ -520,9 +544,9 @@ function animate(now) {
 
 		}
 		if (canReload) {
-			if (numBullets != NUMBULLETS) {
+			if (numBullets != weaponBullets) {
 				setTimeout(() => {
-					numBullets = NUMBULLETS;
+					numBullets = weaponBullets;
 					jqUpdateAmmo("sliding");
 				}, 500)
 				//TODO reload sound play

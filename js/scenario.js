@@ -441,16 +441,24 @@ function createSingleBodyCube(mesh, sidePositionChange = 0, level = 1) {
             uselessBodies.push(e.body)
             uselessMeshes.push(e.body.myMesh) //funzione byeBodyMesh(e.body) fa entrambe
 
-            if (e.target.life < 0)
-                return; //it is in disappearing phase
+            //if (e.target.life < 0)
+              //  return; //it is in disappearing phase
 
-            e.target.life -= 1;
-            if (e.target.life == 1)
+            e.target.life -= weaponDamage;
+            if (e.target.life == 1 && weaponSelected==1 )
+                e.target.angularDamping = 0; // enable ragdoll
+            else if (e.target.life== 1 && weaponSelected==2)
+                e.target.angularDamping = 0; // enable ragdoll
+
+            else if (e.target.life== 5 && weaponSelected==3) // IF WE ARE GONNA CHANGE THIS AND MAKE THE SNIPER ONESHOT WE HAVE TO FIND ANOTHER WAY TO CHANGE THE DAMPING(MAYBE WE CAN PUT AN IF-ELSE WHEN CREATING THE ZOMBIES IF THE SNIPER IS CHOSEN)
                 e.target.angularDamping = 0; // enable ragdoll
 
 
 
-            if (e.target.life == 0) {
+
+            if (e.target.life <= 0) {
+              if (e.target.isDieing) return;
+              else {
                 uselessMeshes.push(e.target.barGui)
                 //byeMeshBody(e.target)
                 e.target.isDieing = true;  //start counter to remove it
@@ -458,6 +466,7 @@ function createSingleBodyCube(mesh, sidePositionChange = 0, level = 1) {
                 e.target.myMeshes[0].zombieAnimated.dieingArmsPose();
 
                 return;
+              }
             }
             uselessMeshes.push(e.target.barGui)
             addLifeBarSprite(e.target, e.target.life) //update gui bar

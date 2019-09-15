@@ -1,6 +1,6 @@
 
-const NUMBULLETS = 30,
-  PLAYERLIFE = 8
+const PLAYERLIFE = 8
+var weaponBullets;
 
 var playerLife = PLAYERLIFE;  // LIFE
 
@@ -9,7 +9,7 @@ var rotationPoint;
 var playerBox;
 var playerBoxBody;
 
-var numBullets = NUMBULLETS
+var numBullets;
 //var gunRecoil = 0;
 
 function stopMovement() {
