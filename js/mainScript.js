@@ -517,6 +517,8 @@ function animate(now) {
 
 	//GENERATE THE ZOMBIE WAAAAVE
 	if (noZombie == true) {
+		canTakeDamage=false;
+		checkCanTakeDamage();
 		console.log("INCOMING WAVE NUMBER ", zombieWave);
 		jqAppearCurrentRoundText()
 		for (var i = 0; i < zombieMap.length; i++) {

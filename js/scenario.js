@@ -400,7 +400,7 @@ function createSingleBodyCube(mesh, sidePositionChange = 0, level = 1) {
 
     var boxBody = new CANNON.Body({ mass: 1 });
     boxBody.name = "zombieBox"
-    boxBody.damage = 2 * level;
+    boxBody.damage = 2 //2 * level; TODO NOT SURE ABOUT THIS BUT I THINK THAT CAN BE A PROBLEM WITH HIGH WAVE
     boxBody.addShape(boxShape);
     //boxBody.position.x += 3 * sidePositionChange;
     //boxBody.position.y += 1;
