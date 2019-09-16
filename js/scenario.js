@@ -195,7 +195,7 @@ function onResourcesLoaded() {
                 const currModel = models[wallMap[i][j]].mesh.clone();
 
                 currModel.position.set((i - 10 / 2) * UNITSIZE, 2, (j - 10 / 2) * UNITSIZE);
-
+                
                 scene.add(currModel);
                 createBoundCube(currModel);
                 meshesArray.push(currModel);

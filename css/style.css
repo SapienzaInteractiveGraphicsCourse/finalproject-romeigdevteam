@@ -3,7 +3,7 @@
 body {
   width: 100%;
   height: 100%;
-  
+
     background-color: #f7ffffff;
     cursor: crosshair;
     font-family: Georgia, Helvetica, sans-serif;
@@ -49,7 +49,7 @@ body {
     cursor: pointer;
 
     background-color:rgba(1, 104, 240, 0.5);
- 
+
 }
 
 /*
@@ -89,7 +89,7 @@ body {
   font-family: 'Creepster','Quattrocento Sans', sans-serif;
   font-size: 250%
 }
-.loading-text span:nth-child(1) { 
+.loading-text span:nth-child(1) {
   -webkit-filter: blur(0px);
           filter: blur(0px);
   -webkit-animation: blur-text 1.5s 0s infinite linear alternate;
@@ -161,7 +161,48 @@ body {
 ////////////////////////////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////
 */
+#weaponDescription {
 
+    position: absolute;
+
+    width: 100%;
+    height: 100%;
+
+    background-color: rgba(0,0,0,0.5);
+    display: none;
+}
+#weaponDescr {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+
+    display: -webkit-box;
+    display: -moz-box;
+    display: box;
+
+    -webkit-box-orient: horizontal;
+    -moz-box-orient: horizontal;
+    box-orient: horizontal;
+
+    -webkit-box-pack: center;
+    -moz-box-pack: center;
+    box-pack: center;
+
+    -webkit-box-align: center;
+    -moz-box-align: center;
+    box-align: center;
+
+    color: #ffffff;
+    text-align: center;
+    font-family: Arial;
+    font-size: 14px;
+    line-height: 24px;
+
+    cursor: pointer;
+
+    background-color:rgba(1, 104, 240, 0.5);
+
+}
 #choiceTxt{
 
   position: relative;
@@ -173,7 +214,7 @@ body {
 
 }
 
-#preSceneDiv {    
+#preSceneDiv {
   width:inherit;
   height: inherit;
   text-align: center;
@@ -198,7 +239,7 @@ body {
 }
 .btn {
   position: relative;
-  
+
   z-index: 1;
   display: inline-block;
   padding: 10px 20px 18px;
@@ -211,7 +252,7 @@ body {
      -moz-box-shadow: 0 10px 20px rgba(0,0,0,.35), inset 0 -1px 1px rgba(255,255,255,.15);
           box-shadow: 0 10px 20px rgba(0,0,0,.35), inset 0 -1px 1px rgba(255,255,255,.15);
   -webkit-transition-property: -webkit-box-shadow; /* drop padding as pseudo-element trans not supported */
-     -moz-transition-property: padding, -moz-box-shadow;       
+     -moz-transition-property: padding, -moz-box-shadow;
        -o-transition-property: box-shadow; /* drop padding as pseudo-element trans not supported */
           transition-property: padding, box-shadow;
   -webkit-transition-duration: .2s;
@@ -225,7 +266,7 @@ body {
 }
 
 .btn:active {
-  padding: 14px 20px 14px;  
+  padding: 14px 20px 14px;
   -webkit-box-shadow: 0 6px 15px rgba(0,0,0,.3), inset 0 -1px 1px rgba(255,255,255,.15);
      -moz-box-shadow: 0 6px 15px rgba(0,0,0,.3), inset 0 -1px 1px rgba(255,255,255,.15);
           box-shadow: 0 6px 15px rgba(0,0,0,.3), inset 0 -1px 1px rgba(255,255,255,.15);
@@ -239,9 +280,9 @@ body {
   content: "";
   position: absolute;
   z-index: -1;
-  top: 0; 
-  bottom: 4px; 
-  left: 0; 
+  top: 0;
+  bottom: 4px;
+  left: 0;
   right: 0;
   background: #3194c6;
   background: -webkit-gradient(linear, 0% 0%, 0% 100%, from(#3194c6), to(#5bacd6));
@@ -250,9 +291,9 @@ body {
   -webkit-border-radius: 8px;
      -moz-border-radius: 8px;
           border-radius: 8px;
-  -webkit-transform: translate(0, -4px);  
-     -moz-transform: translate(0, -4px);  
-       -o-transform: translate(0, -4px);  
+  -webkit-transform: translate(0, -4px);
+     -moz-transform: translate(0, -4px);
+       -o-transform: translate(0, -4px);
           transform: translate(0, -4px);
   -webkit-transition: -webkit-transform .2s ease-in-out;
      -moz-transition: -moz-transform .2s ease-in-out;
@@ -261,9 +302,9 @@ body {
 }
 
 .btn:active:before {
-  -webkit-transform: translate(0, 0);  
-     -moz-transform: translate(0, 0);  
-       -o-transform: translate(0, 0);  
+  -webkit-transform: translate(0, 0);
+     -moz-transform: translate(0, 0);
+       -o-transform: translate(0, 0);
           transform: translate(0, 0);
 }
 
@@ -335,14 +376,14 @@ body {
 
 
   .healthArea{
-    
+
         position: absolute;
         padding: 10px;
         text-align: center;
         left: 32%;
         top: 92%;
         display: none;
-         
+
   }
 
   .health-box {
@@ -352,7 +393,7 @@ body {
     margin: 0 auto;
     border: solid 1px rgb(0, 255, 21);
   }
-  
+
   .health-bar {
     background-color: #007f00;
     width: inherit;
@@ -360,27 +401,27 @@ body {
     position: relative;
     bottom: 28px;
   }
-  
+
   .health-bar-red {
     width: 99%;
     height: 95%;
     background-color: #cc0000;
-    
-    
+
+
 }
-  
-  
-  
+
+
+
   .health-bar-text {
     position: relative;
     bottom: 80px;
   }
-  
+
   .message-box {
     text-align: center;
     padding: 5px;
   }
-  
+
   .total,
   .message-box {
     font-size: 16px;
@@ -411,7 +452,7 @@ body {
   pointer-events: none;
   position: absolute;
   width: 40%;
-  left: 30%;  
+  left: 30%;
 }
 #valueDiv{
   pointer-events: none;
@@ -423,7 +464,7 @@ body {
 #roundValue{
   height: inherit;
   left: inherit;
-  
+
 }
 
 #reloadText{
@@ -460,7 +501,7 @@ body {
     font-size: 300%;
     color: #B5923C
     }
-  
+
 
 #gameOverScreen{
   display: none;
@@ -481,7 +522,7 @@ body {
 }
 
 #restartBtn{
-  
+
   background: none;
   border: none;
   cursor: pointer;
@@ -490,7 +531,7 @@ body {
   padding: 1em 2em;
   letter-spacing: 0.05rem;
 
-  
+
   bottom: -400px;
   color: black;
   left: 3px;
@@ -536,6 +577,3 @@ body {
 .draw-border:hover::after {
   transition-delay: 0s, 0.25s, 0s;
 }
-
-
-

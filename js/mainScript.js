@@ -16,7 +16,9 @@ var zombieAnimatedArray = [];
 //var zombieROOT = [];
 //var flagHit=false;
 //var counterDrop=0;
-
+var reloadFlag=false;
+var reloadFlagUp=false;
+var canShot=true;
 var myDelta;
 
 var gameOver = false;
@@ -364,8 +366,8 @@ window.onmousedown = function(e) {
 	if (PLAYGAME && !gameOver && controls.enabled) {	//IN GAME
 		if (e.button == 0) //left click
 			if (numBullets > 0) {
-				//fireBullet();
-				if (rateoFlag==true) {
+				if (rateoFlag==true && canShot==true) {
+					fireBullet();//TODO ADJUST THIS CAUSE IT CAUSES SOME PROBLEMS
 					intervalId = setInterval(function(){
 						if (numBullets > 0) {
 							fireBullet();
@@ -373,7 +375,7 @@ window.onmousedown = function(e) {
 					}, rateoFire);
 				}
 				else {
-					if (rateoTime==true) {
+					if (rateoTime==true && canShot==true) {
 						fireBullet();
 						rateoTime=false;
 						checkRateoTime();
@@ -498,7 +500,25 @@ function animate(now) {
 	myDelta = now - then;
 	then = now;
 
+	if (reloadFlag) {
+		canShot=false;
+		console.log(meshes[preModels[selectedGun].nameMesh].position.y);
+		meshes[preModels[selectedGun].nameMesh].position.y-=0.01 //weapon goes down
+		if (meshes[preModels[selectedGun].nameMesh].position.y<-1) {
+			reloadFlag=false;
+			reloadFlagUp=true;
+		}
+	}
+	if (reloadFlagUp) {
+		canShot=false;
+		console.log(meshes[preModels[selectedGun].nameMesh].position.y);
+		meshes[preModels[selectedGun].nameMesh].position.y+=0.01 //weapon goes up
+		if (meshes[preModels[selectedGun].nameMesh].position.y>-0.4) {
+			reloadFlagUp=false;
+			canShot=true;
+		}
 
+	}
 	// Play the loading screen until resources are loaded.
 	if (RESOURCES_LOADED == false || PLAYGAME == false) {
 		requestAnimationFrame(animate);
@@ -517,8 +537,6 @@ function animate(now) {
 
 	//GENERATE THE ZOMBIE WAAAAVE
 	if (noZombie == true) {
-		canTakeDamage=false;
-		checkCanTakeDamage();
 		console.log("INCOMING WAVE NUMBER ", zombieWave);
 		jqAppearCurrentRoundText()
 		for (var i = 0; i < zombieMap.length; i++) {
@@ -547,6 +565,7 @@ function animate(now) {
 		}
 		if (canReload) {
 			if (numBullets != weaponBullets) {
+				reloadFlag=true;
 				setTimeout(() => {
 					numBullets = weaponBullets;
 					jqUpdateAmmo("sliding");

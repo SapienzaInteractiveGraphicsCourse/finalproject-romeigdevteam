@@ -11,7 +11,7 @@
 - add these info into preScene
 - add objects
 - enlarge game field
-- add reload animation: weapon down or rotate mag (opt)
+- add reload animation: weapon down or rotate mag (opt) //DONE, MAYBE WE CAN DO IT BETTER
 - add recoil (rinculo) animation (opt)
 - fix absence of mouse pointer when gameOver occurs (maybe easily fixed with redirecting to another page) //ALMOST DONE, WE NEED TO PUT THE CSS
 - fix life of enemies getting stucked on the air
