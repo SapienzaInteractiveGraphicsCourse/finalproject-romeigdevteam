@@ -70,6 +70,13 @@ var models = {
         nameMesh: "sniper",
         internal: false
 
+    },
+    8: {
+        obj: "./scenes/weapons/sniper.obj",
+        mtl: "./scenes/weapons/sniper.mtl",
+        mesh: null,
+        nameMesh: "sniper",
+        internal: true
     }
 
 
@@ -200,16 +207,21 @@ function onResourcesLoaded() {
         for (var j = 0; j < wallMap[i].length; j++) {
             if (wallMap[i][j] != 0) {
                 const UNITSIZE = 1.5;
+                var currModel;
                 if (models[wallMap[i][j]].internal==false) {
-                    const currModel = models[wallMap[i][j]].mesh.clone();
+                    currModel = models[wallMap[i][j]].mesh.clone();
 
-                    currModel.position.set((i - 10 / 2) * UNITSIZE, 2, (j - 10 / 2) * UNITSIZE);
 
-                    scene.add(currModel);
-                    createBoundCube(currModel);
-                    meshesArray.push(currModel);
-                    wallsArray.push(currModel)
                 }
+                else {
+                    currModel=createInternalMesh();
+                }
+                currModel.position.set((i - 10 / 2) * UNITSIZE, 2, (j - 10 / 2) * UNITSIZE);
+
+                scene.add(currModel);
+                createBoundCube(currModel);
+                meshesArray.push(currModel);
+                wallsArray.push(currModel)
             }
 
 
@@ -218,6 +230,26 @@ function onResourcesLoaded() {
 
     }
 
+}
+function createInternalMesh() {
+  var textureLoader= new THREE.TextureLoader();
+  crateTexture= textureLoader.load("./textures/crate0/crate0_diffuse.png");
+  crateBumpMap= textureLoader.load("./textures/crate0/crate0_bump.png")
+  crateNormalMap=textureLoader.load("./textures/crate0/crate0_normal.png")
+  crate = new THREE.Mesh(
+    new THREE.BoxGeometry(1,1,1),
+    new THREE.MeshPhongMaterial({
+      color:0xffffff,
+      map:crateTexture,
+      bumpMap:crateBumpMap,
+      normalMap:crateNormalMap
+    })
+  );
+  //scene.add(crate);
+  //crate.position.set(2.5, 3/2 , 2.5);
+  crate.receiveShadow = true;
+  crate.castShadow = true;
+  return crate;
 }
 
 function addSelectedGunToCamera(){
