@@ -339,7 +339,7 @@ function addLifeBarSprite(zombieObj, value = 10) {
     if (value < 0) // also 0?
         return;
 
-    loaderTex.load(
+    /*loaderTex.load(
         'sprites/lifebar/VIDA_' + value + '.png',
         // onLoad callback
         function (texture) {
@@ -355,6 +355,16 @@ function addLifeBarSprite(zombieObj, value = 10) {
             scene.add(life);
             zombieObj.barGui = life;
         })
+    */
+    var spriteMap = new THREE.TextureLoader().load( "sprites/lifebar/VIDA_"+value+".png" );
+    var spriteMaterial = new THREE.SpriteMaterial( { map: spriteMap, color: 0xffffff } );
+    var sprite = new THREE.Sprite( spriteMaterial );
+    sprite.scale.set(0.6, 0.1, 0.1);
+    sprite.position.copy(zombieObj.position);
+    sprite.position.y += 2;
+    scene.add( sprite );
+    zombieObj.barGui=sprite
+
 
 }
 
