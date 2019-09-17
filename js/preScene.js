@@ -161,6 +161,7 @@ function preSceneAnimate() {
           weaponBullets=15;
           numBullets=weaponBullets;
           reloadTime=0.05
+          
 
         }
         else if (selectedGun==3){ //SNIPER RIFLE
@@ -229,17 +230,23 @@ function raycast(e) {
     for (var i = 0; i < intersects.length; i++) {
         console.log(intersects[i]);
         if (intersects[i].object.parent.nameMesh && intersects[i].object.parent.nameMesh in gunNameToIdx) {
-            if (selectedGun != -1 && selectedGun != gunNameToIdx[intersects[i].object.parent]) { //changed selected gun
+            if (selectedGun != -1 && selectedGun != gunNameToIdx[intersects[i].object.parent]) { //selected gun has changed 
                 preMeshes[selectedGun].position.z = 100    //back to default position
                 preMeshes[1].position.x=-75;
                 preMeshes[3].position.x=75;
+                
             }
 
             if(selectedGun==-1){
                 $("#playBtn").css({ opacity: 1 })
             }
-            selectedGun = gunNameToIdx[intersects[i].object.parent.nameMesh]
+            else{
+                $("#po"+selectedGun).fadeOut(100);
+                $("#po"+  gunNameToIdx[intersects[i].object.parent.nameMesh] ).fadeIn("slow");
 
+            }
+            selectedGun = gunNameToIdx[intersects[i].object.parent.nameMesh]
+            
         }
 
 

@@ -58,13 +58,13 @@ function createPlayer() {
 
 function checkPlayerLife() {
   if (playerLife <= 0 && !gameOver) {
-    window.location.href = "GameOverScreen.html";
-    setInterval(() =>{
-        $('#gameOverScreen').fadeIn(500);
-        $('#gameOverScreen').fadeOut(500)
-    }
-    ,1000)
+    
     fadeOutAll();
+    $("#youLose").fadeIn("fast")
+    setTimeout(() =>{
+      window.location.href = "GameOverScreen.html";
+    }
+    ,4000)
     gameOver = true;
     controls.enabled = false;
   }

@@ -333,7 +333,8 @@ function importZombie(i, j, level = 1) {
 
 
 function addLifeBarSprite(zombieObj, value = 10) {
-    uselessMeshes.push(zombieObj.barGui)
+    if(zombieObj.barGui)
+        uselessMeshes.push(zombieObj.barGui)
 
     if (value < 0) // also 0?
         return;

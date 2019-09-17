@@ -577,3 +577,139 @@ body {
 .draw-border:hover::after {
   transition-delay: 0s, 0.25s, 0s;
 }
+
+
+
+/* pre screen of game over */
+
+.creepyText{
+  display: inline-block;
+  margin: none;
+  border: none;
+  color: red;
+  background: none;
+  
+  font-family: 'Creepster','Quattrocento Sans', sans-serif;
+  font-size: 500%;
+  
+}
+
+#youLose{
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  text-align: center;
+  background-color: rgba(0,0,0,0.7);
+  display: none;
+  vertical-align: middle;
+  line-height: 590px; 
+
+}
+
+ 
+
+.pricing-table {
+  position: absolute;
+  display: table;
+  width: 100%;
+  height: 30%;
+  background: none;
+}
+.pricing-table .pricing-option {
+  width: 28%;
+  background: none;
+  float: left;
+  padding: 2%;
+  text-align: center;
+  transition: all .3s ease-in-out;
+  white-space: nowrap;
+
+}
+.pricing-table .pricing-option:nth-child(even) {
+  margin: 0 2%;
+}
+
+.pricing-table .pricing-option hr {
+  border: none;
+  border-bottom: 1px solid #F0F0F0;
+}
+.pricing-table .pricing-option i {
+  font-size: 3rem;
+  color: #D8D8D8;
+  transition: all .3s ease-in-out;
+  display: inline;
+}
+.pricing-table .pricing-option h1 {
+  
+  margin: 0px 0;
+  color: #212121;
+  transition: all .3s ease-in-out;
+}
+.pricing-table .pricing-option p {
+  color: black;
+  padding: 0 10px;
+  line-height: 1.3;
+}
+.pricing-table .pricing-option .price {
+  position: relative;
+}
+.pricing-table .pricing-option .price .front span.price {
+  font-size: 2rem;
+  text-transform: uppercase;
+  margin-top: 0px;
+  display: block;
+  font-weight: 700;
+  position: relative;
+}
+.pricing-table .pricing-option .price .front span.price b {
+  position: absolute;
+  font-size: 1rem;
+  margin-left: 2px;
+  font-weight: 600;
+}
+.pricing-table .pricing-option .price .back {
+  opacity: 0;
+  visibility: hidden;
+  transition: all .3s ease-in-out;
+}
+
+
+.grey{
+  color: grey;
+}
+.yellow{
+
+  color: yellow;
+}
+.black{
+
+  color: black;
+
+}
+
+.customP{
+  border:none;
+  background:none;
+  font-size: 2rem;
+}
+
+
+#po1{
+  position: absolute;
+  left: 0%;
+    display: none;
+}
+
+#po2{
+
+  position: absolute;
+  left:33%;
+  display:  none;
+}
+#po3{
+
+  left: 66%;
+  position: absolute;
+  
+  display: none;
+}

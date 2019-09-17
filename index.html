@@ -48,16 +48,17 @@
 
 
 	<script>
-	//Load some fonts
-	WebFont.load({
+		//Load some fonts
+		WebFont.load({
 			google: {
-				families: ['Creepster','Plaster','Droid Sans', 'Droid Serif','Ruslan Display']
+				families: ['Creepster', 'Plaster', 'Droid Sans', 'Droid Serif', 'Ruslan Display']
 			}
 		});
 	</script>
 </head>
 
-	<!-- Loading screen -->
+<!-- Loading screen -->
+
 <body style="text-align:center;">
 
 	<div class="loading" id="loading-screen">
@@ -72,13 +73,9 @@
 		</div>
 	</div>
 
-	<!-- PreScene -->
-<div id="preSceneDiv">
-    <p id="playBtn" class="btn" disabled="true">Start!</a>
-	<p id="choiceTxt" > Choose your weapon! </p>
-	</div>
+	
 
-<!-- Scene -->
+	<!-- Scene -->
 	<div class="rectangle">
 
 		<div id="blocker">
@@ -86,18 +83,88 @@
 			<div id="instructions" class="intro">
 				<span style="font-size:40px">Click to play</span>
 				<br />
-				(W,A,S,D = Move, SPACE = Jump, MOUSE = Look, CLICK SX = Shoot, CLICK DX = Aim, R = Reload, ENTER= TOGGLE HITBOXES)
+				(W,A,S,D = Move, SPACE = Jump, MOUSE = Look, CLICK SX = Shoot, CLICK DX = Aim, R = Reload, ENTER= TOGGLE
+				HITBOXES)
 			</div>
 
 		</div>
 
 	</div>
 
+	<div id="youLose">
+		<p class="creepyText">You lose!</p>
+
+	</div>
 
 
+<!-- PreScene -->
 
+<div class="pricing-table">
+    <div class="pricing-option" id="po1">
+        <i class="material-icons">Uzi <p class="customP">Submachine gun</p> </i>
+        <hr />
+        <p>Rate of fire: High</p>
+		<hr />
+		<p>Fire-Mode: Auto</p>
+		<hr />
+		<p>Damage: Medium</p>
+		<hr />
+		<p>Mag: 15</p>
+		<hr />
+        <div class="price">
+            <div class="front">
+                <span class="price">Easy <b></b></span>
+            </div>
+        </div>
+    </div>
+    
+    <div class="pricing-option" id="po2">
+        <i class="material-icons" >M4 <p class="customP">Rifle</p> </i>
+        <hr />
+        <p>Rate of fire: Medium</p>
+		<hr />
+		<p>Fire-Mode: Auto</p>
+		<hr />
+		<p>Damage: High</p>
+		<hr />
+		<p>Mag: 30</p>
+		<hr />
+        <div class="price">
+            <div class="front">
+                <span class="price">Medium <b></b></span>
+            </div>
+        </div>
+    </div>
+    
+    <div class="pricing-option" id="po3">
+		
+        <i class="material-icons">Barrett <p class="customP"> Sniper</p></i>
+        <hr />
+        <p>Rate of fire: Low</p>
+		<hr />
+		<p>Fire-Mode: Semi-Auto</p>
+		<hr />
+		<p>Damage: Very High</p>
+		<hr />
+		<p>Mag: 3</p>
+		<hr />
+        <div class="price">
+            <div class="front">
+                <span class="price">Hard <b></b></span>
+            </div>
+        </div>
+    </div>
+	
+	
 
+</div>
 
+<div id="preSceneDiv">
+		<p id="playBtn" class="btn" disabled="true">Start!</a>
+			<p id="choiceTxt"> Choose your weapon! </p>
+	</div>
+	
+	
 
 </body>
 

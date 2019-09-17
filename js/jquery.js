@@ -143,12 +143,7 @@ function fadeOutAll() {
 
     $('.intro').fadeIn();
     $('#loseText').append(zombieWave - 1)
-    window.location.href = "GameOverScreen.html";
-    setInterval(() =>{
-        $('#gameOverScreen').fadeIn(500);
-        $('#gameOverScreen').fadeOut(500)
-    }
-    ,1000)
+   
 }
 
 
