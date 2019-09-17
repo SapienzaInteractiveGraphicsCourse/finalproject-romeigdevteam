@@ -387,22 +387,7 @@ window.onmousedown = function(e) {
 				//TODO arma scarica sound
 			}
 		else if (e.button == 2) {	//Right click
-			if (!isPlayerAiming) {
-				isPlayerAiming = !isPlayerAiming;
-				meshes[ preModels[selectedGun].nameMesh ].position.setX(camera.position.x)
-				meshes[ preModels[selectedGun].nameMesh ].position.setY(camera.position.y - 0.25)
-				//Zoom in
-				camera.fov -= 25;
-				camera.updateProjectionMatrix();
-			}
-			else {
-				isPlayerAiming = !isPlayerAiming;
-				meshes[ preModels[selectedGun].nameMesh ].position.copy(meshes[ preModels[selectedGun].nameMesh ].freeAim)
-				//Zoom out back to initial
-				camera.fov = 75;
-				camera.updateProjectionMatrix();
-
-			}
+			aimWeapon();
 		}
 	}
 	else if (!PLAYGAME && !gameOver ){ //PRESCENE
@@ -416,6 +401,24 @@ window.onmouseup = function(e) {
 	clearInterval(intervalId);
 };
 
+function aimWeapon() {
+	if (!isPlayerAiming) {
+		isPlayerAiming = !isPlayerAiming;
+		meshes[ preModels[selectedGun].nameMesh ].position.setX(camera.position.x)
+		meshes[ preModels[selectedGun].nameMesh ].position.setY(camera.position.y - 0.25)
+		//Zoom in
+		camera.fov -= 25;
+		camera.updateProjectionMatrix();
+	}
+	else {
+		isPlayerAiming = !isPlayerAiming;
+		meshes[ preModels[selectedGun].nameMesh ].position.copy(meshes[ preModels[selectedGun].nameMesh ].freeAim)
+		//Zoom out back to initial
+		camera.fov = 75;
+		camera.updateProjectionMatrix();
+
+	}
+}
 
 
 
@@ -567,6 +570,9 @@ function animate(now) {
 		}
 		if (canReload) {
 			if (numBullets != weaponBullets) {
+				if (isPlayerAiming) {
+					aimWeapon();
+				}
 				reloadFlag=true;
 				setTimeout(() => {
 					numBullets = weaponBullets;
