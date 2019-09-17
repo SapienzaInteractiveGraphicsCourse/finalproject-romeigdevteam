@@ -3,19 +3,22 @@
 - check wasd while clicking when not in control lock -> bug sparato lontano
 - remove red box line of objects (making it flaggable) //DOOONE YOU HAVE TO PRESS ENTER
 - fix bug of zombie keep touching you not hurting//DONE, NEED TO BE TESTED MORE TO BE SURE IF IT WORKS
-- fix css layout and colors
-- ADD TEXTURES (introducing simple mesh with nice textures instead of models)
 - fix ball trajectory when shooting in free Aim
 - add real rounds instead of balls (opt)
 - make different weapon damages, mag and reload time (mirino) //DONE, NEED TO BE CUSTOMIZED MORE
-- add these info into preScene
 - add objects
 - enlarge game field
 - add reload animation: weapon down or rotate mag (opt) //DONE, MAYBE WE CAN DO IT BETTER
 - add recoil (rinculo) animation (opt)
 - fix absence of mouse pointer when gameOver occurs (maybe easily fixed with redirecting to another page) //ALMOST DONE, WE NEED TO PUT THE CSS
-- fix life of enemies getting stucked on the air
 - THE MESHES TREMBLE! HOW TO FIX THEM? MAYBE THE PROBLEM IS THE FLOOR THAT IS NOT EXACTLY ON THE GROUND//SOLVED WITH SLEEP OF CANNON.JS, BE CAREFUL! Body.allowSleep = false; if you don't want a body to sleep
+
+
+- ADD TEXTURES (introducing simple mesh with nice textures instead of models)
+- fix css layout and colors
+- add these info into preScene
+- fix life of enemies getting stucked on the air
+
 
 
 - MAKE REPORT

@@ -571,7 +571,7 @@ function animate(now) {
 				setTimeout(() => {
 					numBullets = weaponBullets;
 					jqUpdateAmmo("sliding");
-				}, 500)
+				}, reloadTime*1000)
 				//TODO reload sound play
 
 

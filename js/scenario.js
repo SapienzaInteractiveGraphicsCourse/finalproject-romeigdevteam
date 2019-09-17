@@ -20,47 +20,56 @@ var models = {
         obj: "./scenes/3d-nature-pack/Models/Tree_01.obj",
         mtl: "./scenes/3d-nature-pack/Models/Tree_01.mtl",
         mesh: null,
-        nameMesh: "tree"
+        nameMesh: "tree",
+        internal: false
     },
 
     2: {
         obj: "./scenes/3d-nature-pack/Models/Rock_1_01.obj",
         mtl: "./scenes/3d-nature-pack/Models/Rock_1_01.mtl",
         mesh: null,
-        nameMesh: "rock"
+        nameMesh: "rock",
+        internal: false
     },
     3: {
         obj: "./scenes/3d-nature-pack/Models/Brown_Cliff_01.obj",
         mtl: "./scenes/3d-nature-pack/Models/Brown_Cliff_01.mtl",
         mesh: null,
-        nameMesh: "cliff"
-
+        nameMesh: "cliff",
+        internal: false
 
     },
     4: {
         obj: "./scenes/weapons/uziGold.obj",
         mtl: "./scenes/weapons/uziGold.mtl",
         mesh: null,
-        nameMesh: "uzi"
+        nameMesh: "uzi",
+        internal: false
     },
 
     5: {
         obj: "./scenes/3d-nature-pack/Models/Fallen_Trunk_01.obj",
         mtl: "./scenes/3d-nature-pack/Models/Fallen_Trunk_01.mtl",
         mesh: null,
-        nameMesh: "rock"
+        nameMesh: "rock",
+        internal: false
+
     },
     6: {
         obj: "./scenes/weapons/machinegun.obj",
         mtl: "./scenes/weapons/machinegun.mtl",
         mesh: null,
-        nameMesh: "machinegun"
+        nameMesh: "machinegun",
+        internal: false
+
     },
     7: {
         obj: "./scenes/weapons/sniper.obj",
         mtl: "./scenes/weapons/sniper.mtl",
         mesh: null,
-        nameMesh: "sniper"
+        nameMesh: "sniper",
+        internal: false
+
     }
 
 
@@ -191,15 +200,16 @@ function onResourcesLoaded() {
         for (var j = 0; j < wallMap[i].length; j++) {
             if (wallMap[i][j] != 0) {
                 const UNITSIZE = 1.5;
+                if (models[wallMap[i][j]].internal==false) {
+                    const currModel = models[wallMap[i][j]].mesh.clone();
 
-                const currModel = models[wallMap[i][j]].mesh.clone();
+                    currModel.position.set((i - 10 / 2) * UNITSIZE, 2, (j - 10 / 2) * UNITSIZE);
 
-                currModel.position.set((i - 10 / 2) * UNITSIZE, 2, (j - 10 / 2) * UNITSIZE);
-
-                scene.add(currModel);
-                createBoundCube(currModel);
-                meshesArray.push(currModel);
-                wallsArray.push(currModel)
+                    scene.add(currModel);
+                    createBoundCube(currModel);
+                    meshesArray.push(currModel);
+                    wallsArray.push(currModel)
+                }
             }
 
 
