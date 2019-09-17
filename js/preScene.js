@@ -29,6 +29,7 @@ var rateoFire;
 var rateoFlag;
 var rateoTime=true;
 var weaponDamage;
+var reloadTime;
 
 function preSceneInit() {
 
@@ -147,6 +148,7 @@ function preSceneAnimate() {
           weaponDamage=3.0;
           weaponBullets=30;
           numBullets=weaponBullets;
+          reloadTime=0.03
         }
         else if (selectedGun==1) { //UZI OR PISTOL
           preMeshes[selectedGun].position.z += 1;
@@ -158,6 +160,7 @@ function preSceneAnimate() {
           weaponDamage=1.0;
           weaponBullets=15;
           numBullets=weaponBullets;
+          reloadTime=0.05
 
         }
         else if (selectedGun==3){ //SNIPER RIFLE
@@ -170,6 +173,7 @@ function preSceneAnimate() {
           weaponDamage=5.0;
           weaponBullets=3;
           numBullets=weaponBullets;
+          reloadTime=0.01
 
         }
     }

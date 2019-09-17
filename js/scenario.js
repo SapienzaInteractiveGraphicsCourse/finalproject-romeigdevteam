@@ -195,7 +195,7 @@ function onResourcesLoaded() {
                 const currModel = models[wallMap[i][j]].mesh.clone();
 
                 currModel.position.set((i - 10 / 2) * UNITSIZE, 2, (j - 10 / 2) * UNITSIZE);
-                
+
                 scene.add(currModel);
                 createBoundCube(currModel);
                 meshesArray.push(currModel);
@@ -323,6 +323,7 @@ function importZombie(i, j, level = 1) {
 
 
 function addLifeBarSprite(zombieObj, value = 10) {
+    uselessMeshes.push(zombieObj.barGui)
 
     if (value < 0) // also 0?
         return;
@@ -482,7 +483,7 @@ function createSingleBodyCube(mesh, sidePositionChange = 0, level = 1) {
               playerLife -= e.target.damage;
               changePlayerLifeBar(playerLife);
               canTakeDamage=false;
-              checkCanTakeDamage();
+              checkCanTakeDamage(2000);
               $('#hurt').fadeOut(350);
             }
             //THIS IS THE JUMPAWAY OF THE ZOMBIES AFTER THEY TOUCH YOU

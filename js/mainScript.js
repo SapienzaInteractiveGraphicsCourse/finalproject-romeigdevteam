@@ -369,7 +369,7 @@ window.onmousedown = function(e) {
 				if (rateoFlag==true && canShot==true) {
 					fireBullet();//TODO ADJUST THIS CAUSE IT CAUSES SOME PROBLEMS
 					intervalId = setInterval(function(){
-						if (numBullets > 0) {
+						if (numBullets > 0 && canShot==true) {
 							fireBullet();
 						}
 					}, rateoFire);
@@ -503,19 +503,19 @@ function animate(now) {
 	if (reloadFlag) {
 		canShot=false;
 		console.log(meshes[preModels[selectedGun].nameMesh].position.y);
-		meshes[preModels[selectedGun].nameMesh].position.y-=0.01 //weapon goes down
+		meshes[preModels[selectedGun].nameMesh].position.y-=reloadTime //weapon goes down THIS CAN BE CUSTOMIZED WEAPON-BASED
 		if (meshes[preModels[selectedGun].nameMesh].position.y<-1) {
 			reloadFlag=false;
 			reloadFlagUp=true;
 		}
 	}
 	if (reloadFlagUp) {
-		canShot=false;
+		//canShot=false;
 		console.log(meshes[preModels[selectedGun].nameMesh].position.y);
-		meshes[preModels[selectedGun].nameMesh].position.y+=0.01 //weapon goes up
+		meshes[preModels[selectedGun].nameMesh].position.y+=reloadTime //weapon goes up THIS CAN BE CUSTOMIZED WEAPON-BASED
 		if (meshes[preModels[selectedGun].nameMesh].position.y>-0.4) {
-			reloadFlagUp=false;
 			canShot=true;
+			reloadFlagUp=false;
 		}
 
 	}
@@ -537,8 +537,10 @@ function animate(now) {
 
 	//GENERATE THE ZOMBIE WAAAAVE
 	if (noZombie == true) {
+
 		console.log("INCOMING WAVE NUMBER ", zombieWave);
 		jqAppearCurrentRoundText()
+		checkCanTakeDamage(3000);
 		for (var i = 0; i < zombieMap.length; i++) {
 			for (var j = 0; j < zombieMap[i].length; j++) {
 				var level = zombieMap[i][j]

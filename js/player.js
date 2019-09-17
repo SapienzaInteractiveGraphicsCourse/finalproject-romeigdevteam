@@ -72,10 +72,10 @@ function checkPlayerLife() {
 
 
 
-function checkCanTakeDamage() {
+function checkCanTakeDamage(invulnerabilityTime) {
   //this is the time of INVULNERABILITY OF THE PLAYER
   //THE PLAYER CAN'T BE DAMAGED UNTIL THIS TIMER GOES OUT
-  setTimeout(function(){ canTakeDamage=true }, 2000);
+  setTimeout(function(){ canTakeDamage=true }, invulnerabilityTime);
 }
 
 
