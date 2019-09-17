@@ -387,7 +387,9 @@ window.onmousedown = function(e) {
 				//TODO arma scarica sound
 			}
 		else if (e.button == 2) {	//Right click
-			aimWeapon();
+			if (canShot) {
+				aimWeapon();
+			}
 		}
 	}
 	else if (!PLAYGAME && !gameOver ){ //PRESCENE
