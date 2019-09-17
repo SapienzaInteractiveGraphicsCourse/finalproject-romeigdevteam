@@ -545,6 +545,7 @@ function animate(now) {
 
 		console.log("INCOMING WAVE NUMBER ", zombieWave);
 		jqAppearCurrentRoundText()
+		canTakeDamage=false;
 		checkCanTakeDamage(3000);
 		for (var i = 0; i < zombieMap.length; i++) {
 			for (var j = 0; j < zombieMap[i].length; j++) {
