@@ -459,11 +459,11 @@ function createBoundCube(objectMesh, mass=1000) {
 
 
 function createSingleBodyCube(mesh, sidePositionChange = 0, level = 1) {
-    var halfExtents = new CANNON.Vec3(0.5, 0.8, 0.5);
+    var halfExtents = new CANNON.Vec3(0.3, 0.6, 0.3);
     boxShape = new CANNON.Box(halfExtents);
     boxGeometry = new THREE.BoxGeometry(halfExtents.x * 2, halfExtents.y * 2, halfExtents.z * 2);
 
-    newmaterial = new THREE.MeshLambertMaterial({ color: 0xffffff });
+    newmaterial = new THREE.MeshLambertMaterial({ color: 0xffffff, wireframe: true  });
 
     var boxBody = new CANNON.Body({ mass: 1 });
     boxBody.name = "zombieBox"
@@ -667,7 +667,15 @@ window.addEventListener("keydown", function (e) {
     if (e.keyCode === 13) {  //checks whether the pressed key is "Enter"
         for (var key in collisionboxMeshes1) {
           collisionboxMeshes1[key].visible=!(collisionboxMeshes1[key].visible);
-          console.log(collisionboxMeshes1[key])
+
+
+          
+        }
+
+        for (var key in collisionboxMeshes1) {
+          collisionboxMeshes[key].visible=!(collisionboxMeshes[key].visible);
+
+
         }
     }
 });
