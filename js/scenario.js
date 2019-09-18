@@ -12,6 +12,7 @@ var numZombie = 10;
 var zombieAlive = 0;
 var uselessBodies = []
 var uselessMeshes = []
+var zombieHitBoxFlag=false;
 
 
 // Models index
@@ -79,7 +80,8 @@ var models = {
         size1: 1,
         size2: 1,
         size3: 1,
-        mass: 10
+        mass: 10,
+        shape: 1
     },
     9: { // when put in the bitMap you need to leave two zeros of space
 
@@ -89,7 +91,29 @@ var models = {
         size1: 6,
         size2: 5,
         size3: 0.5,
-        mass: 1000000
+        mass: 1000000,
+        shape: 1
+    },
+    10: { // when put in the bitMap you need to leave two zeros of space
+
+        nameMesh: "wallZombie2",
+        internal: true,
+        texture: "./textures/wall/wallZombie.png",
+        size1: 0.5,
+        size2: 5,
+        size3: 6,
+        mass: 1000000,
+        shape: 1
+    },
+
+    11: { // when put in the bitMap you need to leave two zeros of space
+
+        nameMesh: "lifeUp",
+        internal: true,
+        texture: "./textures/wall/wallZombie.png",
+        size1: 1,
+        mass: 1000000,
+        shape: 2
     }
 
 
@@ -176,7 +200,7 @@ function loadModels() {
               });
             }
             else {
-              models[key].mesh=createInternalMesh(models[key].texture, models[key].size1, models[key].size2, models[key].size3);
+              models[key].mesh=createInternalMesh(models[key].texture, models[key].size1, models[key].size2, models[key].size3, models[key].shape);
             }
         })(_key);
     }
@@ -244,13 +268,20 @@ function onResourcesLoaded() {
     }
 
 }
-function createInternalMesh(texturePng, size1, size2, size3) {
+function createInternalMesh(texturePng, size1, size2=1, size3=1, shape=1) {
   var textureLoader= new THREE.TextureLoader();
   crateTexture= textureLoader.load(texturePng);
 //  crateBumpMap= textureLoader.load("./textures/crate0/crate0_bump.png")
   //crateNormalMap=textureLoader.load("./textures/crate0/crate0_normal.png")
+  var geometryShape;
+  if (shape == 1) { //simple box
+    geometryShape=new THREE.BoxGeometry(size1, size2, size3);
+  }
+  else if (shape == 2) {
+    geometryShape=new THREE.OctahedronGeometry(size1);
+  }
   crate = new THREE.Mesh(
-    new THREE.BoxGeometry(size1, size2, size3),
+    geometryShape,
     new THREE.MeshPhongMaterial({
       color:0xffffff,
       map:crateTexture,
@@ -591,7 +622,13 @@ function createSingleBodyCube(mesh, sidePositionChange = 0, level = 1) {
     //boxMesh.position.x += 3 * sidePositionChange;
     //boxMesh.position.y -= 1;
     boxMesh.position.copy(mesh.position);
-    boxMesh.visible = false;
+    if (zombieHitBoxFlag==false) {
+      boxMesh.visible = false;
+    }
+    else {
+      boxMesh.visible = true;
+    }
+
     scene.add(boxMesh);
     console.log("Added box external #: ", sidePositionChange);
     boxMesh.castShadow = true;
@@ -672,7 +709,8 @@ window.addEventListener("keydown", function (e) {
 
         }
 
-        for (var key in collisionboxMeshes1) {
+        for (var key in collisionboxMeshes) {
+          zombieHitBoxFlag=!zombieHitBoxFlag;
           collisionboxMeshes[key].visible=!(collisionboxMeshes[key].visible);
 
 
