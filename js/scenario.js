@@ -75,9 +75,22 @@ var models = {
 
         nameMesh: "crate",
         internal: true,
-        texture: "./textures/crate0/crate0_diffuse.png"
-    }
+        texture: "./textures/crate0/crate0_diffuse.png",
+        size1: 1,
+        size2: 1,
+        size3: 1,
+        mass: 10
+    },
+    9: { // when put in the bitMap you need to leave two zeros of space
 
+        nameMesh: "wallZombie",
+        internal: true,
+        texture: "./textures/wall/wallZombie.png",
+        size1: 6,
+        size2: 5,
+        size3: 0.5,
+        mass: 1000000
+    }
 
 
 
@@ -163,7 +176,7 @@ function loadModels() {
               });
             }
             else {
-              models[key].mesh=createInternalMesh(models[key].texture);
+              models[key].mesh=createInternalMesh(models[key].texture, models[key].size1, models[key].size2, models[key].size3);
             }
         })(_key);
     }
@@ -219,7 +232,7 @@ function onResourcesLoaded() {
                 currModel.position.set((i - 10 / 2) * UNITSIZE, 2, (j - 10 / 2) * UNITSIZE);
 
                 scene.add(currModel);
-                createBoundCube(currModel);
+                createBoundCube(currModel, models[wallMap[i][j]].mass);
                 meshesArray.push(currModel);
                 wallsArray.push(currModel)
             }
@@ -231,18 +244,19 @@ function onResourcesLoaded() {
     }
 
 }
-function createInternalMesh(texturePng) {
+function createInternalMesh(texturePng, size1, size2, size3) {
   var textureLoader= new THREE.TextureLoader();
   crateTexture= textureLoader.load(texturePng);
 //  crateBumpMap= textureLoader.load("./textures/crate0/crate0_bump.png")
   //crateNormalMap=textureLoader.load("./textures/crate0/crate0_normal.png")
   crate = new THREE.Mesh(
-    new THREE.BoxGeometry(1,1,1),
+    new THREE.BoxGeometry(size1, size2, size3),
     new THREE.MeshPhongMaterial({
       color:0xffffff,
       map:crateTexture,
       bumpMap:crateBumpMap,
       normalMap:crateNormalMap
+
     })
   );
   //scene.add(crate);
@@ -406,7 +420,7 @@ function changeLifeBar(zombieObj, value = 10) {
 }
 
 
-function createBoundCube(objectMesh) {
+function createBoundCube(objectMesh, mass=1000) {
     var bbox = (new THREE.Box3()).setFromObject(objectMesh);
     var helper = new THREE.Box3Helper(bbox, 0xffff00);
     //scene.add(helper);
@@ -423,9 +437,8 @@ function createBoundCube(objectMesh) {
 
     collisionboxMeshes1.push(mesh);
     var shape = new CANNON.Box(new CANNON.Vec3(dimensions.x / 2, dimensions.y / 2, dimensions.z / 2));
-    var mass = 1000;
     var body = new CANNON.Body({
-        mass: 1000
+        mass: mass
     });
     body.addShape(shape);
 
