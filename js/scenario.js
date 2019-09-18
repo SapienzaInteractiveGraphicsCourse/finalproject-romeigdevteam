@@ -72,11 +72,10 @@ var models = {
 
     },
     8: {
-        obj: "./scenes/weapons/sniper.obj",
-        mtl: "./scenes/weapons/sniper.mtl",
-        mesh: null,
-        nameMesh: "sniper",
-        internal: true
+
+        nameMesh: "crate",
+        internal: true,
+        texture: "./textures/crate0/crate0_diffuse.png"
     }
 
 
@@ -131,38 +130,41 @@ function loadModels() {
     createSkyBox();
     for (var _key in models) {
         (function (key) {
+            if (models[key].internal==false) {
+              var mtlLoader = new THREE.MTLLoader(loadingManager);
+              mtlLoader.load(models[key].mtl, function (materials) {
+                  materials.preload();
 
-            var mtlLoader = new THREE.MTLLoader(loadingManager);
-            mtlLoader.load(models[key].mtl, function (materials) {
-                materials.preload();
+                  var objLoader = new THREE.OBJLoader(loadingManager);
 
-                var objLoader = new THREE.OBJLoader(loadingManager);
+                  objLoader.setMaterials(materials);
+                  objLoader.load(models[key].obj, function (mesh) {
 
-                objLoader.setMaterials(materials);
-                objLoader.load(models[key].obj, function (mesh) {
+                     //not guns
+                     if (key != 4 && key != 6 && key != 7) {
 
-                   //not guns
-                   if (key != 4 && key != 6 && key != 7) {
+                          mesh.traverse(function (child) {
 
-                        mesh.traverse(function (child) {
-
-                            if (child instanceof THREE.Mesh) {
-                                //child.material = material;
-                                child.geometry.center();
+                              if (child instanceof THREE.Mesh) {
+                                  //child.material = material;
+                                  child.geometry.center();
 
 
-                                //( Shadow for objects)
-                                child.castShadow = true;
-                                child.receiveShadow = true;
-                            }
+                                  //( Shadow for objects)
+                                  child.castShadow = true;
+                                  child.receiveShadow = true;
+                              }
 
-                        });
-                    }
-                    models[key].mesh = mesh;
+                          });
+                      }
+                      models[key].mesh = mesh;
 
-                });
-            });
-
+                  });
+              });
+            }
+            else {
+              models[key].mesh=createInternalMesh(models[key].texture);
+            }
         })(_key);
     }
 
@@ -208,14 +210,12 @@ function onResourcesLoaded() {
             if (wallMap[i][j] != 0) {
                 const UNITSIZE = 1.5;
                 var currModel;
-                if (models[wallMap[i][j]].internal==false) {
-                    currModel = models[wallMap[i][j]].mesh.clone();
+
+                currModel = models[wallMap[i][j]].mesh.clone();
 
 
-                }
-                else {
-                    currModel=createInternalMesh();
-                }
+
+
                 currModel.position.set((i - 10 / 2) * UNITSIZE, 2, (j - 10 / 2) * UNITSIZE);
 
                 scene.add(currModel);
@@ -231,11 +231,11 @@ function onResourcesLoaded() {
     }
 
 }
-function createInternalMesh() {
+function createInternalMesh(texturePng) {
   var textureLoader= new THREE.TextureLoader();
-  crateTexture= textureLoader.load("./textures/crate0/crate0_diffuse.png");
-  crateBumpMap= textureLoader.load("./textures/crate0/crate0_bump.png")
-  crateNormalMap=textureLoader.load("./textures/crate0/crate0_normal.png")
+  crateTexture= textureLoader.load(texturePng);
+//  crateBumpMap= textureLoader.load("./textures/crate0/crate0_bump.png")
+  //crateNormalMap=textureLoader.load("./textures/crate0/crate0_normal.png")
   crate = new THREE.Mesh(
     new THREE.BoxGeometry(1,1,1),
     new THREE.MeshPhongMaterial({
