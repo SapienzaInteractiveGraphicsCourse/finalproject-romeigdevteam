@@ -14,11 +14,11 @@
 - THE MESHES TREMBLE! HOW TO FIX THEM? MAYBE THE PROBLEM IS THE FLOOR THAT IS NOT EXACTLY ON THE GROUND//SOLVED WITH SLEEP OF CANNON.JS, BE CAREFUL! Body.allowSleep = false; if you don't want a body to sleep
 
 
-- ADD TEXTURES (introducing simple mesh with nice textures instead of models)
+- ADD TEXTURES (introducing simple mesh with nice textures instead of models)//DONE, NEED TO ADD SOME MORE MESHES AND TEXTURES
 - fix css layout and colors
 - add these info into preScene
-- fix life of enemies getting stucked on the air
-
+- fix life of enemies getting stucked on the air //DONE NEED MORE TESTING
+- SOMETIME ZOMBIES GO THROUGH OBJECT OR CAN PUSH OBJECT WITH A VERY BIG MASS
 
 
 - MAKE REPORT

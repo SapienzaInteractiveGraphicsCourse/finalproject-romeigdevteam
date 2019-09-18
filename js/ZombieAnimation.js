@@ -66,10 +66,10 @@ class ZombieAnimation {
 		const fixedAngle=Math.PI/2
 		this.bones[ZombieBonesIds.ULARM].rotateZ(-fixedAngle)
 		this.bones[ZombieBonesIds.ULARM].rotateY(-fixedAngle)
-		
+
 		this.bones[ZombieBonesIds.URARM].rotateZ(fixedAngle)
 		this.bones[ZombieBonesIds.URARM].rotateY(fixedAngle)
-		
+
 	}
 
 
@@ -111,16 +111,16 @@ function zombieFollowsCharacter(idx, delta) {
 
 	//make it jump
 	// if( casualProb <10 && y ==0 ){
-	// 	body.y = 
+	// 	body.y =
 	// }
 
 	if (0.1 > Math.abs( z - playerSphereBody.position.z )) { }
 	else if (z > playerSphereBody.position.z) body.position.z -= speed;
 	else body.position.z += speed;
-	
+
 	}
 
-	
+
 }
 
 // function aStarAlgo(){
