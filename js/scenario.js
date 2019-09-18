@@ -447,7 +447,7 @@ function createBoundCube(objectMesh, mass=1000) {
     world.allowSleep = true;
     body.allowSleep = true;
     // Sleep parameters
-    body.sleepSpeedLimit = 1; // Body will feel sleepy if speed<1 (speed == norm of velocity)
+    body.sleepSpeedLimit = 1.5; // Body will feel sleepy if speed<1 (speed == norm of velocity)
     body.sleepTimeLimit = 1; // Body falls asleep after 1s of sleepiness
 
 
@@ -669,7 +669,7 @@ window.addEventListener("keydown", function (e) {
           collisionboxMeshes1[key].visible=!(collisionboxMeshes1[key].visible);
 
 
-          
+
         }
 
         for (var key in collisionboxMeshes1) {
