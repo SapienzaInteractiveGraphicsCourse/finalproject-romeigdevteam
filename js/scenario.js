@@ -192,16 +192,16 @@ var models = {
 
     },
     20: {
-      obj: "./scenes/graveyard/gravestoneBroken.obj",
-      mtl: "./scenes/graveyard/gravestoneBroken.mtl",
+      obj: "./scenes/graveyard/coffinOld.obj",
+      mtl: "./scenes/graveyard/coffinOld.mtl",
       mesh: null,
       nameMesh: "graveDec",
       internal: false
 
     },
     21: {
-      obj: "./scenes/graveyard/gravestoneBroken.obj",
-      mtl: "./scenes/graveyard/gravestoneBroken.mtl",
+      obj: "./scenes/graveyard/coffin.obj",
+      mtl: "./scenes/graveyard/coffin.mtl",
       mesh: null,
       nameMesh: "graveDec",
       internal: false
