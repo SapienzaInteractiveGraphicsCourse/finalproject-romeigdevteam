@@ -220,6 +220,8 @@ var meshes = {};
 var meshesArray = [];
 var collisionboxes1 = [];
 var collisionboxMeshes1 = [];
+var meshesNotWall=[1,2,3,5,8,16,17,18,19,20,21];
+var graveyardMeshes=[0,0,0,16,17,18,19,20,21];
 
 
 function initLoading() {
@@ -232,6 +234,19 @@ function initLoading() {
 
     // Create a loading manager to set RESOURCES_LOADED when appropriate.
     // Pass loadingManager to all resource loaders.
+    for (var i = 0; i < wallMap.length; i++) {
+        for (var j = 0; j < wallMap[i].length; j++) {
+          if (![9,10,11,12,13,14,15].includes(wallMap[i][j])) {
+            if (i>((wallMap.length)*6.5/8) && i<(wallMap.length-3) && j>(wallMap[i].length/2) && j<(wallMap[i].length-3)) {
+              var value= Math.floor(Math.random() * (graveyardMeshes.length));
+              wallMap[i][j]=graveyardMeshes[value];
+            }
+            else {
+              wallMap[i][j]=0;
+            }
+          }
+        }
+    }
     loadingManager = new THREE.LoadingManager();
 
     loadingManager.onProgress = function (item, loaded, total) {
@@ -336,6 +351,8 @@ function onResourcesLoaded() {
       meshesArray.push(meshes["rock"]);
 
       var cliffs = []*/
+
+
     for (var i = 0; i < wallMap.length; i++) {
         for (var j = 0; j < wallMap[i].length; j++) {
             if (wallMap[i][j] != 0) {
