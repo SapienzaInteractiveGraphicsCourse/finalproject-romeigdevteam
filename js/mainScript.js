@@ -186,6 +186,7 @@ function init() {
 	preSceneInit()
 
 	scene = new THREE.Scene();
+	
 	camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
 
 	geometry = new THREE.PlaneGeometry(300, 300, 50, 50);

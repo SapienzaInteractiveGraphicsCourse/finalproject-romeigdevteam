@@ -114,7 +114,100 @@ var models = {
         size1: 1,
         mass: 1000000,
         shape: 2
+    },
+    12: { // when put in the bitMap you need to leave two zeros of space
+
+        nameMesh: "wallZombie",
+        internal: true,
+        texture: "./textures/wall/wallZombie.png",
+        size1: 1,
+        size2: 5,
+        size3: 0.5,
+        mass: 1000000,
+        shape: 1
+    },
+    13: { // when put in the bitMap you need to leave two zeros of space
+
+        nameMesh: "wallZombie",
+        internal: true,
+        texture: "./textures/wall/wallZombie.png",
+        size1: 1,
+        size2: 5,
+        size3: 0.5,
+        mass: 1000000,
+        shape: 1
+    },
+    14: { // when put in the bitMap you need to leave two zeros of space
+
+        nameMesh: "wallZombie",
+        internal: true,
+        texture: "./textures/wall/wallZombie.png",
+        size1: 1,
+        size2: 5,
+        size3: 0.5,
+        mass: 1000000,
+        shape: 1
+    },
+    15: { // when put in the bitMap you need to leave two zeros of space
+
+        nameMesh: "wallZombie",
+        internal: true,
+        texture: "./textures/wall/wallZombie.png",
+        size1: 1,
+        size2: 5,
+        size3: 0.5,
+        mass: 1000000,
+        shape: 1
+    },
+    16: {
+        obj: "./scenes/graveyard/gravestoneBroken.obj",
+        mtl: "./scenes/graveyard/gravestoneBroken.mtl",
+        mesh: null,
+        nameMesh: "brokengrave",
+        internal: false
+
+    },
+    17: {
+        obj: "./scenes/graveyard/gravestoneCrossLarge.obj",
+        mtl: "./scenes/graveyard/gravestoneCrossLarge.mtl",
+        mesh: null,
+        nameMesh: "crossgrave",
+        internal: false
+
+    },
+    18: {
+        obj: "./scenes/graveyard/gravestoneDecorative.obj",
+        mtl: "./scenes/graveyard/gravestoneDecorative.mtl",
+        mesh: null,
+        nameMesh: "graveDec",
+        internal: false
+
+    },
+    19: {
+        obj: "./scenes/graveyard/gravestoneFlat.obj",
+        mtl: "./scenes/graveyard/gravestoneFlat.mtl",
+        mesh: null,
+        nameMesh: "graveDec",
+        internal: false
+
+    },
+    20: {
+      obj: "./scenes/graveyard/gravestoneBroken.obj",
+      mtl: "./scenes/graveyard/gravestoneBroken.mtl",
+      mesh: null,
+      nameMesh: "graveDec",
+      internal: false
+
+    },
+    21: {
+      obj: "./scenes/graveyard/gravestoneBroken.obj",
+      mtl: "./scenes/graveyard/gravestoneBroken.mtl",
+      mesh: null,
+      nameMesh: "graveDec",
+      internal: false
+
     }
+
 
 
 
@@ -168,6 +261,7 @@ function loadModels() {
     for (var _key in models) {
         (function (key) {
             if (models[key].internal==false) {
+
               var mtlLoader = new THREE.MTLLoader(loadingManager);
               mtlLoader.load(models[key].mtl, function (materials) {
                   materials.preload();
@@ -251,9 +345,21 @@ function onResourcesLoaded() {
                 currModel = models[wallMap[i][j]].mesh.clone();
 
 
-
-
-                currModel.position.set((i - 10 / 2) * UNITSIZE, 2, (j - 10 / 2) * UNITSIZE);
+                if (wallMap[i][j]==12) {
+                  currModel.position.set(((i - 10 / 2) * UNITSIZE)-3.5, 2, ((j - 10 / 2) * UNITSIZE)-7.5);
+                }
+                else if (wallMap[i][j]==13) {
+                  currModel.position.set(((i - 10 / 2) * UNITSIZE)+2, 2, ((j - 10 / 2) * UNITSIZE)-1.5);
+                }
+                else if (wallMap[i][j]==14) {
+                  currModel.position.set(((i - 10 / 2) * UNITSIZE)-3.5, 2, ((j - 10 / 2) * UNITSIZE)+7.5);
+                }
+                else if (wallMap[i][j]==15) {
+                  currModel.position.set(((i - 10 / 2) * UNITSIZE)+2, 2, ((j - 10 / 2) * UNITSIZE)+1.5);
+                }
+                else {
+                  currModel.position.set((i - 10 / 2) * UNITSIZE, 2, (j - 10 / 2) * UNITSIZE);
+                }
 
                 scene.add(currModel);
                 createBoundCube(currModel, models[wallMap[i][j]].mass);
