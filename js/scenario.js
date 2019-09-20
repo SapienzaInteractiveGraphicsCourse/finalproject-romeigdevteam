@@ -80,7 +80,7 @@ var models = {
         size1: 1,
         size2: 1,
         size3: 1,
-        mass: 10,
+        mass: 5,
         shape: 1
     },
     9: { // when put in the bitMap you need to leave two zeros of space
@@ -206,10 +206,48 @@ var models = {
       nameMesh: "graveDec",
       internal: false
 
+    },
+
+    22: {
+        obj: "./scenes/3d-nature-pack/Models/Oak_Dark_01.obj",
+        mtl: "./scenes/3d-nature-pack/Models/Oak_Dark_01.mtl",
+        mesh: null,
+        nameMesh: "rock",
+        internal: false
+
+    },
+    23: {
+        obj: "./scenes/3d-nature-pack/Models/Oak_Fall_01.obj",
+        mtl: "./scenes/3d-nature-pack/Models/Oak_Fall_01.mtl",
+        mesh: null,
+        nameMesh: "rock",
+        internal: false
+
+    },
+    24: {
+        obj: "./scenes/3d-nature-pack/Models/Oak_Green_01.obj",
+        mtl: "./scenes/3d-nature-pack/Models/Oak_Green_01.mtl",
+        mesh: null,
+        nameMesh: "rock",
+        internal: false
+
+    },
+    25: {
+        obj: "./scenes/3d-nature-pack/Models/Plant_1_01.obj",
+        mtl: "./scenes/3d-nature-pack/Models/Plant_1_01.mtl",
+        mesh: null,
+        nameMesh: "rock",
+        internal: false
+
+    },
+    26: {
+        obj: "./scenes/towers/towerRound_roofC.obj",
+        mtl: "./scenes/towers/towerRound_roofC.mtl",
+        mesh: null,
+        nameMesh: "tower",
+        internal: false
+
     }
-
-
-
 
 };
 
@@ -220,6 +258,11 @@ var meshes = {};
 var meshesArray = [];
 var collisionboxes1 = [];
 var collisionboxMeshes1 = [];
+var meshesNotWall=[1,2,3,5,8,16,17,18,19,20,21];
+var graveyardMeshes=[0,0,0,16,17,18,19,20,21];
+var treeMeshes=[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,22,23,24,25,8,5,2,1]
+var counterHalfTree=0;
+var counterHalfTree2=0;
 
 
 function initLoading() {
@@ -232,6 +275,32 @@ function initLoading() {
 
     // Create a loading manager to set RESOURCES_LOADED when appropriate.
     // Pass loadingManager to all resource loaders.
+    for (var i = 1; i < wallMap.length-2; i++) {
+        for (var j = 1; j < wallMap[i].length-2; j++) {
+          if (wallMap[i][j]==0) {
+            if (i>((wallMap.length)*6.5/8) && i<(wallMap.length-3) && j>(wallMap[i].length/2) && j<(wallMap[i].length-3)) {
+              var value= Math.floor(Math.random() * (graveyardMeshes.length));
+              wallMap[i][j]=graveyardMeshes[value];
+            }
+            else {
+              var value= Math.floor(Math.random() * (treeMeshes.length));
+              if ((i%2==0 || i%5==0) && j%3==0 && i<wallMap.length/2 && counterHalfTree<30) {
+                wallMap[i][j]=treeMeshes[value];
+                if (treeMeshes[value]!=0) counterHalfTree++;
+              }
+              else if ((i%2==0 || i%5==0) && j%3==0 && i>=wallMap.length/2 && counterHalfTree2<30) {
+                wallMap[i][j]=treeMeshes[value];
+                if (treeMeshes[value]!=0) counterHalfTree2++;
+              }
+            }
+          }
+          if (i%3==0 && i%10==0 && j%4==0 && j%5==0) {
+            var rockOrCrate=Math.floor(Math.random() * (2))+1;
+            if (rockOrCrate==1) wallMap[i][j] = 2;
+            else wallMap[i][j] = 8;
+          }
+        }
+    }
     loadingManager = new THREE.LoadingManager();
 
     loadingManager.onProgress = function (item, loaded, total) {
@@ -336,6 +405,8 @@ function onResourcesLoaded() {
       meshesArray.push(meshes["rock"]);
 
       var cliffs = []*/
+
+
     for (var i = 0; i < wallMap.length; i++) {
         for (var j = 0; j < wallMap[i].length; j++) {
             if (wallMap[i][j] != 0) {
