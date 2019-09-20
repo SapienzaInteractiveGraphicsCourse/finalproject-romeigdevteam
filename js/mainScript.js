@@ -509,6 +509,7 @@ function animate(now) {
 		canShot=false;
 		console.log(meshes[preModels[selectedGun].nameMesh].position.y);
 		meshes[preModels[selectedGun].nameMesh].position.y-=reloadTime //weapon goes down THIS CAN BE CUSTOMIZED WEAPON-BASED
+		meshes[preModels[selectedGun].nameMesh].rotation.x+=reloadTime*2;
 		if (meshes[preModels[selectedGun].nameMesh].position.y<-1) {
 			reloadFlag=false;
 			reloadFlagUp=true;
@@ -518,6 +519,7 @@ function animate(now) {
 		//canShot=false;
 		console.log(meshes[preModels[selectedGun].nameMesh].position.y);
 		meshes[preModels[selectedGun].nameMesh].position.y+=reloadTime //weapon goes up THIS CAN BE CUSTOMIZED WEAPON-BASED
+		meshes[preModels[selectedGun].nameMesh].rotation.x-=reloadTime*2;
 		if (meshes[preModels[selectedGun].nameMesh].position.y>-0.4) {
 			canShot=true;
 			reloadFlagUp=false;

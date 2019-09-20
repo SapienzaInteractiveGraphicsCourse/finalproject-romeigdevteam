@@ -507,6 +507,7 @@ function createSingleBodyCube(mesh, sidePositionChange = 0, level = 1) {
     boxBody.angularDamping = 1; //ADDED: no ragdoll till death
     boxBody.isDieing = false; //true when start counter to be removed
     addLifeBarSprite(boxBody)      //ADDED: gui life
+    boxBody.allowSleep = false;
 
 
 
