@@ -307,14 +307,18 @@ function getShootDir(targetVec) {
 
 function fireBullet() {
 	numBullets--;
+	if(numBullets==0)
+		jqNeedReload();
 	jqUpdateAmmo();
 	var ballShape = new CANNON.Sphere(0.2);
 	var ballGeometry = new THREE.SphereGeometry(ballShape.radius, 32, 32);
 	var shootDirection = new THREE.Vector3();
 	var shootVelo = veloBullet;
-	var x = playerSphereBody.position.x+3;
-	var y = playerSphereBody.position.y;
-	var z = playerSphereBody.position.z;
+	//var bodyRotation=new THREE.Euler().setFromQuaternion( playerSphereBody.quaternion )
+	
+	var x = playerSphereBody.position.x //+1*Math.cos(bodyRotation.x) ;
+	var y = playerSphereBody.position.y ;
+	var z = playerSphereBody.position.z //+ 1*Math.sin(bodyRotation.z);
 	var ballBody = new CANNON.Body({ mass: 1 });
 	ballBody.name = "bullet"
 	ballBody.addShape(ballShape);
@@ -409,10 +413,21 @@ function aimWeapon() {
 		meshes[ preModels[selectedGun].nameMesh ].position.setX(camera.position.x)
 		meshes[ preModels[selectedGun].nameMesh ].position.setY(camera.position.y - 0.25)
 		//Zoom in
-		camera.fov -= 25;
+		if(selectedGun==3){
+			camera.fov -= 50;
+			meshes[ preModels[selectedGun].nameMesh ].visible=false;
+			$("#scopeDiv").fadeIn("fast")
+		}
+		else{
+			camera.fov -= 25;
+		}
 		camera.updateProjectionMatrix();
 	}
 	else {
+		if(selectedGun==3){
+			$("#scopeDiv").fadeOut("fast")
+			meshes[ preModels[selectedGun].nameMesh ].visible=true;			
+		}
 		isPlayerAiming = !isPlayerAiming;
 		meshes[ preModels[selectedGun].nameMesh ].position.copy(meshes[ preModels[selectedGun].nameMesh ].freeAim)
 		//Zoom out back to initial
@@ -559,6 +574,9 @@ function animate(now) {
 			}
 		}
 		zombieWave++;
+		$("#rndNum").html(zombieWave)
+		resEn("#roundHud")
+	
 		noZombie = false;
 	}
 

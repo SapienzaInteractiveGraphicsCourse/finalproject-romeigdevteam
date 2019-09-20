@@ -45,6 +45,9 @@ function preSceneInit() {
             $('.healthArea').fadeIn("slow");
             $('#ammoDiv').fadeIn("slow");
             $('#preSceneDiv').css({ display: "none" })
+
+            $("#roundHud").fadeIn("slow")
+            $("#rndNum").html(zombieWave);
             for(i=0;i<4;i++){ $('#po'+i).css("display","none") }
 
         }
@@ -63,7 +66,7 @@ function preSceneInit() {
 
     // preMeshes[0].visible = false;
 
-    var planeTexture = THREE.ImageUtils.loadTexture("../textures/bdPack/block_alt1/stone_bricks.png");
+    var planeTexture = THREE.ImageUtils.loadTexture("./textures/bdPack/block_alt1/stone_bricks.png");
 
     // assuming you want the texture to repeat in both directions:
     planeTexture.wrapS = THREE.RepeatWrapping;

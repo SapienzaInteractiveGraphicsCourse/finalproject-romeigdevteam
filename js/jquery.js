@@ -48,18 +48,14 @@ function jQueryInit() {
     // $('img').click(false)
 
     // Current Round text ( appearas at starting of each round )
-    $("body").append('<div class="row" id="roundTextDiv">')
-    $('#roundTextDiv').css({ width: WINWIDTH, height: WINHEIGHT / 4.0, });
-    $('#roundTextDiv').append("<img class='column' id='roundText' src='./sprites/round/round.png' ><div id='valueDiv'></div>");
-    $("body").append('</div>')
-
+    
     //Reload text
     $("body").append('<div id="reloadText"> Reload [R] </div>')
 
     //Ammo Icon
     $("body").append('<div id="ammoDiv"> <img  src="./sprites/hud/ammoIcon.png" > <a></a> </div>')
 
-
+    
 }
 
 /*
@@ -148,7 +144,7 @@ function fadeOutAll() {
 
 
 function jqAppearCurrentRoundText() {
-    $('#roundTextDiv').fadeIn(3000);
+    
 
     if (zombieWave < 10) {
         const htmlString = "<img class='column' id='roundValue' src=' ./sprites/round/" + zombieWave + ".png '>"
@@ -188,4 +184,27 @@ function jqUpdateAmmo(mode=""){
     $("#ammoDiv a").html(numBullets)
 
 
+}
+
+
+
+function resEn(el){
+	$(el)
+.fadeOut(300)
+.fadeIn(300)
+.fadeOut(300)
+.fadeIn(300)
+.animate({
+    top:'25%',
+    height: '125%',
+    width: '125%'
+})
+
+setTimeout(() => {
+    $(el).animate({
+        top:'0%',
+        height: '100%',
+        width: '100%'
+    })    
+}, 2000);
 }
