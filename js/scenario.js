@@ -773,40 +773,7 @@ function byeMeshBody(body, mesh = null) {
 
 
 
-// TODO AUDIOOOOO
 
-
-// var listener = new THREE.AudioListener();
-// camera.add( listener );
-// var sounds={
-//     "gameOver": {
-//         path: "vattelo/a/pija",
-//         audio: null
-//     },
-// }
-// var audioLoader ;
-
-// function initSounds(){
-//     sounds.push()
-
-// }
-// function addSound(path){
-
-//     // create a global audio source
-//     for( var _key in sounds){
-//         sounds[_key].audio = new THREE.Audio(listener)
-//     }
-
-//     // load a sound and set it as the Audio object's buffer
-
-//     audioLoader = new THREE.AudioLoader();
-//     audioLoader.load( path, function( buffer ) {
-//     sound.setBuffer( buffer );
-//     sound.setLoop( true );
-//     sound.setVolume( 0.5 );
-//     sound.play();
-//     });
-// }
 window.addEventListener("keydown", function (e) {
     if (e.keyCode === 13) {  //checks whether the pressed key is "Enter"
         for (var key in collisionboxMeshes1) {

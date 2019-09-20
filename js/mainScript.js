@@ -133,6 +133,22 @@ function htmlInit() {
 
 	}
 
+	var soundBtn = document.getElementById('sndImg');
+
+    soundBtn.onclick = function () {
+		playMusic=!playMusic
+		if(!playMusic){
+			$("#sndImg").css({opacity:0.5})
+			music.pause()
+		}
+		else{
+			$("#sndImg").css({opacity:1})
+			music.play();
+			
+		}
+		
+    }
+
 }
 
 function initCannon() {
@@ -254,6 +270,11 @@ function init() {
 
 
 
+	//SOUNDS
+
+	camera.add( listener );
+
+	initSounds();
 	htmlInit();
 	jQueryInit();
 
@@ -373,9 +394,12 @@ window.onmousedown = function(e) {
 			if (numBullets > 0) {
 				if (rateoFlag==true && canShot==true) {
 					fireBullet();//TODO ADJUST THIS CAUSE IT CAUSES SOME PROBLEMS
+						sounds[selectedGun].audio.play()
 					intervalId = setInterval(function(){
 						if (numBullets > 0 && canShot==true) {
 							fireBullet();
+									
+							
 						}
 					}, rateoFire);
 				}
@@ -384,6 +408,9 @@ window.onmousedown = function(e) {
 						fireBullet();
 						rateoTime=false;
 						checkRateoTime();
+						if(sounds[3].audio.isPlaying)
+							sounds[3].audio.stop();
+						sounds[3].audio.play();
 					}
 				}
 			}
@@ -406,6 +433,11 @@ window.onmousedown = function(e) {
 
 window.onmouseup = function(e) {
 	clearInterval(intervalId);
+
+	if(selectedGun!=-1 && selectedGun<3 && sounds[selectedGun].audio.isPlaying)
+	sounds[selectedGun].audio.stop()
+
+	//stop
 };
 
 function aimWeapon() {
@@ -575,7 +607,7 @@ function animate(now) {
 			}
 		}
 		zombieWave++;
-		$("#rndNum").html(zombieWave)
+		$("#rndNum").html(zombieWave-1)
 		resEn("#roundHud")
 	
 		noZombie = false;

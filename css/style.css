@@ -697,5 +697,24 @@ body {
   left:6.5%;
   top: -10.5%;
   font-family:"Hand"; 
-  color: rgb(100, 12, 12)
+  color: rgb(100, 12, 12);
+  text-shadow: none;
+
+}
+
+p{
+  background: black;
+  -webkit-text-stroke: 0.5px black;
+   
+   text-shadow: none;
+}
+
+#sndImg{
+  position: absolute;
+  height: 10%;
+  right: 5%;
+  pointer-events: all;
+  z-index:10
+
+
 }

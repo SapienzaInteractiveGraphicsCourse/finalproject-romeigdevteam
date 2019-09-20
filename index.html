@@ -42,6 +42,8 @@
 	<script type="text/javascript" src="js/jquery.js"></script>
 	<script type="text/javascript" src="js/bitMaps.js"></script>
 	<script type="text/javascript" src="js/preScene.js"></script>
+	<script type="text/javascript" src="js/sounds.js"></script>
+
 
 
 
@@ -72,7 +74,10 @@
 			<span class="loading-text-words">G</span>
 		</div>
 	</div>
+	<div>
+			<img id="sndImg" src="./sprites/hud/sound.png" onclick="console.log(ciao)"></img>
 
+	</div>
 	
 
 	<!-- Scene -->
@@ -97,82 +102,84 @@
 	</div>
 
 
-<!-- PreScene -->
+	<!-- PreScene -->
 
-<div class="pricing-table">
-    <div class="pricing-option" id="po1">
-        <i class="material-icons">Uzi <p class="customP">Submachine gun</p> </i>
-        <hr />
-        <p>Rate of fire: High</p>
-		<hr />
-		<p>Fire-Mode: Auto</p>
-		<hr />
-		<p>Damage: Medium</p>
-		<hr />
-		<p>Mag: 15</p>
-		<hr />
-        <div class="price">
-            <div class="front">
-                <span class="price">Easy <b></b></span>
-            </div>
-        </div>
-    </div>
-    
-    <div class="pricing-option" id="po2">
-        <i class="material-icons" >M4 <p class="customP">Rifle</p> </i>
-        <hr />
-        <p>Rate of fire: Medium</p>
-		<hr />
-		<p>Fire-Mode: Auto</p>
-		<hr />
-		<p>Damage: High</p>
-		<hr />
-		<p>Mag: 30</p>
-		<hr />
-        <div class="price">
-            <div class="front">
-                <span class="price">Medium <b></b></span>
-            </div>
-        </div>
-    </div>
-    
-    <div class="pricing-option" id="po3">
-		
-        <i class="material-icons">Barrett <p class="customP"> Sniper</p></i>
-        <hr />
-        <p>Rate of fire: Low</p>
-		<hr />
-		<p>Fire-Mode: Semi-Auto</p>
-		<hr />
-		<p>Damage: Very High</p>
-		<hr />
-		<p>Mag: 3</p>
-		<hr />
-        <div class="price">
-            <div class="front">
-                <span class="price">Hard <b></b></span>
-            </div>
-        </div>
-    </div>
-	
-	
+	<div class="pricing-table">
+		<div class="pricing-option" id="po1">
+			<i class="material-icons">Uzi <p class="customP">Submachine gun</p> </i>
+			<hr />
+			<p>Rate of fire: High</p>
+			<hr />
+			<p>Fire-Mode: Auto</p>
+			<hr />
+			<p>Damage: Medium</p>
+			<hr />
+			<p>Mag: 15</p>
+			<hr />
+			<div class="price">
+				<div class="front">
+					<span class="price">Easy <b></b></span>
+				</div>
+			</div>
+		</div>
 
-</div>
+		<div class="pricing-option" id="po2">
+			<i class="material-icons">M4 <p class="customP">Rifle</p> </i>
+			<hr />
+			<p>Rate of fire: Medium</p>
+			<hr />
+			<p>Fire-Mode: Auto</p>
+			<hr />
+			<p>Damage: High</p>
+			<hr />
+			<p>Mag: 30</p>
+			<hr />
+			<div class="price">
+				<div class="front">
+					<span class="price">Medium <b></b></span>
+				</div>
+			</div>
+		</div>
 
-<div id="roundHud">
-	<img id="rndImg"src="./sprites/round/round.png" ><h2 id="rndNum"></h2></img>
-</div>
+		<div class="pricing-option" id="po3">
 
-<div id="scopeDiv">
+			<i class="material-icons">Barrett <p class="customP"> Sniper</p></i>
+			<hr />
+			<p>Rate of fire: Low</p>
+			<hr />
+			<p>Fire-Mode: Semi-Auto</p>
+			<hr />
+			<p>Damage: Very High</p>
+			<hr />
+			<p>Mag: 3</p>
+			<hr />
+			<div class="price">
+				<div class="front">
+					<span class="price">Hard <b></b></span>
+				</div>
+			</div>
+		</div>
+
+
+
+	</div>
+
+	<div id="roundHud">
+		<img id="rndImg" src="./sprites/round/round.png">
+		<h2 id="rndNum"></h2></img>
+
+	</div>
+
+	<div id="scopeDiv">
 		<img id="scopeImg" src="../sprites/hud/scope2.png"></img>
 	</div>
 
-<div id="preSceneDiv">
+	<div id="preSceneDiv">
 		<p id="playBtn" class="btn" disabled="true">Start!</a>
 			<p id="choiceTxt"> Choose your weapon! </p>
 	</div>
-	
-	
+
+
 
 
 </body>
