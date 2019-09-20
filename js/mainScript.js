@@ -312,7 +312,7 @@ function fireBullet() {
 	var ballGeometry = new THREE.SphereGeometry(ballShape.radius, 32, 32);
 	var shootDirection = new THREE.Vector3();
 	var shootVelo = veloBullet;
-	var x = playerSphereBody.position.x;
+	var x = playerSphereBody.position.x+3;
 	var y = playerSphereBody.position.y;
 	var z = playerSphereBody.position.z;
 	var ballBody = new CANNON.Body({ mass: 1 });

@@ -122,7 +122,7 @@ function changePlayerLifeBar(curHealth) {
     $(".health-bar-blue").animate({
         'width': a + "%"
     }, 300);
-    $('.total').html(curHealth + "/" + maxHealth);
+    //$('.total').html(curHealth + "/" + maxHealth);
 }
 
 function restartPlayerLifeBar() {
