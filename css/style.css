@@ -581,7 +581,7 @@ body {
 }
 .pricing-table .pricing-option i {
   font-size: 3rem;
-  color: red;
+  color: lightsalmon;
   transition: all .3s ease-in-out;
   display: inline;
 }
@@ -606,7 +606,7 @@ body {
   display: block;
   font-weight: 700;
   position: relative;
-  color: orange;
+
 }
 .pricing-table .pricing-option .price .front span.price b {
   position: absolute;
