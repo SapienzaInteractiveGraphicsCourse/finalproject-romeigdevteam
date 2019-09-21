@@ -325,7 +325,7 @@ window.onmousedown = function(e) {
 		if (e.button == 0) //left click
 			if (numBullets > 0) {
 				if (rateoFlag==true && canShot==true) {
-					fireBullet();//TODO ADJUST THIS CAUSE IT CAUSES SOME PROBLEMS
+					fireBullet();
 						sounds[selectedGun].audio.play()
 					intervalId = setInterval(function(){
 						if (numBullets > 0 && canShot==true) {
@@ -353,7 +353,6 @@ window.onmousedown = function(e) {
 				sounds[4].audio.play();
 
 
-				//TODO arma scarica sound
 			}
 		else if (e.button == 2) {	//Right click
 			if (canShot) {
@@ -448,16 +447,11 @@ function updatePositions(delta) {
 		}
 	}
 	for (var i = 0; i < collisionboxes1.length; i++) {
-		//THIS IS TO STOP THE TREMBLE OF THE TREES BUT IS PROVVISORY
-		//TODO SOLVE THIS
-
 			meshesArray[i].position.copy(collisionboxes1[i].position);
 			meshesArray[i].quaternion.copy(collisionboxes1[i].quaternion);
 
 	}
 	for (var i = 0; i < collisionboxes1.length; i++) {
-		//THIS IS TO STOP THE TREMBLE OF THE TREES BUT IS PROVVISORY
-		//TODO SOLVE THIS
 
 			collisionboxMeshes1[i].position.copy(collisionboxes1[i].position);
 			collisionboxMeshes1[i].quaternion.copy(collisionboxes1[i].quaternion);
@@ -570,14 +564,11 @@ function animate(now) {
 					aimWeapon();
 				}
 				reloadFlag=true;
-				if( sounds[5].audio.isPlaying );				
-					sounds[5].audio.stop();
 				sounds[5].audio.play();
 				setTimeout(() => {
 					numBullets = weaponBullets;
 					jqUpdateAmmo("sliding");
 				}, reloadTime*1000)
-				//TODO reload sound play
 
 
 				if (reloadingInterval) {

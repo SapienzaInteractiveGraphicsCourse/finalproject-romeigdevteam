@@ -178,7 +178,6 @@ function jqNeedReload(){
 
 function jqUpdateAmmo(mode=""){
     if(mode=="sliding"){
-        //TODO better animation
 
     }
     $("#ammoDiv a").html(numBullets)

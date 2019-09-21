@@ -12,6 +12,3 @@ bones[12] - low arm right
 bones[14] - up arm left
 bones[15] - low arm left
 
-
-PatrickDeArhatha music 
-    https://patrickdearteaga.com/arcade-music/
