@@ -119,7 +119,7 @@ class ZombieAnimation {
 
 function zombieFollowsCharacter(idx, delta) {
 	//if(idx > 3) return;
-	const speed = (0.9 + idx / 100) * delta
+	const speed = (1+zombieWave/5)*(0.9 + idx / 100) * delta
 	var body = collisionboxes[idx]
 	var x = body.position.x
 	var y = body.position.y
