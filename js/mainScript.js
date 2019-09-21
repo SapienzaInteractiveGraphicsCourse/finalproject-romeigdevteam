@@ -144,9 +144,9 @@ function htmlInit() {
 		else{
 			$("#sndImg").css({opacity:1})
 			music.play();
-			
+
 		}
-		
+
     }
 
 }
@@ -202,7 +202,7 @@ function init() {
 	preSceneInit()
 
 	scene = new THREE.Scene();
-	
+
 	camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
 
 	geometry = new THREE.PlaneGeometry(300, 300, 50, 50);
@@ -368,7 +368,7 @@ function fireBullet() {
 	var shootDirection = new THREE.Vector3();
 	var shootVelo = veloBullet;
 	//var bodyRotation=new THREE.Euler().setFromQuaternion( playerSphereBody.quaternion )
-	
+
 	var x = playerSphereBody.position.x //+1*Math.cos(bodyRotation.x) ;
 	var y = playerSphereBody.position.y ;
 	var z = playerSphereBody.position.z //+ 1*Math.sin(bodyRotation.z);
@@ -429,8 +429,8 @@ window.onmousedown = function(e) {
 					intervalId = setInterval(function(){
 						if (numBullets > 0 && canShot==true) {
 							fireBullet();
-									
-							
+
+
 						}
 					}, rateoFire);
 				}
@@ -495,7 +495,7 @@ function aimWeapon() {
 	else {
 		if(selectedGun==3){
 			$("#scopeDiv").fadeOut("fast")
-			meshes[ preModels[selectedGun].nameMesh ].visible=true;			
+			meshes[ preModels[selectedGun].nameMesh ].visible=true;
 		}
 		isPlayerAiming = !isPlayerAiming;
 		meshes[ preModels[selectedGun].nameMesh ].position.copy(meshes[ preModels[selectedGun].nameMesh ].freeAim)
@@ -587,7 +587,7 @@ function animate(now) {
 
 	if (reloadFlag) {
 		canShot=false;
-		console.log(meshes[preModels[selectedGun].nameMesh].position.y);
+		//console.log(meshes[preModels[selectedGun].nameMesh].position.y);
 		meshes[preModels[selectedGun].nameMesh].position.y-=reloadTime //weapon goes down THIS CAN BE CUSTOMIZED WEAPON-BASED
 		meshes[preModels[selectedGun].nameMesh].rotation.x+=reloadTime*2;
 		if (meshes[preModels[selectedGun].nameMesh].position.y<-1) {
@@ -597,7 +597,7 @@ function animate(now) {
 	}
 	if (reloadFlagUp) {
 		//canShot=false;
-		console.log(meshes[preModels[selectedGun].nameMesh].position.y);
+		//console.log(meshes[preModels[selectedGun].nameMesh].position.y);
 		meshes[preModels[selectedGun].nameMesh].position.y+=reloadTime //weapon goes up THIS CAN BE CUSTOMIZED WEAPON-BASED
 		meshes[preModels[selectedGun].nameMesh].rotation.x-=reloadTime*2;
 		if (meshes[preModels[selectedGun].nameMesh].position.y>-0.4) {
@@ -623,25 +623,32 @@ function animate(now) {
 	}
 
 	//GENERATE THE ZOMBIE WAAAAVE
-	if (noZombie == true) {
+	if (noZombie == true && zombieLoaded==true && zombieAlive==0) {
 
 		console.log("INCOMING WAVE NUMBER ", zombieWave);
 		jqAppearCurrentRoundText()
 		canTakeDamage=false;
 		checkCanTakeDamage(3000);
+		//var zombiespawned=0;
 		for (var i = 0; i < zombieMap.length; i++) {
 			for (var j = 0; j < zombieMap[i].length; j++) {
 				var level = zombieMap[i][j]
 				if (level > 0 && level <= zombieWave) {
-					importZombie(i, j, level);
+					if (level==zombieWave && zombieWave>1) {
+						importZombie(i, j, level);
+					}
+					const UNITSIZE = 1.5;
+					collisionboxes[zombieAlive].position.set((i - 10 / 2) * UNITSIZE, 2, (j - 10 / 2) * UNITSIZE);
+					addLifeBarSprite(collisionboxes[zombieAlive],10);
 					zombieAlive++;
+					console.log("GLI ZOMBIE SONO ", zombieAlive);
 				}
 			}
 		}
 		zombieWave++;
 		$("#rndNum").html(zombieWave-1)
 		resEn("#roundHud")
-	
+
 		noZombie = false;
 	}
 

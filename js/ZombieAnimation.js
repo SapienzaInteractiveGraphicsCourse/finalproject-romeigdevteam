@@ -1,3 +1,10 @@
+var rotUlarmY;
+var rotUlarmZ;
+var rotUlarmX;
+var rotUrarmZ;
+var rotUrarmY;
+var rotUrarmX;
+
 var ZombieBonesIds = {
 
 	URLEG: 1,
@@ -11,6 +18,7 @@ var ZombieBonesIds = {
 }
 
 class ZombieAnimation {
+
 	constructor(bones) {
 		this.rightStep = false;
 		this.torsoRight = false;
@@ -58,17 +66,43 @@ class ZombieAnimation {
 		//this.bones[this.URARM].rotateX(0.5)
 		this.bones[ZombieBonesIds.ULARM].rotateY(-0.4)
 		this.bones[ZombieBonesIds.ULARM].rotateX(-1.8)
+
 	}
+
 
 	dieingArmsPose() {
 		//this.bones[this.URARM].rotateX(0.5)
 		//const randAng=Math.random()*3*Math.PI/4
 		const fixedAngle=Math.PI/2
+		rotUlarmY= this.bones[ZombieBonesIds.ULARM].rotation.y;
+		rotUlarmZ= this.bones[ZombieBonesIds.ULARM].rotation.z;
+		rotUrarmY= this.bones[ZombieBonesIds.URARM].rotation.y;
+		rotUrarmZ= this.bones[ZombieBonesIds.URARM].rotation.z;
+		rotUlarmX= this.bones[ZombieBonesIds.ULARM].rotation.x;
+		rotUrarmX= this.bones[ZombieBonesIds.URARM].rotation.x;
 		this.bones[ZombieBonesIds.ULARM].rotateZ(-fixedAngle)
 		this.bones[ZombieBonesIds.ULARM].rotateY(-fixedAngle)
 
 		this.bones[ZombieBonesIds.URARM].rotateZ(fixedAngle)
 		this.bones[ZombieBonesIds.URARM].rotateY(fixedAngle)
+
+
+	}
+
+	revivingArmsPose() {
+		//this.bones[this.URARM].rotateX(0.5)
+		//const randAng=Math.random()*3*Math.PI/4
+		const fixedAngle=Math.PI/2
+		//this.bones[ZombieBonesIds.ULARM].rotateZ(fixedAngle)
+		this.bones[ZombieBonesIds.ULARM].rotation.y=(rotUlarmY);
+		this.bones[ZombieBonesIds.ULARM].rotation.z=(rotUlarmZ);
+		this.bones[ZombieBonesIds.ULARM].rotation.x=(rotUlarmX);
+
+		//this.bones[ZombieBonesIds.URARM].rotateZ(-fixedAngle)
+		this.bones[ZombieBonesIds.URARM].rotation.x=(rotUrarmX);
+		//this.bones[ZombieBonesIds.URARM].rotateZ(-fixedAngle)
+		this.bones[ZombieBonesIds.URARM].rotation.z=(rotUrarmZ);
+		this.bones[ZombieBonesIds.URARM].rotation.y=(rotUrarmY);
 
 	}
 

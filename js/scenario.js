@@ -13,6 +13,7 @@ var zombieAlive = 0;
 var uselessBodies = []
 var uselessMeshes = []
 var zombieHitBoxFlag=false;
+var zombieLoaded=false;
 
 
 // Models index
@@ -315,6 +316,15 @@ function initLoading() {
         htmlCloseLoading();
 
     };
+    for (var i = 0; i < zombieMap.length; i++) {
+			for (var j = 0; j < zombieMap[i].length; j++) {
+				var level = zombieMap[i][j]
+				if (level==1 || level==2 ) {
+					importZombie(i, j, level);
+
+				}
+			}
+		}
 
     loadModels();
 
@@ -540,7 +550,7 @@ function importZombie(i, j, level = 1) {
 
             //gltf.scene.position.x += 3 * i;
             //gltf.scene.position.y += 1.0;
-            gltf.scene.position.set((i - 10 / 2) * UNITSIZE, 2, (j - 10 / 2) * UNITSIZE);
+            gltf.scene.position.set(1000, 2, 1000);
 
             gltf.scene.children[0].children.forEach(element => {
                 if (element.name.includes("Left") || element.name.includes("Right")) {
@@ -568,6 +578,7 @@ function importZombie(i, j, level = 1) {
             })
 
             createSingleBodyCube(zombieMesh, i, level)
+            zombieLoaded=true;
 
 
         },
@@ -695,8 +706,9 @@ function createSingleBodyCube(mesh, sidePositionChange = 0, level = 1) {
         boxBody.life--;
 
         if (boxBody.life < -200) {
-            byeMeshBody(boxBody);
+            tpBody(boxBody);
             zombieAlive--;
+            console.log("ZOMBIE RIMANENTI = ", zombieAlive);
             if (zombieAlive == 0) {
                 noZombie = true;
             }
@@ -816,7 +828,31 @@ function createSingleBodyCube(mesh, sidePositionChange = 0, level = 1) {
 
 
 
+function tpBody(body, mesh = null) {
+    if ("myMesh" in body && mesh == null) {
+      body.position.set(1000, 2, 1000);
+      body.life=10;
+      body.isDieing=false;
+      body.myMeshes[0].zombieAnimated.revivingArmsPose();
+      body.myMeshes[0].zombieAnimated.startAnimation();
+    }
+    else if ("myMeshes" in body && mesh == null) {
+      body.position.set(1000, 2, 1000);
+      body.life=10;
+      body.isDieing=false;
+      body.myMeshes[0].zombieAnimated.revivingArmsPose();
+      body.myMeshes[0].zombieAnimated.startAnimation();
 
+    }
+    else {   //separati
+      body.position.set(1000, 2, 1000);
+      body.life=10;
+      body.isDieing=false;
+      body.myMeshes[0].zombieAnimated.revivingArmsPose();
+      body.myMeshes[0].zombieAnimated.startAnimation();
+    }
+
+}
 
 function byeMeshBody(body, mesh = null) {
     if ("myMesh" in body && mesh == null) {
