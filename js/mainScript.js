@@ -329,8 +329,11 @@ function getShootDir(targetVec) {
 
 function fireBullet() {
 	numBullets--;
-	if(numBullets==0)
+	if(numBullets==0){
 		jqNeedReload();
+		sounds[this.selectedGun].audio.stop();
+		sounds[4].audio.play();
+	}
 	jqUpdateAmmo();
 	var ballShape = new CANNON.Sphere(0.2);
 	var ballGeometry = new THREE.SphereGeometry(ballShape.radius, 32, 32);
@@ -416,6 +419,11 @@ window.onmousedown = function(e) {
 			}
 			else {
 				jqNeedReload();
+				sounds[this.selectedGun].audio.stop();
+				if(sounds[4].audio.isPlaying ) sounds[4].audio.stop();
+				sounds[4].audio.play();
+				
+
 				//TODO arma scarica sound
 			}
 		else if (e.button == 2) {	//Right click
@@ -630,6 +638,7 @@ function animate(now) {
 					aimWeapon();
 				}
 				reloadFlag=true;
+				sounds[5].audio.play();
 				setTimeout(() => {
 					numBullets = weaponBullets;
 					jqUpdateAmmo("sliding");

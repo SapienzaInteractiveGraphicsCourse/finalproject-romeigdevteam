@@ -32,9 +32,9 @@ var weaponDamage;
 var reloadTime;
 
 function preSceneInit() {
-
+    
     //preScene.preScene.background = new THREE.Color(0xfff000)
-
+    
     startbtn = document.getElementById('playBtn');
 
     startbtn.onclick = function () {

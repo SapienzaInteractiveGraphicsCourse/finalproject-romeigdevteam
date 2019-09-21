@@ -62,7 +62,9 @@ function checkPlayerLife() {
     fadeOutAll();
     $("#youLose").fadeIn("fast")
     setTimeout(() =>{
-      window.location.href = "GameOverScreen.html";
+      //redirect
+    
+      
     }
     ,4000)
     gameOver = true;

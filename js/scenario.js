@@ -758,7 +758,7 @@ function createSingleBodyCube(mesh, sidePositionChange = 0, level = 1) {
               playerLife -= e.target.damage;
               changePlayerLifeBar(playerLife);
               canTakeDamage=false;
-              checkCanTakeDamage(2000);
+              checkCanTakeDamage(250);
               $('#hurt').fadeOut(350);
             }
             //THIS IS THE JUMPAWAY OF THE ZOMBIES AFTER THEY TOUCH YOU

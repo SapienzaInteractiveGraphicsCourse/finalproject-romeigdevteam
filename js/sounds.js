@@ -4,56 +4,67 @@ var playMusic = true
 var listener = new THREE.AudioListener();
 
 // create a global audio source
-var music = new THREE.Audio( listener );
+var music = new THREE.Audio(listener);
 
 // load a sound and set it as the Audio object's buffer
 
 
 var sounds = {
 
-    1:{
-        path: "/sounds/auto.ogg",
+    1: {
+        path: "/sounds/auto2.ogg",
         audio: null
     },
 
-    
-    2:{
-        path: "/sounds/autoHev.ogg",
+
+    2: {
+        path: "/sounds/autoHev2.ogg",
         audio: null
     },
-    
-    3:{
+
+    3: {
         path: "/sounds/sniperRel.mp3",
+        audio: null
+    },
+    4: {
+        path: "/sounds/dry.mp3",
+        audio: null
+    },
+    5: {
+        path: "/sounds/rel.mp3",
         audio: null
     },
 
 }
 
-function initSounds(){
+function initSounds() {
 
 
     var audioLoader = new THREE.AudioLoader();
-    audioLoader.load( 'sounds/HumbleMatch.ogg', function( buffer ) {
-        music.setBuffer( buffer );
-        music.setLoop( true );
-        music.setVolume( 0.5 );
+    audioLoader.load('sounds/HumbleMatch.ogg', function (buffer) {
+        music.setBuffer(buffer);
+        music.setLoop(true);
+        music.setVolume(0.5);
         music.play();
     });
 
-    for (var _key in sounds)        (function (key) {   
+    for (var _key in sounds) (function (key) {
         console.log(key)
-        sounds[key].audio = new THREE.Audio( listener )
-        audioLoader.load(sounds[key].path, function( buffer ) {
-            sounds[key].audio.setBuffer( buffer );
-            if(key<3)
-            sounds[key].audio.setLoop( true );
+        sounds[key].audio = new THREE.Audio(listener)
+        audioLoader.load(sounds[key].path, function (buffer) {
+            sounds[key].audio.setBuffer(buffer);
+            if (key < 3)
+                sounds[key].audio.setLoop(true);
             else
-            sounds[key].audio.setLoop( false);
-            sounds[key].audio.setVolume( 0.5 );
+                sounds[key].audio.setLoop(false);
+            sounds[key].audio.setVolume(0.5);
+            if (key == 4 || key == 5)
+                sounds[key].audio.setVolume(1);
+
             //sounds[key].audio.play();
 
         });
-    
+
     })(_key)
 
 }
