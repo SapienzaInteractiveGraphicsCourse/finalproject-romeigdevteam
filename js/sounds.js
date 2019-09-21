@@ -12,18 +12,18 @@ var music = new THREE.Audio( listener );
 var sounds = {
 
     1:{
-        path: "/sounds/auto.ogg",
+        path: "./sounds/auto.ogg",
         audio: null
     },
 
-    
+
     2:{
-        path: "/sounds/autoHev.ogg",
+        path: "./sounds/autoHev.ogg",
         audio: null
     },
-    
+
     3:{
-        path: "/sounds/sniperRel.mp3",
+        path: "./sounds/sniperRel.mp3",
         audio: null
     },
 
@@ -40,7 +40,7 @@ function initSounds(){
         music.play();
     });
 
-    for (var _key in sounds)        (function (key) {   
+    for (var _key in sounds)        (function (key) {
         console.log(key)
         sounds[key].audio = new THREE.Audio( listener )
         audioLoader.load(sounds[key].path, function( buffer ) {
@@ -53,9 +53,7 @@ function initSounds(){
             //sounds[key].audio.play();
 
         });
-    
+
     })(_key)
 
 }
-
-
