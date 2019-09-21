@@ -12,26 +12,26 @@ var music = new THREE.Audio(listener);
 var sounds = {
 
     1: {
-        path: "/sounds/auto2.ogg",
+        path: "./sounds/auto2.ogg",
         audio: null
     },
 
 
     2: {
-        path: "/sounds/autoHev2.ogg",
+        path: "./sounds/autoHev2.ogg",
         audio: null
     },
 
     3: {
-        path: "/sounds/sniperRel.mp3",
+        path: "./sounds/sniperRel.mp3",
         audio: null
     },
     4: {
-        path: "/sounds/dry.mp3",
+        path: "./sounds/dry.mp3",
         audio: null
     },
     5: {
-        path: "/sounds/rel.mp3",
+        path: "./sounds/rel.mp3",
         audio: null
     },
 
