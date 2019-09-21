@@ -201,106 +201,7 @@ function init() {
 
 	preSceneInit()
 
-	scene = new THREE.Scene();
-
-	camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
-
-	geometry = new THREE.PlaneGeometry(300, 300, 50, 50);
-	geometry.applyMatrix(new THREE.Matrix4().makeRotationX(- Math.PI / 2));
-
-	const floorTexture = new THREE.TextureLoader().load("./textures/bdPack/grass.png", function (texture) {
-
-		texture.wrapS = texture.wrapT = THREE.RepeatWrapping;
-		//texture.offset.set( 0, 0 );
-		texture.repeat.set(200, 200);
-	});
-
-	material = new THREE.MeshLambertMaterial({ map: floorTexture });
-
-
-	var urls = [
-		"textures/fantasySkyboxes/Sunny_01A_left.jpg",
-        "textures/fantasySkyboxes/Sunny_01A_right.jpg",
-        "textures/fantasySkyboxes/Sunny_01A_up.jpg",
-        "textures/fantasySkyboxes/Sunny_01A_down.jpg",
-        "textures/fantasySkyboxes/Sunny_01A_front.jpg",
-        "textures/fantasySkyboxes/Sunny_01A_back.jpg",
-
-	  ];
-	  
-	  // wrap it up into the object that we need
-	  var cubeMap = new THREE.ImageUtils.loadTextureCube(urls);
-	  
-	  // set the format, likely RGB unless you've gone crazy
-	  cubeMap.format = THREE.RGBFormat;
-
-	ballmaterial = new THREE.MeshPhongMaterial( { 
-		color: 0xffffff,
-
-		roughness: 0.7,
-		metalness: 0.9,
-	
-		roughnessMap: cubeMap,
-		metalnessMap: cubeMap,
-	
-		} )
-
-	meshFloor = new THREE.Mesh(geometry, material);
-	meshFloor.castShadow = true;
-	meshFloor.receiveShadow = true;
-	scene.add(meshFloor);
-
-
-	// Create a sphere
-	var mass = 5, radius = 1.3;
-	//	  var boxShape = new CANNON.Box( new CANNON.Vec3(0.5, 0.8 ,0.5)  );
-	sphereShape = new CANNON.Sphere(radius);
-	//   var slipperyMaterial = new CANNON.Material();
-	// 	slipperyMaterial.friction = 0;
-	// 	sphereShape.material=slipperyMaterial
-	playerSphereBody = new CANNON.Body({ mass: 100 });
-	playerSphereBody.name = "playerBox"
-	playerSphereBody.addShape(sphereShape);
-	playerSphereBody.position.set(0, 5, 0);
-	playerSphereBody.linearDamping = 0.98;
-	//playerSphereBody.angularDamping = 1;
-	playerSphereBody.allowSleep = false;//NEEDED BECAUSE WITHOUT THIS IF YOU DON'T MOVE THE PLAYER FOR SOME TIME HE WILL SLEEP AND STOP MOVING
-
-	world.addBody(playerSphereBody);
-
-	controls = new PointerLockControls(camera, playerSphereBody);
-	scene.add(controls.getObject());
-
-
-	ambientLight = new THREE.AmbientLight(0xffffff, 0.9);
-	scene.add(ambientLight);
-
-	light = new THREE.PointLight(0xffffff, 0.8, 18);
-	light.position.set(-3, 6, -3);
-	light.castShadow = true;
-	light.shadow.camera.near = 0.1;
-	light.shadow.camera.far = 25;
-	scene.add(light);
-
-
-	// camera.position.set(0, player.height, -5);
-	// camera.lookAt(new THREE.Vector3(0, player.height, 0));
-
-
-
-
-	renderer = new THREE.WebGLRenderer({ antialias: false });
-	//renderer.setSize(1280, 720);
-	renderer.setSize(window.innerWidth, window.innerHeight);
-
-	renderer.shadowMap.enabled = true;
-	renderer.shadowMap.type = THREE.BasicShadowMap;
-
-
-
-	//SOUNDS
-
-	camera.add( listener );
+	initLoading();
 
 	initSounds();
 	htmlInit();
@@ -311,7 +212,7 @@ function init() {
 
 	//Meshes imports
 
-	initLoading();
+
 
 
 	//importScenario();
@@ -450,7 +351,7 @@ window.onmousedown = function(e) {
 				sounds[this.selectedGun].audio.stop();
 				if(sounds[4].audio.isPlaying ) sounds[4].audio.stop();
 				sounds[4].audio.play();
-				
+
 
 				//TODO arma scarica sound
 			}
