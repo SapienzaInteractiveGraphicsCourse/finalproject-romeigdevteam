@@ -216,13 +216,41 @@ function init() {
 	});
 
 	material = new THREE.MeshLambertMaterial({ map: floorTexture });
-	ballmaterial = new THREE.MeshLambertMaterial({ color: 0xddffff });
+
+
+	var urls = [
+		"textures/fantasySkyboxes/Sunny_01A_left.jpg",
+        "textures/fantasySkyboxes/Sunny_01A_right.jpg",
+        "textures/fantasySkyboxes/Sunny_01A_up.jpg",
+        "textures/fantasySkyboxes/Sunny_01A_down.jpg",
+        "textures/fantasySkyboxes/Sunny_01A_front.jpg",
+        "textures/fantasySkyboxes/Sunny_01A_back.jpg",
+
+	  ];
+	  
+	  // wrap it up into the object that we need
+	  var cubeMap = new THREE.ImageUtils.loadTextureCube(urls);
+	  
+	  // set the format, likely RGB unless you've gone crazy
+	  cubeMap.format = THREE.RGBFormat;
+
+	ballmaterial = new THREE.MeshPhongMaterial( { 
+		color: 0xffffff,
+
+		roughness: 0.7,
+		metalness: 0.9,
+	
+		roughnessMap: cubeMap,
+		metalnessMap: cubeMap,
+	
+		} )
+
 	meshFloor = new THREE.Mesh(geometry, material);
 	meshFloor.castShadow = true;
 	meshFloor.receiveShadow = true;
 	scene.add(meshFloor);
 
-	
+
 	// Create a sphere
 	var mass = 5, radius = 1.3;
 	//	  var boxShape = new CANNON.Box( new CANNON.Vec3(0.5, 0.8 ,0.5)  );
