@@ -25,44 +25,15 @@ function stopMovement() {
 
 }
 
-function createPlayer() {
-
-  rotationPoint = new THREE.Object3D();
-  rotationPoint.position.set(camera.position);
-  scene.add(rotationPoint);
-
-  var halfExtents = new CANNON.Vec3(0.5, 0.8, 0.5);
-  var geometry = new THREE.BoxGeometry(halfExtents.x * 2, halfExtents.y * 2, halfExtents.z * 2);
-  //var geometry = new THREE.BoxBufferGeometry(characterSize / 3, characterSize, characterSize / 3);
-  var material = new THREE.MeshPhongMaterial({ color: 0x22dd88 });
-  playerBox = new THREE.Mesh(geometry, material);
-  //playerBox.visible=false;
-  playerBox.position.set(3, 3, 3);
-  rotationPoint.add(playerBox);
-  scene.add(playerBox)
-
-  //CANNON
-  boxShape = new CANNON.Box(halfExtents);
-  playerBoxBody = new CANNON.Body({ mass: 1, shape: boxShape });
-  playerBoxBody.position.set(0, 0, 0)
-  playerBoxBody.name = "playerBox"
-  playerBox.angularDamping = 1;
-  playerBoxBody.addShape(boxShape);
-  world.addBody(playerBoxBody);
-  playerBoxBody.angularDamping = 1;
-
-
-
-
-}
-
 function checkPlayerLife() {
   if (playerLife <= 0 && !gameOver) {
     
     fadeOutAll();
     $("#youLose").fadeIn("fast")
     setTimeout(() =>{
-      window.location.href = "GameOverScreen.html";
+      //redirect
+    
+      
     }
     ,4000)
     gameOver = true;

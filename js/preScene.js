@@ -30,11 +30,12 @@ var rateoFlag;
 var rateoTime=true;
 var weaponDamage;
 var reloadTime;
+var bulletMass;
 
 function preSceneInit() {
-
+    
     //preScene.preScene.background = new THREE.Color(0xfff000)
-
+    
     startbtn = document.getElementById('playBtn');
 
     startbtn.onclick = function () {
@@ -144,7 +145,7 @@ function preSceneAnimate() {
     if (selectedGun != -1 && preMeshes[selectedGun].position.z < 150) {
         if (selectedGun==2) { //assault rifle
           preMeshes[selectedGun].position.z += 1;
-          veloBullet=20;
+          veloBullet=50;
           weaponSelected=2;
           rateoFlag=true;
           rateoFire=250;
@@ -152,11 +153,12 @@ function preSceneAnimate() {
           weaponBullets=30;
           numBullets=weaponBullets;
           reloadTime=0.03
+          bulletMass=0.3;
         }
         else if (selectedGun==1) { //UZI OR PISTOL
           preMeshes[selectedGun].position.z += 1;
           preMeshes[selectedGun].position.x += 1;
-          veloBullet=30;
+          veloBullet=40;
           weaponSelected=1;
           rateoFlag=true;
           rateoFire=100;
@@ -164,13 +166,13 @@ function preSceneAnimate() {
           weaponBullets=15;
           numBullets=weaponBullets;
           reloadTime=0.05
-          
+          bulletMass=0.2;
 
         }
         else if (selectedGun==3){ //SNIPER RIFLE
           preMeshes[selectedGun].position.z += 1;
           preMeshes[selectedGun].position.x -= 1;
-          veloBullet=50;
+          veloBullet=80;
           weaponSelected=3;
           rateoFlag=false;
           rateoFire=1000;
@@ -178,7 +180,7 @@ function preSceneAnimate() {
           weaponBullets=3;
           numBullets=weaponBullets;
           reloadTime=0.01
-
+            bulletMass=0.5;
         }
     }
 
