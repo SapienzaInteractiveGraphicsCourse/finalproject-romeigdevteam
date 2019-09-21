@@ -222,7 +222,7 @@ function init() {
 	meshFloor.receiveShadow = true;
 	scene.add(meshFloor);
 
-	createPlayer();
+	
 	// Create a sphere
 	var mass = 5, radius = 1.3;
 	//	  var boxShape = new CANNON.Box( new CANNON.Vec3(0.5, 0.8 ,0.5)  );
@@ -344,7 +344,7 @@ function fireBullet() {
 	var x = playerSphereBody.position.x //+1*Math.cos(bodyRotation.x) ;
 	var y = playerSphereBody.position.y ;
 	var z = playerSphereBody.position.z //+ 1*Math.sin(bodyRotation.z);
-	var ballBody = new CANNON.Body({ mass: 1 });
+	var ballBody = new CANNON.Body({ mass: bulletMass });
 	ballBody.name = "bullet"
 	ballBody.addShape(ballShape);
 
@@ -373,7 +373,7 @@ function fireBullet() {
 	ballBody.life = 0;
 	ballBody.postStep = () => {
 		ballBody.life++
-		if (ballBody.life > 200) {
+		if (ballBody.life > 70) { //was 200
 			byeMeshBody(ballBody)
 		}
 	}
@@ -537,10 +537,6 @@ function updatePositions(delta) {
 
 	}
 
-	playerBox.position.copy(playerBoxBody.position)
-	playerBox.quaternion.copy(playerBoxBody.quaternion);
-	//if(playerBoxBody)
-	//	camera.position.copy(playerBoxBody.position)
 
 }
 

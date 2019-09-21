@@ -707,8 +707,10 @@ function createSingleBodyCube(mesh, sidePositionChange = 0, level = 1) {
     }
     boxBody.addEventListener("collide", function (e) {
         //e.body.id -> 1 is ground
+
         if (e.target.name != "zombieBox" || e.body.id == 0 || e.body.name == "ground" || e.target.name == "ground")
             return;
+            
         if (e.body.name == "bullet" && e.target.name == "zombieBox") {
             console.log("Collided with body:", e);
             console.log("id:", e.body.id);
@@ -721,23 +723,15 @@ function createSingleBodyCube(mesh, sidePositionChange = 0, level = 1) {
               //  return; //it is in disappearing phase
 
             e.target.life -= weaponDamage;
-            if (e.target.life == 1 && weaponSelected==1 )
-                e.target.angularDamping = 0; // enable ragdoll
-            else if (e.target.life== 1 && weaponSelected==2)
-                e.target.angularDamping = 0; // enable ragdoll
-
-            else if (e.target.life== 5 && weaponSelected==3) // IF WE ARE GONNA CHANGE THIS AND MAKE THE SNIPER ONESHOT WE HAVE TO FIND ANOTHER WAY TO CHANGE THE DAMPING(MAYBE WE CAN PUT AN IF-ELSE WHEN CREATING THE ZOMBIES IF THE SNIPER IS CHOSEN)
-                e.target.angularDamping = 0; // enable ragdoll
-
-
-
-
+        
             if (e.target.life <= 0) {
               if (e.target.isDieing) return;
               else {
                 uselessMeshes.push(e.target.barGui)
                 //byeMeshBody(e.target)
                 e.target.isDieing = true;  //start counter to remove it
+                e.target.angularDamping=0;
+        
                 e.target.myMeshes[0].zombieAnimated.stopAnimation();
                 e.target.myMeshes[0].zombieAnimated.dieingArmsPose();
 
