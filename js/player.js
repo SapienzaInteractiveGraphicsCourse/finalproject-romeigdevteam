@@ -27,15 +27,15 @@ function stopMovement() {
 
 function checkPlayerLife() {
   if (playerLife <= 0 && !gameOver) {
-    
+
     fadeOutAll();
     $("#youLose").fadeIn("fast")
-    setTimeout(() =>{
-      //redirect
-    
-      
-    }
-    ,4000)
+    document.exitPointerLock = document.exitPointerLock ||
+      document.mozExitPointerLock;
+
+    // Attempt to unlock
+    document.exitPointerLock();
+
     gameOver = true;
     controls.enabled = false;
   }
@@ -46,7 +46,7 @@ function checkPlayerLife() {
 function checkCanTakeDamage(invulnerabilityTime) {
   //this is the time of INVULNERABILITY OF THE PLAYER
   //THE PLAYER CAN'T BE DAMAGED UNTIL THIS TIMER GOES OUT
-  setTimeout(function(){ canTakeDamage=true }, invulnerabilityTime);
+  setTimeout(function () { canTakeDamage = true }, invulnerabilityTime);
 }
 
 

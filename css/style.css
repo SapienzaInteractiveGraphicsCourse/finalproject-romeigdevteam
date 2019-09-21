@@ -542,7 +542,7 @@ body {
 }
 
 #youLose{
-  
+  cursor: pointer;
   position: absolute;
   background: url(../textures/horde.png) no-repeat center center fixed; 
   -webkit-background-size: cover;
@@ -557,6 +557,7 @@ body {
   display: none;
   vertical-align: middle;
   line-height: 590px; 
+  z-index: 10;
   
 
 }
@@ -750,6 +751,7 @@ p{
   transition: color 0.25s 0.0833333333s;
   
   text-shadow: none;
+
   z-index: 10;
 }
 

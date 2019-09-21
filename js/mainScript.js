@@ -669,6 +669,8 @@ function animate(now) {
 					aimWeapon();
 				}
 				reloadFlag=true;
+				if( sounds[5].audio.isPlaying );				
+					sounds[5].audio.stop();
 				sounds[5].audio.play();
 				setTimeout(() => {
 					numBullets = weaponBullets;
