@@ -920,7 +920,7 @@ function createSingleBodyCube(mesh, sidePositionChange = 0, level = 1) {
     collisionboxMeshes.push(boxMesh);
     console.log(boxMesh)
 
-    boxBody.myMeshes = [mesh, boxMesh]   
+    boxBody.myMeshes = [mesh, boxMesh]
 
     world.addBody(boxBody);
     boxMesh.idInArray = collisionboxes.push(boxBody) - 1;
@@ -935,6 +935,7 @@ function tpBody(body, mesh = null) {
       body.isDieing=false;
       body.myMeshes[0].zombieAnimated.revivingArmsPose();
       body.myMeshes[0].zombieAnimated.startAnimation();
+      body.angularDamping = 1;
     }
     else if ("myMeshes" in body && mesh == null) {
       body.position.set(1000, 2, 1000);
@@ -942,6 +943,8 @@ function tpBody(body, mesh = null) {
       body.isDieing=false;
       body.myMeshes[0].zombieAnimated.revivingArmsPose();
       body.myMeshes[0].zombieAnimated.startAnimation();
+      body.angularDamping = 1;
+
 
     }
     else {   //separati
@@ -950,6 +953,8 @@ function tpBody(body, mesh = null) {
       body.isDieing=false;
       body.myMeshes[0].zombieAnimated.revivingArmsPose();
       body.myMeshes[0].zombieAnimated.startAnimation();
+      body.angularDamping = 1;
+
     }
 
 }
