@@ -1,6 +1,7 @@
 # Zombies Horde
 
 Three js game as final project of Interactive Graphics course at Sapienza University of Rome.
+
 Live **DEMO**: https://sapienzainteractivegraphicscourse.github.io/finalproject-romeigdevteam/
 
 ## Getting Started
