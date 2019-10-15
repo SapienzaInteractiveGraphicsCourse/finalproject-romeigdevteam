@@ -1,13 +1,16 @@
-#Zombies Horde
+# Zombies Horde
 
 Three js game as final project of Interactive Graphics course at Sapienza University of Rome.
-Live demo can be found here: https://sapienzainteractivegraphicscourse.github.io/finalproject-romeigdevteam/
+Live **DEMO**: https://sapienzainteractivegraphicscourse.github.io/finalproject-romeigdevteam/
 
 ## Getting Started
-We used Three js, Cannon js and jQuery.  
+We used Three.js, Cannon.js and jQuery.  
 
 ### Prerequisites
+To run:
+  common browser (Chrome, Firefox, ...) recent versions. 
 
+To develop:
 - Three js
 - Cannon js
 - jQuery.
